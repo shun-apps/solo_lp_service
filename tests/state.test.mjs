@@ -90,7 +90,12 @@ test("3つのLPと受付サンプルは架空のハンドメイドアトリエ�
   assert.match(html,/オーダー相談/);
   assert.match(html,/theme-handmade\.css/);
   assert.match(theme,/#964A64/i);
-  assert.match(theme,/#FBF8F6/i);
+  assert.match(theme,/#F2F0EF/i);
+  assert.match(theme,/#397C7D/i);
+  assert.doesNotMatch(theme,/#F1EAF3|#D9C9DE|#C8B6D4|#F3EDF5|#F0E9F4|#FFFDFC|#FFFCFB|radial-gradient/i);
+  assert.match(html,/class="business-id shop-header"/);
+  assert.doesNotMatch(html,/class="brand"/);
+  assert.doesNotMatch(html,/class="brand-icon"/);
   assert.match(theme,/\.lp-ornament/);
   assert.match(base,/\.sidebar/);
   assert.match(base,/\.metrics/);
