@@ -1,0 +1,14 @@
+{
+  "name": "shun-solo-business-admin-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "個人事業主向けイベント申込とお問い合わせの独立した操作デモ",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/app.mjs && node --check src/state.mjs && node --check worker/index.mjs && node --check scripts/build.mjs && npm test",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": { "wrangler": "^4.0.0" }
+}

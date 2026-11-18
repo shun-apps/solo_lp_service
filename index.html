@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="個人事業主・コンテンツ販売者・ハンドメイド作家向け管理画面の安全な操作体験。">
+  <title>マイビジネス管理画面｜瞬apps（デモ）</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./src/app.mjs"></script>
+</head>
+<body>
+<a class="skip" href="#main">本文に移動</a>
+<div class="shell">
+  <aside class="sidebar" aria-label="管理メニュー">
+    <div class="brand"><span class="brand-icon">瞬</span><span><strong>マイビジネス管理</strong><small>瞬apps / 操作体験</small></span></div>
+    <div class="business-id"><span class="business-avatar">S</span><span><strong id="sidebar-name">サンプル事業者</strong><small>事業者アカウント（デモ）</small></span></div>
+    <nav id="menu" aria-label="管理メニュー">
+      <span class="menu-heading">管理メニュー</span>
+      <button type="button" class="nav active" data-page-go="dashboard"><span>▦</span> ダッシュボード</button>
+      <button type="button" class="nav" data-page-go="lp"><span>▤</span> LP管理 <small>3</small></button>
+      <button type="button" class="nav" data-page-go="events"><span>▦</span> イベント管理</button>
+      <button type="button" class="nav" data-page-go="leads"><span>≡</span> 申込・お問い合わせ</button>
+      <button type="button" class="nav" data-page-go="settings"><span>⚙</span> フォームの設定</button>
+      <button type="button" class="nav" data-page-go="mail"><span>✉</span> 自動返信メール</button>
+      <button type="button" class="nav" data-page-go="profile"><span>◉</span> 事業者情報</button>
+    </nav>
+    <div class="side-foot"><span class="dot"></span> デモデータのみ使用中 <small>顧客情報の送信・保存はありません。</small></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb">マイビジネス <span>/</span> <strong id="page-name">ダッシュボード</strong></div><div class="top-actions"><span class="demo-tag"><span class="dot"></span> 操作体験版</span><button type="button" class="btn btn-light btn-small" id="reset">初期状態に戻す</button></div></header>
+    <main id="main" class="main">
+      <div class="notice"><b>i</b><span><strong>操作体験用の管理画面です。</strong> 全て架空の申込・お問い合わせです。他の体験者とは共有されず、再読み込みすると初期状態に戻ります。実際のメールは送信されません。</span></div>
+      <section class="page" id="page-dashboard" data-page="dashboard" aria-labelledby="title-dashboard">
+        <div class="page-head"><div><span class="eyebrow">OVERVIEW</span><h1 id="title-dashboard">ダッシュボード</h1><p>LP・イベント・お問い合わせの状況をまとめて管理します。</p></div><div class="page-ctas"><button class="btn btn-outline" type="button" data-try="contact">お問い合わせを試す</button><button class="btn btn-primary" type="button" data-try="event">イベント申込を試す</button></div></div>
+        <div class="metrics">
+          <article class="metric"><span>LP見本</span><strong id="stat-lp">3<small>本</small></strong><p>異なる訴求のページ</p></article>
+          <article class="metric"><span>開催予定イベント</span><strong id="stat-events">—</strong><p>公開中のイベント</p></article>
+          <article class="metric"><span>イベント申込数</span><strong id="stat-register">—</strong><p>デモの参加申込</p></article>
+          <article class="metric"><span>未対応のお問い合わせ</span><strong id="stat-inquiry">—</strong><p>デモの受信箱</p></article>
+        </div>
+        <div class="split">
+          <section class="panel"><div class="panel-head"><div><h2>最近の受付</h2><p>申込とお問い合わせを一か所で確認</p></div><button class="text-action" data-page-go="leads">すべて見る ›</button></div><div id="recent-leads" class="recent-list"></div></section>
+          <section class="panel"><div class="panel-head"><div><h2>受付フォームの体験</h2><p>提供する2つのフォームを切り替えられます</p></div></div><div class="panel-body"><div class="choice-cards"><button type="button" class="choice-card" data-try="event"><span class="choice-symbol">▦</span><b>イベント申込</b><small>開催日・定員を見て申し込む</small><em>操作する →</em></button><button type="button" class="choice-card" data-try="contact"><span class="choice-symbol">✉</span><b>お問い合わせ</b><small>相談内容を選び送信を体験</small><em>操作する →</em></button></div></div></section>
+        </div>
+        <section class="panel margin-top"><div class="panel-head"><div><h2>LP見本</h2><p>コンテンツ販売・ハンドメイド・イベント</p></div><button class="text-action" data-page-go="lp">LP管理へ ›</button></div><div class="lp-tiles" id="dashboard-lps"></div></section>
+      </section>
+      <section class="page" id="page-lp" data-page="lp" hidden aria-labelledby="title-lp">
+        <div class="page-head"><div><span class="eyebrow">LANDING PAGES</span><h1 id="title-lp">LP管理</h1><p>訴求の異なる3ページから同じ管理画面へ受付を集約します。</p></div></div>
+        <div class="info"><b>ⓘ</b> ここに表示するのは制作見本の仮カードです。実際の完成LPのURLや画像が揃ったら差し替えます。存在しない公開URLにはリンクしません。</div>
+        <div class="lp-cards" id="lp-cards"></div>
+      </section>
+      <section class="page" id="page-events" data-page="events" hidden aria-labelledby="title-events">
+        <div class="page-head"><div><span class="eyebrow">EVENTS</span><h1 id="title-events">イベント管理</h1><p>セミナー・ワークショップの開催日と定員を設定します。</p></div><button class="btn btn-primary" type="button" id="new-event">＋ イベントを作成</button></div>
+        <section class="panel"><div class="panel-head"><div><h2>開催予定のイベント</h2><p>受付ON/OFF、日程・定員の変更を体験できます</p></div></div><div class="event-list" id="events-list"></div></section>
+      </section>
+      <section class="page" id="page-leads" data-page="leads" hidden aria-labelledby="title-leads">
+        <div class="page-head"><div><span class="eyebrow">LEADS</span><h1 id="title-leads">申込・お問い合わせ</h1><p>2つのフォームからの受付をまとめて確認できます。</p></div></div>
+        <section class="panel"><div class="panel-head lead-head"><div class="segmented" role="group" aria-label="一覧切り替え"><button class="segment active" data-lead-tab="event" aria-pressed="true">イベント申込</button><button class="segment" data-lead-tab="contact" aria-pressed="false">お問い合わせ</button></div><span class="count-label" id="lead-count"></span></div><div class="table-scroll"><table class="records"><thead id="lead-headings"></thead><tbody id="lead-rows"></tbody></table></div><div class="empty" id="lead-empty" hidden>該当するデータはありません。</div></section>
+      </section>
+      <section class="page" id="page-settings" data-page="settings" hidden aria-labelledby="title-settings">
+        <div class="page-head"><div><span class="eyebrow">FORM SETTINGS</span><h1 id="title-settings">フォームの設定</h1><p>どのタイプの受付フォームを使うか体験できます。</p></div></div>
+        <div class="split">
+          <section class="panel"><div class="panel-head"><div><h2>受付フォームの種類</h2><p>デモの既定値を選択</p></div></div><div class="panel-body"><div class="mode-choices"><label class="mode-option"><input type="radio" name="default-mode" value="event"><span><b>イベント申込フォーム</b><small>開催日・定員を指定して申込を受け付ける</small></span></label><label class="mode-option"><input type="radio" name="default-mode" value="contact"><span><b>お問い合わせフォーム</b><small>質問や制作相談などの問い合わせを受け付ける</small></span></label></div><p class="inline-status" id="setting-status">設定を切り替えられます（デモのみ）。</p><button type="button" class="btn btn-primary" id="try-default">設定したフォームを体験</button></div></section>
+          <section class="panel"><div class="panel-head"><div><h2>受付のしくみ</h2><p>どちらのフォームも同じ管理画面に集約</p></div></div><div class="panel-body"><div class="steps"><span>① LPからフォームを開く</span><span>② 架空のお客様が送信</span><span>③ 申込・お問い合わせ一覧に反映</span><span>④ メール内容をプレビュー</span></div><p class="subtle">実運用時の公開フォームとの連携、Google Sheetsへの保存、メール送信は、このデモとは別に実装します。</p></div></section>
+        </div>
+      </section>
+      <section class="page" id="page-mail" data-page="mail" hidden aria-labelledby="title-mail">
+        <div class="page-head"><div><span class="eyebrow">EMAIL PREVIEW</span><h1 id="title-mail">自動返信メール</h1><p>フォーム送信後の案内内容を確認できます。実際には送信されません。</p></div></div>
+        <div class="split">
+          <section class="panel"><div class="panel-head"><h2>イベント申込確認メール</h2><span class="chip">プレビューのみ</span></div><div class="panel-body"><div class="mail-sample"><strong>件名：イベントへのお申し込みありがとうございます</strong><p id="event-mail">参加申込を受け付けました。<br>イベントの詳細をご案内します。</p></div></div></section>
+          <section class="panel"><div class="panel-head"><h2>お問い合わせ確認メール</h2><span class="chip">プレビューのみ</span></div><div class="panel-body"><div class="mail-sample"><strong>件名：お問い合わせを受け付けました</strong><p id="contact-mail">お問い合わせありがとうございます。<br>ご相談内容を確認します。</p></div></div></section>
+        </div>
+      </section>
+      <section class="page" id="page-profile" data-page="profile" hidden aria-labelledby="title-profile">
+        <div class="page-head"><div><span class="eyebrow">PROFILE</span><h1 id="title-profile">事業者情報</h1><p>管理画面に表示する事業者名を変更できます。</p></div></div>
+        <section class="panel narrow"><div class="panel-head"><h2>基本情報</h2></div><div class="panel-body"><label class="field-label" for="business-name">事業者名（デモ用）</label><input type="text" class="field" id="business-name" value="サンプル事業者" maxlength="40"><p class="subtle">本名・メールアドレスなどの個人情報は入力しないでください。再読み込みで戻ります。</p><button type="button" class="btn btn-primary" id="save-business">表示名を変更</button></div></section>
+      </section>
+      <footer class="footer">瞬apps <span>個人事業主向け管理画面・操作体験版</span></footer>
+    </main>
+  </div>
+</div>
+
+<dialog id="experience-dialog" class="experience" aria-labelledby="experience-title">
+  <header class="dialog-head"><div><small>お客様側のフォーム（操作体験版）</small><h2 id="experience-title">お申し込み・お問い合わせ</h2></div><button type="button" class="close" id="close-experience" aria-label="閉じる">×</button></header>
+  <div class="dialog-body">
+    <p class="modal-notice">架空のお客様情報のみを使用します。実際の送信・メール通知・他の利用者とのデータ共有はありません。</p>
+    <div class="progress"><span id="progress-bar"></span></div><p class="progress-label" id="progress-label">1 / 3　フォームを選択</p>
+    <section id="experience-step-0" class="flow-step">
+      <h3>どちらのフォームを体験しますか？</h3>
+      <div class="flow-modes"><button type="button" class="flow-mode" data-modal-mode="event"><b>▦ イベント申込</b><small>日時・残席から選ぶ</small></button><button type="button" class="flow-mode" data-modal-mode="contact"><b>✉ お問い合わせ</b><small>相談内容を選んで送る</small></button></div>
+      <label class="field-label" for="modal-lp">どのLPからアクセスしたことにしますか？</label><select class="field" id="modal-lp"></select>
+      <div id="event-selection"><label class="field-label">申し込むイベント <span class="required">必須</span></label><div id="event-choices" class="event-choices"></div></div>
+      <div id="contact-selection" hidden><label class="field-label" for="modal-topic">お問い合わせ内容 <span class="required">必須</span></label><select class="field" id="modal-topic"></select><p class="subtle">実際の文章を入力する必要はありません。</p></div>
+      <p class="inline-status" id="select-status" aria-live="polite"></p>
+    </section>
+    <section id="experience-step-1" class="flow-step" hidden>
+      <h3>お客様情報と申込内容の確認</h3>
+      <div class="fake-contact"><span class="fake-badge">自動入力・架空データ</span><strong>デモのお客様</strong><span>demo@example.invalid</span><small>個人情報の入力は不要です</small></div>
+      <dl class="review" id="review-content"></dl>
+      <label class="confirm"><input type="checkbox" id="confirm-checkbox"><span>この操作はデモであり、実際には送信されないことを確認しました。</span></label>
+    </section>
+    <section id="experience-step-2" class="flow-step success" hidden>
+      <div class="success-mark">✓</div><h3 id="success-heading">受け付けました</h3>
+      <p>管理画面へ反映されました。メールは実際には送信されません。</p>
+      <div class="success-card"><strong id="success-summary"></strong><small id="success-detail"></small></div>
+      <div class="mail-sample"><span>自動返信のプレビュー（未送信）</span><p id="success-mail"></p></div>
+      <button type="button" id="view-result" class="btn btn-primary btn-wide">管理画面で反映を確認する →</button>
+      <button type="button" id="again" class="text-action">別のフォームも試す</button>
+    </section>
+  </div>
+  <footer class="dialog-foot" id="experience-actions"><button type="button" class="btn btn-outline" id="step-back" hidden>戻る</button><button type="button" class="btn btn-primary" id="step-next">次へ</button><button type="button" class="btn btn-primary" id="step-send" hidden disabled>送信を確定する（デモ）</button></footer>
+</dialog>
+
+<dialog id="event-dialog" class="event-editor" aria-labelledby="edit-title"><header class="dialog-head"><div><small>管理画面でイベントを設定</small><h2 id="edit-title">イベントの追加・変更</h2></div><button type="button" class="close" id="close-event" aria-label="閉じる">×</button></header>
+<form id="event-form" class="dialog-body">
+  <input type="hidden" id="edit-id">
+  <label class="field-label" for="edit-name">イベント名</label><input class="field" id="edit-name" maxlength="80" required placeholder="例：初心者向けオンライン講座">
+  <div class="form-grid"><div><label class="field-label" for="edit-date">開催日</label><input class="field" id="edit-date" type="date" required></div><div><label class="field-label" for="edit-time">開始時間</label><input class="field" id="edit-time" type="time" value="10:00" required></div></div>
+  <label class="field-label" for="edit-capacity">定員</label><input class="field" type="number" id="edit-capacity" min="1" max="1000" value="10" required>
+  <p class="inline-status" id="edit-status" aria-live="polite"></p>
+  <div class="dialog-foot"><button type="button" class="btn btn-outline" id="cancel-event">キャンセル</button><button class="btn btn-primary" type="submit">内容を保存する（デモ）</button></div>
+</form></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

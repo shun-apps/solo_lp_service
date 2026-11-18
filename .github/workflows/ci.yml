@@ -1,0 +1,47 @@
+name: Solo business admin demo tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate pure demo logic and syntax
+        run: npm run check
+      - name: Build dedicated Workers static assets
+        run: npm run build
+      - name: Verify minimal public assets and no live customer integrations
+        run: |
+          test -s dist/index.html
+          test -s dist/styles.css
+          test -s dist/src/app.mjs
+          test -s dist/src/state.mjs
+          test -s dist/robots.txt
+          test ! -e dist/README.md
+          test ! -e dist/package.json
+          test ! -e dist/wrangler.jsonc
+          test ! -e dist/worker/index.mjs
+          if grep -En '\b(fetch|XMLHttpRequest|sendBeacon|localStorage|sessionStorage)\b' src/app.mjs src/state.mjs; then
+            echo 'Prohibited persistence or network call in customer demo'
+            exit 1
+          fi
+      - name: Install Chromium for smoke tests
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install chromium
+      - name: Verify event and inquiry forms on desktop and mobile
+        run: node scripts/smoke.mjs
+      - name: Upload desktop and mobile previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: solo-business-demo-screenshots
+          path: artifacts/*.png
+          if-no-files-found: ignore
