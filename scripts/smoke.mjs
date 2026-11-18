@@ -10,7 +10,7 @@ import {createServer} from "node:http";
 import {chromium} from "playwright";
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
-const allowed=new Set(["/","/index.html","/styles.css","/src/app.mjs","/src/state.mjs","/robots.txt"]);
+const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/src/app.mjs","/src/state.mjs","/robots.txt"]);
 const server=createServer(async(req,res)=>{
   const u=new URL(req.url,"http://127.0.0.1");const path=u.pathname==="/"?"/index.html":u.pathname;
   if(!allowed.has(u.pathname)){res.writeHead(404);res.end();return;}
