@@ -1,43 +1,68 @@
 /**
- * Handmade Atelier theme — 基盤のSaaSレイアウト・レスポンシブ仕様は styles.css に保持。
- * 背景はアイボリー、主な操作は深いくすみローズ、補助はグレージュとラベンダー。
- * 薄いピンクを本文色に使用せず、可読性と押しやすさを優先する。
+ * Handmade Atelier: くすみローズ × グレージュ × ブルーグリーン
+ * 既存の管理画面のレイアウト・操作は styles.css を維持。
+ * 白はカード用の無彩色。黄みの強いアイボリーとラベンダーは使用しない。
  */
 :root {
-  color: #51424B;
-  background: #FBF8F6;
-  --line: #EBE1E4;
-  --green: #964A64; /* 既存の管理画面の主CTAトークンを再利用 */
-  --muted: #7D6D75;
-  --ink: #463943;
+  color: #494549;
+  background: #F2F0EF;
+  --line: #E5DEDB;
+  --green: #397C7D;
+  --muted: #716A6B;
+  --ink: #423F42;
   --rose: #964A64;
   --rose-dark: #79364E;
-  --rose-soft: #F8ECF0;
-  --rose-line: #E8D5DC;
-  --greige: #E6DDD9;
-  --sage: #668875;
+  --rose-soft: #F2E8EB;
+  --rose-line: #DBBFC9;
+  --greige: #E8E2DF;
+  --greige-soft: #F2F0EF;
+  --teal: #397C7D;
+  --teal-dark: #245C61;
+  --teal-soft: #E4F1EF;
 }
-body { background: radial-gradient(circle at 100% 0%, #FFF0F2 0, transparent 42%), #FBF8F6; }
+body { background: #F2F0EF; }
 h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
 .page-head h1 { font-weight: 830; }
 .page-head p, .panel-head p, .subtle { color: #806F78; }
 :where(.field, button, select, input):focus-visible { outline: 3px solid #D7A4B8; outline-offset: 2px; }
-.sidebar { background: #FFFCFB; border-color: #EDE2E4; }
-.brand { border-color: #EFE7E8; }
-.brand-icon { background: #654250; color: #FFF8F8; border-radius: 12px; }
-.brand strong { color: #4A3541; }
-.brand small, .menu-heading { color: #8B7780; }
-.business-id {
-  background: #FCF1F3;
-  border-color: #EBDCE1;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.64);
+.sidebar { background: #FFFFFF; border-color: #EDE2E4; }
+.menu-heading { color: #807777; }
+.sidebar .shop-header {
+  width: 100%;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 16px 18px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #E5DEDB;
+  border-radius: 0;
+  box-shadow: none;
+  background: #F8F7F6;
 }
-.business-avatar { background: #EAD1DB; color: #843C57; border-radius: 11px; }
-.business-id strong { color: #614653; }
-.business-id small { color: #826A75; }
+.shop-header .business-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 41px;
+  width: 41px;
+  height: 41px;
+  background: #D6E7E5;
+  color: #285D62;
+  border-radius: 11px;
+  font-size: 18px;
+}
+.shop-header-text { flex: 1; min-width: 0; }
+.shop-header .shop-header-text strong {
+  font-size: 13px; font-weight: 800; line-height: 1.45;
+  color: #51444A; overflow-wrap: anywhere;
+}
+.shop-header .shop-header-text small {
+  font-size: 10px; color: #72696C; line-height: 1.5;
+}
 .nav { color: #6A5963; }
 .nav>span { color: #997D89; }
-.nav.active, .nav:hover { background: #F9E9EE; color: #873F5A; }
+.nav.active, .nav:hover { background: #F2E7EB; color: #873F5A; }
 .nav.active>span, .nav:hover>span, .nav small { color: #9A516C; }
 .side-foot { border-color: #EFE6E6; color: #755B67; }
 .side-foot small { color: #91818A; }
@@ -47,14 +72,14 @@ h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
 .breadcrumb strong { color: #614B57; }
 .demo-tag { color: #874A60; background: #FBEEF2; border-color: #EFDBE1; }
 .notice {
-  background: #F9F0F1;
+  background: #F0E8E8;
   border-color: #EDE0E3;
   color: #705D67;
 }
 .notice b { border-color: #BE95A7; color: #894D66; }
 .eyebrow { color: #AA718A; letter-spacing: .15em; }
 .metric, .panel, .lp-card {
-  background: #FFFDFC;
+  background: #FFFFFF;
   border-color: #EDE3E5;
   box-shadow: 0 3px 12px rgba(86,45,58,.024);
 }
@@ -69,40 +94,40 @@ h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
   box-shadow: 0 3px 8px rgba(123,57,81,.11);
 }
 .btn-primary:hover { background: #79364E; border-color: #79364E; }
-.btn-outline { color: #8C405B; border-color: #DDBEC9; background: #FFFDFC; }
-.btn-outline:hover { color: #79364E; background: #FCF0F3; border-color: #CB9AAC; }
-.btn-light { background: #FFFCFB; color: #695762; border-color: #E9DEE2; }
+.btn-outline { color: #8C405B; border-color: #DDBEC9; background: #FFFFFF; }
+.btn-outline:hover { color: #79364E; background: #F2E8EB; border-color: #CB9AAC; }
+.btn-light { background: #FFFFFF; color: #695762; border-color: #E9DEE2; }
 .btn-light:hover { background: #FAF2F4; }
 .text-action { color: #8C405B; }
 .text-action:hover { color: #6D3046; }
 .pill.neutral { background: #F2EBED; color: #695C62; }
-.pill.green { background: #E7F1E9; color: #426B52; }
-.pill.blue { background: #F0E9F4; color: #755D83; }
-.pill.amber { background: #FFF0E5; color: #895C35; }
+.pill.green { background: #E4F1EF; color: #2C696B; }
+.pill.blue { background: #E4EFEE; color: #2B6267; }
+.pill.amber { background: #F0ECE9; color: #6E615B; }
 .recent-row { border-color: #F2EAEC; }
 .recent-main strong { color: #51414A; }
 .recent-main small { color: #8A7C84; }
 .choice-card {
-  background: linear-gradient(150deg,#FFF9F8,#F9EEF1);
+  background: linear-gradient(150deg,#F5F2F1,#F1E4E8);
   border-color: #E9DCE1;
   color: #604650;
   border-radius: 12px;
 }
 .choice-card:nth-child(2) {
-  background: linear-gradient(155deg,#FFFBF9,#F3EDF5);
-  border-color: #E7DCE7;
+  background: linear-gradient(155deg,#FFFFFF,#E9F2F1);
+  border-color: #CFE1DF;
 }
-.choice-card:hover { background: #F9E8EE; border-color: #C99AAE; }
+.choice-card:hover { background: #F0E2E7; border-color: #C99AAE; }
 .choice-card b { color: #563B47; }
 .choice-card small { color: #836E79; }
 .choice-symbol { color: #A55874; }
-.choice-card:nth-child(2) .choice-symbol { color: #94739F; }
+.choice-card:nth-child(2) .choice-symbol { color: #397C7D; }
 .choice-card em { color: #914560; }
 /* LP見本の写真がまだない段階でも、作品・贈り物・教室の印象が伝わる表紙 */
 .lp-visual {
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(135deg,#F7DCE5,#E8BDC9);
+  background: linear-gradient(135deg,#EDD5DE,#D6A8B9);
   color: #79465A;
 }
 .lp-visual::before {
@@ -131,16 +156,16 @@ h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
   z-index:0;
 }
 .lp-content {
-  background: linear-gradient(135deg,#FAE9EE 3%,#E5BCCB 66%,#D8ABB9);
+  background: linear-gradient(135deg,#F1E1E7 3%,#D5ABBC 66%,#BD91A3);
   color:#70475A;
 }
 .lp-craft {
-  background: linear-gradient(130deg,#FFF2E8 2%,#EAD1C8 58%,#D9BBAF);
-  color:#76564B;
+  background: linear-gradient(130deg,#F0EBE8 2%,#D8C9C4 58%,#B7A69F);
+  color:#665850;
 }
 .lp-event {
-  background: linear-gradient(132deg,#F1EAF3 5%,#D9C9DE 60%,#C8B6D4);
-  color:#654D72;
+  background: linear-gradient(132deg,#E4F1EF 5%,#AACFCD 60%,#75A6A7);
+  color:#245A60;
 }
 .lp-visual-number, .lp-visual-copy { position:relative;z-index:2; }
 .lp-visual-number { letter-spacing:.16em; font-size:10px; color:inherit; }
@@ -163,78 +188,126 @@ h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
 .lp-actions { gap:9px; }
 .kicker { color:#9C667B; }
 .lp-tile { border-color:#EFE6E8; }
-.info { background:#FAF1F2;border-color:#EEDFE2;color:#765D68; }
+.info { background:#F4ECEE;border-color:#EEDFE2;color:#765D68; }
 .event-row { border-color:#F0E8EA; }
-.event-date { background:#F7E8EE;color:#90435E; }
+.event-date { background:#F2E5EA;color:#90435E; }
 .event-details h3 { color:#58414D; }
 .event-details p { color:#7F7079; }
 .event-meta .subtle { color:#71646A; }
-.segmented { background:#F7EFF2; }
+.segmented { background:#F2E9EC; }
 .segment { color:#7F6D78; }
-.segment.active { background:#FFFDFC;color:#89445E;box-shadow:0 2px 6px rgba(89,40,56,.09); }
+.segment.active { background:#FFFFFF;color:#89445E;box-shadow:0 2px 6px rgba(89,40,56,.09); }
 .count-label, .records th { color:#85727D; }
-.records th { background:#FFF9F9;border-color:#F1E8EB; }
+.records th { background:#F7F5F4;border-color:#F1E8EB; }
 .records td { color:#675760;border-color:#F2E9EC; }
 .records .bold-cell { color:#57414D; }
-.records tr.highlight { background:#FBEDF1; }
-.mode-option { border-color:#EDE0E5; background:#FFFDFC; }
-.mode-option:has(input:checked) { background:#FBEFF3;border-color:#CFA6B5; }
+.records tr.highlight { background:#F1E6EA; }
+.mode-option { border-color:#EDE0E5; background:#FFFFFF; }
+.mode-option:has(input:checked) { background:#F2E7EB;border-color:#CFA6B5; }
 .mode-option input, .confirm input { accent-color:#9B4E68; }
 .mode-option b { color:#5E4652; }
 .mode-option small { color:#7F7079; }
 .inline-status { color:#884B61; }
-.steps span { background:#FCF8F8;border-color:#EFE4E6;color:#6C5662; }
-.mail-sample { background:#FFFBFA;border-color:#F0E6E7; }
+.steps span { background:#F6F3F2;border-color:#EFE4E6;color:#6C5662; }
+.mail-sample { background:#FFFFFF;border-color:#F0E6E7; }
 .mail-sample strong { color:#5C4552; }
 .mail-sample p { color:#776873; }
-.chip { background:#FAEEF1;color:#8D4F66; }
+.chip { background:#F2E6E9;color:#8D4F66; }
 .field-label { color:#624E59; }
-.field { background:#FFFDFC;color:#51414A;border-color:#E7DBDF; }
+.field { background:#FFFFFF;color:#51414A;border-color:#E7DBDF; }
 .field:focus { border-color:#B87990; }
 .footer { color:#897783; }
-dialog { background:#FFFDFC;border-color:#E9DDE1;box-shadow:0 24px 80px rgba(65,35,49,.24);border-radius:17px; }
+dialog { background:#FFFFFF;border-color:#E9DDE1;box-shadow:0 24px 80px rgba(65,35,49,.24);border-radius:17px; }
 dialog::backdrop { background:rgba(44,28,40,.55); }
 .dialog-head { border-color:#F0E8EA; }
-.dialog-head small { color:#9F617C; }
+.dialog-head small { color:#8E5971; }
 .dialog-head h2 { color:#563F4A; }
-.close { background:#FFFDFC;color:#795F6A;border-color:#EEDFE4; }
-.modal-notice { background:#FBF1F3;color:#735968;border-color:#EBDCE2; }
-.progress { background:#F3E9ED; }
+.close { background:#FFFFFF;color:#795F6A;border-color:#EEDFE4; }
+.modal-notice { background:#F2E8EB;color:#735968;border-color:#EBDCE2; }
+.progress { background:#E8E3E2; }
 .progress span { background:#A15974; }
 .progress-label { color:#88737E; }
 .flow-step h3 { color:#5F4552; }
-.flow-mode { background:#FFFCFB;border-color:#EADDE2;color:#725562; }
+.flow-mode { background:#FFFFFF;border-color:#EADDE2;color:#725562; }
 .flow-mode b { color:#5B4651; }
 .flow-mode small { color:#826F78; }
-.flow-mode.active { background:#FBEFF3;border-color:#C48DA3;color:#873D5B; }
+.flow-mode.active { background:#F2E7EB;border-color:#C48DA3;color:#873D5B; }
 .flow-mode.active b { color:#85415C; }
-.event-choice { background:#FFFDFC;border-color:#EADDE1;color:#6B5360; }
-.event-choice.selected { background:#FCEFF2;border-color:#BB7B94;box-shadow:inset 0 0 0 1px #D8B1C0; }
+.event-choice { background:#FFFFFF;border-color:#EADDE1;color:#6B5360; }
+.event-choice.selected { background:#F3E7EA;border-color:#BB7B94;box-shadow:inset 0 0 0 1px #D8B1C0; }
 .event-choice small { color:#806C78; }
-.fake-contact { background:#FDF8F8;border-color:#EFE2E5; }
+.fake-contact { background:#F5F3F2;border-color:#EFE2E5; }
 .fake-badge { color:#94506A; }
 .review { border-color:#EBE0E3; }
 .review-row { border-color:#F1E8EA; }
 .review dt { color:#82717C; }
 .review dd { color:#52434C; }
 .confirm { color:#6B5A63; }
-.success-mark { background:#F9E8EE;color:#94506B; }
+.success-mark { background:#F0E2E7;color:#94506B; }
 .success h3 { color:#59424E; }
 .success>p { color:#816E77; }
-.success-card { background:#FAEDF1;border-color:#EACFD9; }
+.success-card { background:#F2E6EA;border-color:#EACFD9; }
 .success-card strong { color:#81435D; }
 .success-card small { color:#81636F; }
 .success .mail-sample span { color:#9B5472; }
-.dialog-foot { background:#FFFDFC;border-color:#F0E6E8; }
-.toast { background:#624052;color:#FFFDFC;box-shadow:0 12px 32px rgba(58,22,41,.23); }
+.dialog-foot { background:#FFFFFF;border-color:#F0E6E8; }
+.toast { background:#624052;color:#FFFFFF;box-shadow:0 12px 32px rgba(58,22,41,.23); }
 @media(max-width:650px){
   .lp-visual-copy { font-size:18px; }
   .lp-card .lp-visual { min-height:210px; }
   .lp-tile .lp-visual-copy { font-size:11px; }
   .page-head h1 { font-size:23px; }
-  .choice-card { background:#FBF1F3; }
-  .choice-card:nth-child(2) { background:#F5EFF5; }
+  .choice-card { background:#F2E8EB; }
+  .choice-card:nth-child(2) { background:#E6F1EF; }
 }
 @media(prefers-reduced-motion:reduce){
   .progress span { transition:none; }
+}
+
+/* 限定3色の役割: ローズ=CTA、グレージュ=背景・境界線、ブルーグリーン=管理情報・完了状態 */
+.sidebar { background: #F8F7F6; border-color: #E4DDDA; }
+.topbar { background: #FFFFFF; border-color: #E5DEDB; }
+.metric, .panel, .lp-card { background: #FFFFFF; border-color: #E6DFDC; }
+.text-action, .choice-card:nth-child(2) em { color: #28666C; }
+.text-action:hover { color: #205458; }
+.choice-card:nth-child(2) {
+  background: linear-gradient(145deg,#F3F7F6,#E4F0EE);
+  border-color: #CFE1DF;
+}
+.choice-card:nth-child(2) .choice-symbol { color: #397C7D; }
+.pill.green, .pill.blue { background: #E4F1EF; color: #285F65; }
+.chip { background: #E4F1EF; color: #28666C; }
+.event-date { background: #E4F1EF; color: #2C696B; }
+.success-mark { background: #E4F1EF; color: #2C696B; }
+.success-card { background: #E4F1EF; border-color: #CFE1DF; }
+.success-card strong { color: #285F65; }
+.success-card small { color: #416E70; }
+.progress span { background: #397C7D; }
+.flow-mode.active { background: #E9F2F0; border-color: #8CBAB7; color: #285F65; }
+.flow-mode.active b { color: #285F65; }
+.event-choice.selected { background: #E9F2F0; border-color: #72A6A4; box-shadow: inset 0 0 0 1px #9BC9C6; }
+.mode-option:has(input:checked) { background: #E9F2F0; border-color: #8CBAB7; }
+.mode-option input, .confirm input { accent-color: #397C7D; }
+.lp-event {
+  background: linear-gradient(132deg,#E3F1EF 3%,#B4D4D0 57%,#75A6A7);
+  color: #255A60;
+}
+.lp-craft {
+  background: linear-gradient(130deg,#F2EFED 2%,#DACFC9 58%,#B6A49E);
+  color: #5E504A;
+}
+.lp-content {
+  background: linear-gradient(130deg,#F2E5EA 2%,#D7ACBC 65%,#BC8EA2);
+  color: #6C4151;
+}
+@media(max-width:800px){
+ .sidebar .shop-header {
+   min-height:62px; padding:10px 16px; margin:0; display:flex;
+   border-bottom:1px solid #E5DEDB;
+ }
+ .shop-header .business-avatar { width:34px;height:34px;flex-basis:34px;font-size:16px; }
+ .shop-header .shop-header-text strong { font-size:13px; }
+}
+@media(max-width:650px){
+ .choice-card:nth-child(2) { background:#E8F1F0; }
 }
