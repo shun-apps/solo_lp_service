@@ -10,7 +10,7 @@ import {createServer} from "node:http";
 import {chromium} from "playwright";
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
-const allowed=new Set(["/","/index.html","/styles.css","/src/app.mjs","/src/state.mjs","/robots.txt"]);
+const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/src/app.mjs","/src/state.mjs","/robots.txt"]);
 const server=createServer(async(req,res)=>{
   const u=new URL(req.url,"http://127.0.0.1");const path=u.pathname==="/"?"/index.html":u.pathname;
   if(!allowed.has(u.pathname)){res.writeHead(404);res.end();return;}
@@ -33,11 +33,16 @@ try{
  assert.equal(await page.locator("#title-dashboard").isVisible(),true);
  assert.equal(await page.locator(".nav").count(),7);
  assert.equal(await page.locator("#stat-inquiry").textContent(),"1件");
+ assert.equal(await page.locator("#sidebar-name").textContent(),"糸と花のアトリエ（架空）");
+ assert.equal(await page.locator("#page-dashboard").getByRole("button",{name:"ワークショップ申込を試す"}).count(),1);
+ assert.equal(await page.locator('#page-dashboard [data-try="event"]').first().evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(150, 74, 100)");
+ assert.equal(await page.locator(".sidebar").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(255, 252, 251)");
  await page.screenshot({path:join(screenshots,"solo-dashboard-desktop.png"),animations:"disabled"});
 
  // 申込モード選択 → 内容確認 → 同意 → 確定 → 管理画面に追加
  await page.locator('#page-dashboard [data-try="event"]').first().click();
  assert.equal(await page.locator("#experience-dialog").isVisible(),true);
+ assert.match(await page.locator("#experience-title").innerText(),/ワークショップ/);
  assert.equal(await page.locator("#event-choices .event-choice:not(:disabled)").count(),3);
  await page.locator("#step-next").click();
  assert.equal(await page.locator("#experience-step-1").isVisible(),true);
@@ -51,6 +56,7 @@ try{
  await page.screenshot({path:join(screenshots,"solo-event-confirmed.png"),animations:"disabled"});
  await page.locator("#view-result").click();
  assert.equal(await page.locator("#page-leads").isVisible(),true);
+ assert.match(await page.locator("#title-leads").innerText(),/オーダー相談/);
  assert.equal(await page.locator("#lead-rows tr").count(),4);
  assert.equal(await page.locator("#lead-rows tr.highlight").count(),1);
 
@@ -58,6 +64,7 @@ try{
  await page.locator('[data-page-go="dashboard"]').first().click();
  await page.locator('#page-dashboard [data-try="contact"]').first().click();
  assert.equal(await page.locator("#contact-selection").isVisible(),true);
+ assert.match(await page.locator(".flow-mode.active").innerText(),/オーダー相談/);
  await page.locator("#modal-topic").selectOption({label:"作品のオーダー制作について相談したい"});
  await page.locator("#step-next").click();
  await page.locator("#confirm-checkbox").check();
@@ -84,6 +91,9 @@ try{
  // LP見本は虚偽の実URLにリンクしない
  await page.locator('[data-page-go="lp"]').first().click();
  assert.equal(await page.locator("#lp-cards .lp-card").count(),3);
+ assert.match(await page.locator("#lp-cards").innerText(),/作品販売LP/);
+ assert.match(await page.locator("#lp-cards").innerText(),/オーダー受付LP/);
+ assert.match(await page.locator("#lp-cards").innerText(),/ワークショップ募集LP/);
  assert.equal(await page.locator("#lp-cards a").count(),0);
 
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,deviceScaleFactor:1,reducedMotion:"reduce"});
@@ -93,6 +103,7 @@ try{
  await mobile.screenshot({path:join(screenshots,"solo-dashboard-mobile.png"),animations:"disabled"});
  await mobile.locator('#page-dashboard [data-try="contact"]').first().click();
  assert.equal(await mobile.locator("#experience-dialog").isVisible(),true);
+ assert.equal(await mobile.locator('#page-dashboard [data-try="event"]').first().evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(150, 74, 100)");
  await mobile.screenshot({path:join(screenshots,"solo-contact-mobile.png"),animations:"disabled"});
  await mobile.locator("#step-next").click();
  await mobile.locator("#confirm-checkbox").check();

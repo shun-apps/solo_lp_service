@@ -1,0 +1,240 @@
+/**
+ * Handmade Atelier theme — 基盤のSaaSレイアウト・レスポンシブ仕様は styles.css に保持。
+ * 背景はアイボリー、主な操作は深いくすみローズ、補助はグレージュとラベンダー。
+ * 薄いピンクを本文色に使用せず、可読性と押しやすさを優先する。
+ */
+:root {
+  color: #51424B;
+  background: #FBF8F6;
+  --line: #EBE1E4;
+  --green: #964A64; /* 既存の管理画面の主CTAトークンを再利用 */
+  --muted: #7D6D75;
+  --ink: #463943;
+  --rose: #964A64;
+  --rose-dark: #79364E;
+  --rose-soft: #F8ECF0;
+  --rose-line: #E8D5DC;
+  --greige: #E6DDD9;
+  --sage: #668875;
+}
+body { background: radial-gradient(circle at 100% 0%, #FFF0F2 0, transparent 42%), #FBF8F6; }
+h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
+.page-head h1 { font-weight: 830; }
+.page-head p, .panel-head p, .subtle { color: #806F78; }
+:where(.field, button, select, input):focus-visible { outline: 3px solid #D7A4B8; outline-offset: 2px; }
+.sidebar { background: #FFFCFB; border-color: #EDE2E4; }
+.brand { border-color: #EFE7E8; }
+.brand-icon { background: #654250; color: #FFF8F8; border-radius: 12px; }
+.brand strong { color: #4A3541; }
+.brand small, .menu-heading { color: #8B7780; }
+.business-id {
+  background: #FCF1F3;
+  border-color: #EBDCE1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.64);
+}
+.business-avatar { background: #EAD1DB; color: #843C57; border-radius: 11px; }
+.business-id strong { color: #614653; }
+.business-id small { color: #826A75; }
+.nav { color: #6A5963; }
+.nav>span { color: #997D89; }
+.nav.active, .nav:hover { background: #F9E9EE; color: #873F5A; }
+.nav.active>span, .nav:hover>span, .nav small { color: #9A516C; }
+.side-foot { border-color: #EFE6E6; color: #755B67; }
+.side-foot small { color: #91818A; }
+.dot { background: #B98596; }
+.topbar { background: rgba(255,252,250,.97); border-color: #EDE3E5; }
+.breadcrumb { color: #8D7A83; }
+.breadcrumb strong { color: #614B57; }
+.demo-tag { color: #874A60; background: #FBEEF2; border-color: #EFDBE1; }
+.notice {
+  background: #F9F0F1;
+  border-color: #EDE0E3;
+  color: #705D67;
+}
+.notice b { border-color: #BE95A7; color: #894D66; }
+.eyebrow { color: #AA718A; letter-spacing: .15em; }
+.metric, .panel, .lp-card {
+  background: #FFFDFC;
+  border-color: #EDE3E5;
+  box-shadow: 0 3px 12px rgba(86,45,58,.024);
+}
+.metric>span { color: #796771; }
+.metric>strong { color: #58404D; }
+.metric>p { color: #907E85; }
+.panel-head { border-bottom-color: #F1EAEC; }
+.btn-primary {
+  background: #964A64;
+  border-color: #964A64;
+  color: white;
+  box-shadow: 0 3px 8px rgba(123,57,81,.11);
+}
+.btn-primary:hover { background: #79364E; border-color: #79364E; }
+.btn-outline { color: #8C405B; border-color: #DDBEC9; background: #FFFDFC; }
+.btn-outline:hover { color: #79364E; background: #FCF0F3; border-color: #CB9AAC; }
+.btn-light { background: #FFFCFB; color: #695762; border-color: #E9DEE2; }
+.btn-light:hover { background: #FAF2F4; }
+.text-action { color: #8C405B; }
+.text-action:hover { color: #6D3046; }
+.pill.neutral { background: #F2EBED; color: #695C62; }
+.pill.green { background: #E7F1E9; color: #426B52; }
+.pill.blue { background: #F0E9F4; color: #755D83; }
+.pill.amber { background: #FFF0E5; color: #895C35; }
+.recent-row { border-color: #F2EAEC; }
+.recent-main strong { color: #51414A; }
+.recent-main small { color: #8A7C84; }
+.choice-card {
+  background: linear-gradient(150deg,#FFF9F8,#F9EEF1);
+  border-color: #E9DCE1;
+  color: #604650;
+  border-radius: 12px;
+}
+.choice-card:nth-child(2) {
+  background: linear-gradient(155deg,#FFFBF9,#F3EDF5);
+  border-color: #E7DCE7;
+}
+.choice-card:hover { background: #F9E8EE; border-color: #C99AAE; }
+.choice-card b { color: #563B47; }
+.choice-card small { color: #836E79; }
+.choice-symbol { color: #A55874; }
+.choice-card:nth-child(2) .choice-symbol { color: #94739F; }
+.choice-card em { color: #914560; }
+/* LP見本の写真がまだない段階でも、作品・贈り物・教室の印象が伝わる表紙 */
+.lp-visual {
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg,#F7DCE5,#E8BDC9);
+  color: #79465A;
+}
+.lp-visual::before {
+  content:"";
+  position:absolute;
+  border:1px solid rgba(255,255,255,.56);
+  width:78%;
+  aspect-ratio:1;
+  border-radius:50%;
+  right:-25%;
+  top:-42%;
+  transform:rotate(-16deg);
+  pointer-events:none;
+  z-index:0;
+}
+.lp-visual::after {
+  content:"";
+  position:absolute;
+  border:1px solid rgba(255,255,255,.46);
+  width:46%;
+  aspect-ratio:1;
+  border-radius:50%;
+  right:-10%;
+  bottom:-37%;
+  pointer-events:none;
+  z-index:0;
+}
+.lp-content {
+  background: linear-gradient(135deg,#FAE9EE 3%,#E5BCCB 66%,#D8ABB9);
+  color:#70475A;
+}
+.lp-craft {
+  background: linear-gradient(130deg,#FFF2E8 2%,#EAD1C8 58%,#D9BBAF);
+  color:#76564B;
+}
+.lp-event {
+  background: linear-gradient(132deg,#F1EAF3 5%,#D9C9DE 60%,#C8B6D4);
+  color:#654D72;
+}
+.lp-visual-number, .lp-visual-copy { position:relative;z-index:2; }
+.lp-visual-number { letter-spacing:.16em; font-size:10px; color:inherit; }
+.lp-visual-copy { font-size:20px; line-height:1.62;max-width:88%;text-wrap:balance; }
+.lp-ornament {
+  position:absolute;
+  right:13%;
+  top:12%;
+  font-size:64px;
+  line-height:1;
+  color:rgba(255,255,255,.5);
+  pointer-events:none;
+  z-index:1;
+  font-family:Georgia,serif;
+}
+.lp-tile .lp-visual-copy { font-size:11px;max-width:100%; }
+.lp-tile .lp-ornament { font-size:31px;right:7%;top:10%; }
+.lp-visual.lp-event .lp-ornament { right:12%;top:16%; }
+.lp-card-details h3 { color:#5B4652; }
+.lp-actions { gap:9px; }
+.kicker { color:#9C667B; }
+.lp-tile { border-color:#EFE6E8; }
+.info { background:#FAF1F2;border-color:#EEDFE2;color:#765D68; }
+.event-row { border-color:#F0E8EA; }
+.event-date { background:#F7E8EE;color:#90435E; }
+.event-details h3 { color:#58414D; }
+.event-details p { color:#7F7079; }
+.event-meta .subtle { color:#71646A; }
+.segmented { background:#F7EFF2; }
+.segment { color:#7F6D78; }
+.segment.active { background:#FFFDFC;color:#89445E;box-shadow:0 2px 6px rgba(89,40,56,.09); }
+.count-label, .records th { color:#85727D; }
+.records th { background:#FFF9F9;border-color:#F1E8EB; }
+.records td { color:#675760;border-color:#F2E9EC; }
+.records .bold-cell { color:#57414D; }
+.records tr.highlight { background:#FBEDF1; }
+.mode-option { border-color:#EDE0E5; background:#FFFDFC; }
+.mode-option:has(input:checked) { background:#FBEFF3;border-color:#CFA6B5; }
+.mode-option input, .confirm input { accent-color:#9B4E68; }
+.mode-option b { color:#5E4652; }
+.mode-option small { color:#7F7079; }
+.inline-status { color:#884B61; }
+.steps span { background:#FCF8F8;border-color:#EFE4E6;color:#6C5662; }
+.mail-sample { background:#FFFBFA;border-color:#F0E6E7; }
+.mail-sample strong { color:#5C4552; }
+.mail-sample p { color:#776873; }
+.chip { background:#FAEEF1;color:#8D4F66; }
+.field-label { color:#624E59; }
+.field { background:#FFFDFC;color:#51414A;border-color:#E7DBDF; }
+.field:focus { border-color:#B87990; }
+.footer { color:#897783; }
+dialog { background:#FFFDFC;border-color:#E9DDE1;box-shadow:0 24px 80px rgba(65,35,49,.24);border-radius:17px; }
+dialog::backdrop { background:rgba(44,28,40,.55); }
+.dialog-head { border-color:#F0E8EA; }
+.dialog-head small { color:#9F617C; }
+.dialog-head h2 { color:#563F4A; }
+.close { background:#FFFDFC;color:#795F6A;border-color:#EEDFE4; }
+.modal-notice { background:#FBF1F3;color:#735968;border-color:#EBDCE2; }
+.progress { background:#F3E9ED; }
+.progress span { background:#A15974; }
+.progress-label { color:#88737E; }
+.flow-step h3 { color:#5F4552; }
+.flow-mode { background:#FFFCFB;border-color:#EADDE2;color:#725562; }
+.flow-mode b { color:#5B4651; }
+.flow-mode small { color:#826F78; }
+.flow-mode.active { background:#FBEFF3;border-color:#C48DA3;color:#873D5B; }
+.flow-mode.active b { color:#85415C; }
+.event-choice { background:#FFFDFC;border-color:#EADDE1;color:#6B5360; }
+.event-choice.selected { background:#FCEFF2;border-color:#BB7B94;box-shadow:inset 0 0 0 1px #D8B1C0; }
+.event-choice small { color:#806C78; }
+.fake-contact { background:#FDF8F8;border-color:#EFE2E5; }
+.fake-badge { color:#94506A; }
+.review { border-color:#EBE0E3; }
+.review-row { border-color:#F1E8EA; }
+.review dt { color:#82717C; }
+.review dd { color:#52434C; }
+.confirm { color:#6B5A63; }
+.success-mark { background:#F9E8EE;color:#94506B; }
+.success h3 { color:#59424E; }
+.success>p { color:#816E77; }
+.success-card { background:#FAEDF1;border-color:#EACFD9; }
+.success-card strong { color:#81435D; }
+.success-card small { color:#81636F; }
+.success .mail-sample span { color:#9B5472; }
+.dialog-foot { background:#FFFDFC;border-color:#F0E6E8; }
+.toast { background:#624052;color:#FFFDFC;box-shadow:0 12px 32px rgba(58,22,41,.23); }
+@media(max-width:650px){
+  .lp-visual-copy { font-size:18px; }
+  .lp-card .lp-visual { min-height:210px; }
+  .lp-tile .lp-visual-copy { font-size:11px; }
+  .page-head h1 { font-size:23px; }
+  .choice-card { background:#FBF1F3; }
+  .choice-card:nth-child(2) { background:#F5EFF5; }
+}
+@media(prefers-reduced-motion:reduce){
+  .progress span { transition:none; }
+}

@@ -75,3 +75,23 @@ test("フォーム種別は2種類のみ、操作はメモリ内",async()=>{
   assert.match(html,/demo@example.invalid/);
   assert.doesNotMatch(html,/type="email"|type="tel"/);
 });
+
+test("3つのLPと受付サンプルは架空のハンドメイドアトリエに統一",async()=>{
+  const s=baseline();
+  assert.equal(s.businessName,"糸と花のアトリエ（架空）");
+  assert.deepEqual(LP_SAMPLES.map(x=>x.title),["作品販売LP","オーダー受付LP","ワークショップ募集LP"]);
+  assert.ok(s.events.every(x=>/刺繍|布花/.test(x.title)));
+  assert.ok(INQUIRY_TOPICS.some(x=>x.includes("オーダー制作")));
+  const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+  const theme=await readFile(new URL("../theme-handmade.css",import.meta.url),"utf8");
+  const base=await readFile(new URL("../styles.css",import.meta.url),"utf8");
+  assert.match(html,/ハンドメイド作家/);
+  assert.match(html,/ワークショップ申込/);
+  assert.match(html,/オーダー相談/);
+  assert.match(html,/theme-handmade\.css/);
+  assert.match(theme,/#964A64/i);
+  assert.match(theme,/#FBF8F6/i);
+  assert.match(theme,/\.lp-ornament/);
+  assert.match(base,/\.sidebar/);
+  assert.match(base,/\.metrics/);
+});

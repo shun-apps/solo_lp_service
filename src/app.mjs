@@ -6,9 +6,9 @@ import {
 
 const $=id=>document.getElementById(id);
 const create=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined&&text!==null)e.textContent=String(text);if(cls)e.className=cls;return e};
-const pages={dashboard:"ダッシュボード",lp:"LP管理",events:"イベント管理",leads:"申込・お問い合わせ",settings:"フォームの設定",mail:"自動返信メール",profile:"事業者情報"};
-const modeLabel={event:"イベント申込",contact:"お問い合わせ"};
-const CONTACT_PREVIEW="デモのお客様 様\nお問い合わせありがとうございます。\n内容を受け付けました。追ってご案内します。\n（このメールは実際には送信されません）";
+const pages={dashboard:"ダッシュボード",lp:"LP管理",events:"ワークショップ管理",leads:"申込・オーダー相談",settings:"フォームの設定",mail:"自動返信メール",profile:"作家プロフィール"};
+const modeLabel={event:"ワークショップ申込",contact:"オーダー相談"};
+const CONTACT_PREVIEW="デモのお客様 様\n作品のご相談をお寄せいただきありがとうございます。\n内容を受け付けました。確認後にご案内します。\n（このメールは実際には送信されません）";
 let s=initialState(),activePage="dashboard",leadTab="event";
 let flow={mode:"event",step:0,eventId:null,lpId:"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
 let toastTimer=null;
@@ -42,7 +42,7 @@ function chooseExperience(mode,lpId){
 }
 function openEventEditor(ev){
  $("edit-id").value=ev?.id||"";
- $("edit-title").textContent=ev?"イベントを編集":"新しいイベントを作成";
+ $("edit-title").textContent=ev?"ワークショップを編集":"新しいワークショップを作成";
  $("edit-name").value=ev?.title||"";
  $("edit-date").value=ev?.date||addDaysISO(14);
  $("edit-time").value=ev?.time||"10:00";
@@ -59,7 +59,7 @@ function renderDashboard(){
  $("stat-inquiry").textContent=x.inquiries+"件";
  const box=$("recent-leads");box.replaceChildren();
  const all=[
-  ...s.registrations.map(r=>({kind:"event",id:r.id,person:r.customer,summary:evById(r.eventId)?.title||"イベント",status:r.status})),
+  ...s.registrations.map(r=>({kind:"event",id:r.id,person:r.customer,summary:evById(r.eventId)?.title||"ワークショップ",status:r.status})),
   ...s.inquiries.map(q=>({kind:"contact",id:q.id,person:q.customer,summary:q.topic,status:q.status}))
  ].sort((a,b)=>parseInt(b.id.replace(/\D/g,""))-parseInt(a.id.replace(/\D/g,""))).slice(0,5);
  for(const row of all){
@@ -74,10 +74,10 @@ function renderDashboard(){
 function lpCard(lp,small=false){
  const card=create("article",null,small?"lp-tile":"lp-card");
  const visual=create("div",null,"lp-visual "+lp.id);
- visual.append(create("span","LP "+LP_SAMPLES.indexOf(lp).toString().padStart(2,"0"),"lp-visual-number"),create("strong",lp.copy,"lp-visual-copy"));
+ visual.append(create("span","LOOK "+String(LP_SAMPLES.indexOf(lp)+1).padStart(2,"0"),"lp-visual-number"),create("span",lp.id==="lp-content"?"✿":lp.id==="lp-craft"?"✧":"❋","lp-ornament"),create("strong",lp.copy,"lp-visual-copy"));
  const info=create("div",null,"lp-card-details");
  info.append(create("span",lp.category,"kicker"),create("h3",lp.title));
- if(!small)info.append(create("p","制作見本の仮デザイン。実際の公開LPの画像・URLは未登録です。","subtle"));
+ if(!small)info.append(create("p","ハンドメイド作家向けの構成イメージです。実際の完成LP画像・公開URLは準備中です。","subtle"));
  const actions=create("div",null,"lp-actions");
  actions.append(chip("見本画像準備中"));
  actions.append(safeButton("フォームを体験 →","text-action",()=>chooseExperience(lp.mode,lp.id)));
@@ -117,14 +117,14 @@ function renderLeads(){
  $("lead-count").textContent=rows.length+"件";
  const h=$("lead-headings");h.replaceChildren();
  const hr=create("tr");
- for(const t of (isEvent?["申込者（架空）","イベント","流入LP","状態","操作"]:["送信者（架空）","お問い合わせ内容","流入LP","状態","操作"]))hr.append(create("th",t));
+ for(const t of (isEvent?["参加申込者（架空）","ワークショップ","流入LP","状態","操作"]:["ご相談者（架空）","オーダー相談内容","流入LP","状態","操作"]))hr.append(create("th",t));
  h.append(hr);
  const body=$("lead-rows");body.replaceChildren();
  for(const row of rows){
   const tr=create("tr");
   if(s.latest?.id===row.id)tr.classList.add("highlight");
   tr.append(create("td",row.customer,"bold-cell"));
-  tr.append(create("td",isEvent?evById(row.eventId)?.title||"イベント":row.topic));
+  tr.append(create("td",isEvent?evById(row.eventId)?.title||"ワークショップ":row.topic));
   tr.append(create("td",lpName(row.lpId)));
   tr.append(create("td",null));
   tr.lastChild.append(chip(row.status,row.status==="未対応"?"amber":row.status==="参加予定"?"green":"neutral"));
@@ -146,7 +146,7 @@ function renderSettings(){
 function renderMails(){
  const reg=s.registrations[0],event=evById(reg?.eventId),inq=s.inquiries[0];
  $("event-mail").textContent=reg&&event?reg.customer+" 様\n"+event.title+" へのお申し込みありがとうございます。\n開催日：" + eventLabel(event)+"\n（実際には送信されません）":"参加申込を受け付けました（デモ）。";
- $("contact-mail").textContent=inq?inq.customer+" 様\nお問い合わせありがとうございます。\n内容："+inq.topic+"\n（実際には送信されません）":CONTACT_PREVIEW;
+ $("contact-mail").textContent=inq?inq.customer+" 様\n作品のご相談をお寄せいただきありがとうございます。\n内容："+inq.topic+"\n（実際には送信されません）":CONTACT_PREVIEW;
 }
 function renderAll(){
  renderDashboard();renderLps();renderEvents();renderLeads();renderSettings();renderMails();
@@ -166,7 +166,7 @@ function renderEventChoices(){
   row.append(create("strong",ev.title),create("small",eventLabel(ev)+" ・ "+(remaining?"残り"+remaining+"席":"満席")));
   root.append(row);
  }
- if(!root.childElementCount)root.append(create("p","受付中のイベントはありません。管理画面でイベントを公開してください。","subtle"));
+ if(!root.childElementCount)root.append(create("p","受付中のワークショップはありません。管理画面でワークショップを公開してください。","subtle"));
 }
 function renderModalButtons(){
  $("step-back").hidden=flow.step!==1;
@@ -179,8 +179,8 @@ function renderModalButtons(){
 function renderReview(){
  const rows=[["フォーム",modeLabel[flow.mode]],["お名前","デモのお客様（架空）"],["メール","demo@example.invalid"],["流入LP",lpName(flow.lpId)]];
  if(flow.mode==="event"){
-  const ev=evById(flow.eventId);rows.push(["イベント",ev?.title||"未選択"],["開催日",ev?eventLabel(ev):"未選択"]);
- }else rows.push(["お問い合わせ内容",flow.topic]);
+  const ev=evById(flow.eventId);rows.push(["ワークショップ",ev?.title||"未選択"],["開催日",ev?eventLabel(ev):"未選択"]);
+ }else rows.push(["オーダー相談内容",flow.topic]);
  $("review-content").replaceChildren(...rows.map(([key,val])=>{
   const div=create("div",null,"review-row");div.append(create("dt",key),create("dd",val));return div;
  }));
@@ -214,22 +214,22 @@ function submit(){
   if(flow.mode==="event"){
    result=registerEvent(s,{eventId:flow.eventId,lpId:flow.lpId});
    const ev=evById(result.eventId);
-   $("success-heading").textContent="イベント申込を受け付けました";
+   $("success-heading").textContent="ワークショップ申込を受け付けました";
    $("success-summary").textContent=ev.title;
    $("success-detail").textContent=eventLabel(ev)+" / 残り"+totalSeats(ev)+"席";
    $("success-mail").textContent=result.customer+" 様\nお申し込みありがとうございます。\n"+ev.title+"\n"+eventLabel(ev)+"\n（メール送信なし）";
   }else{
    result=submitInquiry(s,{topic:flow.topic,lpId:flow.lpId});
-   $("success-heading").textContent="お問い合わせを受け付けました";
+   $("success-heading").textContent="オーダー相談を受け付けました";
    $("success-summary").textContent=result.topic;
-   $("success-detail").textContent="お問い合わせ一覧に新着が1件追加されました";
-   $("success-mail").textContent=result.customer+" 様\nお問い合わせありがとうございます。\n"+result.topic+"\n（メール送信なし）";
+   $("success-detail").textContent="ご相談一覧に新着が1件追加されました";
+   $("success-mail").textContent=result.customer+" 様\n作品のご相談をお寄せいただきありがとうございます。\n"+result.topic+"\n（メール送信なし）";
   }
   flow.resultId=result.id;flow.step=2;renderAll();renderExperience();
   $("experience-dialog").scrollTop=0;
  }catch(e){
   flow.step=0;renderExperience();
-  $("select-status").textContent=e.message==="event_full"?"満席のため別のイベントを選んでください。":"この内容では受け付けできません。選択を確認してください。";
+  $("select-status").textContent=e.message==="event_full"?"満席のため別のワークショップを選んでください。":"この内容では受け付けできません。選択を確認してください。";
  }
 }
 function bind(){
@@ -258,9 +258,9 @@ function bind(){
  $("event-form").addEventListener("submit",e=>{
   e.preventDefault();
   try{saveEvent(s,{id:$("edit-id").value||null,title:$("edit-name").value,date:$("edit-date").value,time:$("edit-time").value,capacity:Number($("edit-capacity").value)});
-   $("event-dialog").close();renderAll();showToast("イベント設定を保存しました（デモ）。");
+   $("event-dialog").close();renderAll();showToast("ワークショップ設定を保存しました（デモ）。");
   }catch(err){
-   const errors={invalid_title:"イベント名を2〜80文字で入力してください。",invalid_date:"開催日が正しくありません。",invalid_capacity:"定員は1〜1,000名で、申込人数以上にしてください。",capacity_below_bookings:"定員は申込済み人数より少なくできません。"};
+   const errors={invalid_title:"ワークショップ名を2〜80文字で入力してください。",invalid_date:"開催日が正しくありません。",invalid_capacity:"定員は1〜1,000名で、申込人数以上にしてください。",capacity_below_bookings:"定員は申込済み人数より少なくできません。"};
    $("edit-status").textContent=errors[err.message]||"入力内容を確認してください。";
   }
  });
