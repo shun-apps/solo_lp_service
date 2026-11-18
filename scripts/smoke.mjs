@@ -36,7 +36,14 @@ try{
  assert.equal(await page.locator("#sidebar-name").textContent(),"糸と花のアトリエ（架空）");
  assert.equal(await page.locator("#page-dashboard").getByRole("button",{name:"ワークショップ申込を試す"}).count(),1);
  assert.equal(await page.locator('#page-dashboard [data-try="event"]').first().evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(150, 74, 100)");
- assert.equal(await page.locator(".sidebar").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(255, 252, 251)");
+ assert.equal(await page.locator(".sidebar").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(248, 247, 246)");
+ assert.equal(await page.locator(".brand").count(),0,"上部の旧ブランドヘッダーは表示しない");
+ assert.equal(await page.locator(".sidebar > .business-id").count(),1);
+ assert.equal(await page.locator(".sidebar > :first-child").getAttribute("class"),"business-id shop-header");
+ assert.equal(await page.locator(".shop-header .business-avatar").isVisible(),true);
+ assert.equal(await page.locator(".shop-header").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(248, 247, 246)");
+ assert.equal(await page.locator(".lp-event").first().evaluate(el=>getComputedStyle(el).backgroundImage.includes("117, 166, 167")),true,"3番目のLPはブルーグリーン");
+ assert.equal(await page.locator(".lp-content").first().evaluate(el=>getComputedStyle(el).backgroundImage.includes("188, 142, 162")),true,"1番目のLPはくすみローズ");
  await page.screenshot({path:join(screenshots,"solo-dashboard-desktop.png"),animations:"disabled"});
 
  // 申込モード選択 → 内容確認 → 同意 → 確定 → 管理画面に追加
@@ -100,6 +107,11 @@ try{
  mobile.on("pageerror",e=>errors.push(e.message));
  await mobile.goto("http://127.0.0.1:4185/");
  await mobile.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
+ assert.equal(await mobile.locator(".brand").count(),0);
+ assert.equal(await mobile.locator(".sidebar > :first-child").getAttribute("class"),"business-id shop-header");
+ const mobileShop=await mobile.locator(".shop-header").boundingBox();
+ assert.ok(mobileShop && mobileShop.y===0 && mobileShop.height>=58 && mobileShop.height<=75,"mobileショップ名は最上段");
+ assert.equal(await mobile.locator(".shop-header").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(248, 247, 246)");
  await mobile.screenshot({path:join(screenshots,"solo-dashboard-mobile.png"),animations:"disabled"});
  await mobile.locator('#page-dashboard [data-try="contact"]').first().click();
  assert.equal(await mobile.locator("#experience-dialog").isVisible(),true);
