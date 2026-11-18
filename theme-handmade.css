@@ -311,3 +311,112 @@ dialog::backdrop { background:rgba(44,28,40,.55); }
 @media(max-width:650px){
  .choice-card:nth-child(2) { background:#E8F1F0; }
 }
+
+
+/* 2026-11: 読みやすさ優先の文字サイズ調整。機能/3色/レイアウトの基本構造は維持。 */
+body { font-size: 14px; line-height: 1.65; }
+.shop-header .shop-header-text strong { font-size: 16px; line-height: 1.4; }
+.shop-header .shop-header-text small { font-size: 13px; line-height: 1.5; }
+.menu-heading { font-size: 12px; }
+.nav { font-size: 15px; line-height: 1.5; min-height: 46px; }
+.nav small { font-size: 12px; }
+.side-foot { font-size: 13px; }
+.side-foot small { font-size: 12px; }
+.breadcrumb { font-size: 14px; }
+.demo-tag { font-size: 12px; }
+.notice { font-size: 14px; line-height: 1.75; }
+.eyebrow { font-size: 12px; }
+h1, .page-head h1 { font-size: 26px; line-height: 1.4; }
+h2 { font-size: 18px; line-height: 1.5; }
+h3 { font-size: 16px; line-height: 1.5; }
+.page-head p, .panel-head p { font-size: 14px; line-height: 1.75; }
+.btn, .btn-small, .text-action { font-size: 14px; line-height: 1.4; }
+.btn { min-height: 44px; }
+.btn-small { min-height: 38px; }
+.metric>span { font-size: 14px; }
+.metric>p { font-size: 13px; line-height: 1.55; }
+.metric>strong { font-size: 34px; }
+.metric>strong small { font-size: 15px; }
+.recent-main strong { font-size: 14px; line-height: 1.5; }
+.recent-main small { font-size: 13px; }
+.pill { font-size: 12px; line-height: 1.5; }
+.choice-card { min-height: 182px; }
+.choice-card b { font-size: 16px; line-height: 1.5; }
+.choice-card small { font-size: 13px; line-height: 1.6; }
+.choice-card em { font-size: 14px; }
+.lp-visual-number { font-size: 12px; }
+.lp-visual-copy { font-size: 20px; }
+.lp-tile .lp-visual-copy { font-size: 12px; }
+.kicker { font-size: 12px; }
+.lp-card-details h3, .lp-card .lp-card-details h3 { font-size: 16px; line-height: 1.5; }
+.subtle, .info { font-size: 14px; line-height: 1.75; }
+.event-date small { font-size: 13px; }
+.event-details h3 { font-size: 16px; }
+.event-details p { font-size: 14px; line-height: 1.65; }
+.segment { font-size: 14px; }
+.count-label { font-size: 13px; }
+.records th { font-size: 13px; }
+.records td { font-size: 14px; }
+.mode-option b { font-size: 15px; }
+.mode-option small { font-size: 14px; line-height: 1.6; }
+.steps span { font-size: 14px; line-height: 1.65; }
+.inline-status { font-size: 13px; }
+.mail-sample strong, .mail-sample p { font-size: 14px; }
+.chip { font-size: 12px; }
+.field-label { font-size: 14px; }
+.field { font-size: 14px; line-height: 1.5; }
+.footer { font-size: 12px; }
+.dialog-head h2 { font-size: 20px; }
+.dialog-head small { font-size: 13px; }
+.modal-notice { font-size: 13px; }
+.progress-label { font-size: 12px; }
+.flow-step h3 { font-size: 18px; }
+.flow-mode b { font-size: 15px; line-height: 1.5; }
+.flow-mode small { font-size: 13px; }
+.required { font-size: 12px; }
+.event-choice strong { font-size: 14px; }
+.event-choice small { font-size: 13px; }
+.fake-contact > span:not(.fake-badge) { font-size: 14px; }
+.fake-contact small { font-size: 13px; }
+.fake-badge { font-size: 12px; }
+.review dt { font-size: 13px; }
+.review dd { font-size: 14px; }
+.confirm { font-size: 14px; }
+.success h3 { font-size: 20px; }
+.success>p { font-size: 14px; }
+.success-card strong { font-size: 14px; }
+.success-card small { font-size: 13px; }
+.success .mail-sample span { font-size: 13px; }
+.success .mail-sample p { font-size: 14px; }
+.toast { font-size: 14px; }
+@media (max-width: 1250px) {
+  .lp-tile .lp-visual-copy { font-size: 12px; }
+}
+@media (max-width: 800px) {
+  .nav { font-size: 14px; min-height: 44px; }
+  .shop-header .shop-header-text strong { font-size: 16px; }
+  .lp-visual-copy { font-size: 17px; }
+  .lp-tile .lp-visual-copy { font-size: 12px; }
+}
+@media (max-width: 650px) {
+  .notice { font-size: 13px; }
+  .page-head h1 { font-size: 25px; }
+  .page-ctas .btn { font-size: 14px; min-height: 44px; }
+  .metric>strong { font-size: 28px; }
+  .choice-card { min-height: 188px; }
+  .choice-card small { font-size: 13px; }
+  .lp-visual-copy { font-size: 17px; }
+  .lp-tile .lp-visual-copy { font-size: 12px; }
+  .event-actions .btn { font-size: 13px; }
+  .top-actions .btn { font-size: 12px; min-height: 38px; }
+  .demo-tag { font-size: 12px; }
+  .breadcrumb { font-size: 13px; }
+}
+@media (max-width: 480px) {
+  .topbar { height: auto; min-height: 62px; gap: 8px; }
+  .topbar .demo-tag { display: none; } /* デモ告知は本文に常時表示 */
+  .page-ctas { flex-wrap: wrap; }
+  .page-ctas .btn { flex: 1 1 100%; white-space: normal; }
+  .choice-card { padding: 13px; }
+  .records { min-width: 720px; } /* 表は独立横スクロールで文字を潰さない */
+}

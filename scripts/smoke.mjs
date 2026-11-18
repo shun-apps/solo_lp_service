@@ -34,6 +34,18 @@ try{
  assert.equal(await page.locator(".nav").count(),7);
  assert.equal(await page.locator("#stat-inquiry").textContent(),"1件");
  assert.equal(await page.locator("#sidebar-name").textContent(),"糸と花のアトリエ（架空）");
+ // 実際の表示フォントサイズを確認（単なるCSS文字列ではなくcomputed style）
+ const px=async (p,selector)=>Number.parseFloat(await p.locator(selector).first().evaluate(el=>getComputedStyle(el).fontSize));
+ assert.equal(await px(page,"#sidebar-name"),16);
+ assert.equal(await px(page,".nav"),15);
+ assert.equal(await px(page,"#title-dashboard"),26);
+ assert.equal(await px(page,".panel-head h2"),18);
+ assert.equal(await px(page,".page-head p"),14);
+ assert.equal(await px(page,".metric>p"),13);
+ assert.equal(await px(page,".notice"),14);
+ assert.equal(await px(page,".page-ctas .btn"),14);
+ assert.equal(await px(page,".field"),14);
+ assert.equal(await px(page,".records td"),14);
  assert.equal(await page.locator("#page-dashboard").getByRole("button",{name:"ワークショップ申込を試す"}).count(),1);
  assert.equal(await page.locator('#page-dashboard [data-try="event"]').first().evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(150, 74, 100)");
  assert.equal(await page.locator(".sidebar").evaluate(el=>getComputedStyle(el).backgroundColor),"rgb(248, 247, 246)");
@@ -107,6 +119,14 @@ try{
  mobile.on("pageerror",e=>errors.push(e.message));
  await mobile.goto("http://127.0.0.1:4185/");
  await mobile.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
+ assert.equal(await px(mobile,"#sidebar-name"),16);
+ assert.equal(await px(mobile,".nav"),14);
+ assert.equal(await px(mobile,".notice"),13);
+ assert.equal(await px(mobile,"#title-dashboard"),25);
+ assert.equal(await px(mobile,".page-ctas .btn"),14);
+ assert.equal(await px(mobile,".metric>p"),13);
+ assert.equal(await px(mobile,".choice-card small"),13);
+ assert.equal(await mobile.locator(".topbar .demo-tag").isVisible(),false);
  assert.equal(await mobile.locator(".brand").count(),0);
  assert.equal(await mobile.locator(".sidebar > :first-child").getAttribute("class"),"business-id shop-header");
  const mobileShop=await mobile.locator(".shop-header").boundingBox();
