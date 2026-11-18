@@ -100,3 +100,16 @@ test("3つのLPと受付サンプルは架空のハンドメイドアトリエ�
   assert.match(base,/\.sidebar/);
   assert.match(base,/\.metrics/);
 });
+
+test("読みやすい文字サイズと配色は独立テーマで維持",async()=>{
+  const theme=await readFile(new URL("../theme-handmade.css",import.meta.url),"utf8");
+  assert.match(theme,/\.shop-header \.shop-header-text strong\s*\{ font-size: 16px/);
+  assert.match(theme,/\.nav\s*\{ font-size: 15px/);
+  assert.match(theme,/h1, \.page-head h1\s*\{ font-size: 26px/);
+  assert.match(theme,/\.page-head p, \.panel-head p\s*\{ font-size: 14px/);
+  assert.match(theme,/\.metric>p\s*\{ font-size: 13px/);
+  assert.match(theme,/@media \(max-width: 480px\)/);
+  assert.match(theme,/#F2F0EF/i);
+  assert.match(theme,/#397C7D/i);
+  assert.match(theme,/#964A64/i);
+});
