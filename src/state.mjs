@@ -1,14 +1,14 @@
-/** 個人事業主デモ専用ドメインロジック。データはメモリ内のみ。 */
+/** ハンドメイド作家向け操作デモ。架空のアトリエを想定し、データはブラウザメモリ内のみ。 */
 export const LP_SAMPLES = Object.freeze([
-  {id:"lp-content",title:"講座・デジタルコンテンツ",category:"デジタル教材・オンライン講座",copy:"知識と経験を、必要な人に届ける。",mode:"contact"},
-  {id:"lp-craft",title:"ハンドメイド作品",category:"アクセサリー・雑貨・オーダー制作",copy:"世界にひとつの、特別な一品。",mode:"contact"},
-  {id:"lp-event",title:"セミナー・ワークショップ",category:"リアルイベント・体験会",copy:"体験から、ファンになってもらう。",mode:"event"}
+  {id:"lp-content",title:"作品販売LP",category:"刺繍ブローチ・一点ものの作品販売",copy:"ひと針ずつ、想いを込めて。",mode:"contact"},
+  {id:"lp-craft",title:"オーダー受付LP",category:"名入れ・色変更・大切な人への贈り物",copy:"世界にひとつ、あなたのために。",mode:"contact"},
+  {id:"lp-event",title:"ワークショップ募集LP",category:"刺繍体験・オンラインレッスン",copy:"つくる時間が、好きになる。",mode:"event"}
 ]);
 export const INQUIRY_TOPICS=Object.freeze([
-  "講座・サービスの内容を詳しく知りたい",
-  "料金・お支払い方法を知りたい",
+  "作品のサイズ・素材について質問したい",
+  "ギフト包装・発送について相談したい",
   "作品のオーダー制作について相談したい",
-  "イベント参加について質問したい"
+  "ワークショップの参加について質問したい"
 ]);
 const clone=(x)=>JSON.parse(JSON.stringify(x));
 const pad=(n)=>String(n).padStart(2,"0");
@@ -23,16 +23,16 @@ export function prettyDate(iso){
   if(date.toISOString().slice(0,10)!==iso)throw Error("invalid_date");
   return date.toLocaleDateString("ja-JP",{timeZone:"UTC",month:"long",day:"numeric",weekday:"short"});
 }
-const DEMO_NAME="サンプル事業者";
+const DEMO_NAME="糸と花のアトリエ（架空）";
 export function initialState(now=new Date()){
   const dates=[addDaysISO(8,now),addDaysISO(16,now),addDaysISO(25,now)];
   return {
     businessName:DEMO_NAME,
     selectedMode:"event",
     events:[
-      {id:"event1",title:"はじめてのハンドメイド体験会",date:dates[0],time:"10:00",capacity:8,open:true},
-      {id:"event2",title:"自分の得意を商品にするオンライン講座",date:dates[1],time:"14:00",capacity:12,open:true},
-      {id:"event3",title:"小さなブランドづくり相談会",date:dates[2],time:"13:00",capacity:6,open:true}
+      {id:"event1",title:"刺繍ブローチづくり体験会",date:dates[0],time:"10:00",capacity:8,open:true},
+      {id:"event2",title:"はじめての手刺繍オンラインレッスン",date:dates[1],time:"14:00",capacity:12,open:true},
+      {id:"event3",title:"季節の布花アクセサリーづくり",date:dates[2],time:"13:00",capacity:6,open:true}
     ],
     registrations:[
       {id:"reg1",eventId:"event1",lpId:"lp-event",customer:"体験用のお客様 A",status:"参加予定"},
