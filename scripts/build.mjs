@@ -3,7 +3,7 @@ import {resolve,dirname,join} from "node:path";
 import {fileURLToPath} from "node:url";
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
 const dist=join(root,"dist");
-const files=["index.html","styles.css","src/app.mjs","src/state.mjs"];
+const files=["index.html","styles.css","theme-handmade.css","src/app.mjs","src/state.mjs"];
 const html=await readFile(join(root,"index.html"),"utf8");
 if(!["page-dashboard","page-lp","page-events","page-leads","experience-dialog","event-dialog"].every(x=>html.includes(x)))throw Error("Missing demo screens");
 await rm(dist,{recursive:true,force:true});
