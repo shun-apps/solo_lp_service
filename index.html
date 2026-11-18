@@ -38,26 +38,26 @@
           <article class="metric"><span>LP見本</span><strong id="stat-lp">3<small>本</small></strong><p>作品の魅力を伝える3つの訴求</p></article>
           <article class="metric"><span>開催予定のレッスン</span><strong id="stat-events">—</strong><p>公開中のワークショップ</p></article>
           <article class="metric"><span>参加申込数</span><strong id="stat-register">—</strong><p>デモの参加申込</p></article>
-          <article class="metric"><span>未対応のご相談</span><strong id="stat-inquiry">—</strong><p>デモの受信箱</p></article>
+          <article class="metric"><span>未対応のご相談</span><strong id="stat-inquiry">—</strong><p>架空のご相談一覧</p></article>
         </div>
         <div class="split">
           <section class="panel"><div class="panel-head"><div><h2>最近の受付</h2><p>申込と作品のご相談を一か所で確認</p></div><button class="text-action" data-page-go="leads">すべて見る ›</button></div><div id="recent-leads" class="recent-list"></div></section>
-          <section class="panel"><div class="panel-head"><div><h2>受付フォームの体験</h2><p>参加申込とオーダー相談、どちらも試せます</p></div></div><div class="panel-body"><div class="choice-cards"><button type="button" class="choice-card" data-try="event"><span class="choice-symbol">▦</span><b>ワークショップ申込</b><small>開催日・定員を見て申し込む</small><em>操作する →</em></button><button type="button" class="choice-card" data-try="contact"><span class="choice-symbol">✉</span><b>作品のご相談</b><small>作品のご質問や制作相談を受付</small><em>操作する →</em></button></div></div></section>
+          <section class="panel"><div class="panel-head"><div><h2>受付フォームの体験</h2><p>参加申込とオーダー相談、どちらも試せます</p></div></div><div class="panel-body"><div class="choice-cards"><button type="button" class="choice-card" data-try="event"><span class="choice-symbol">▦</span><b>ワークショップ申込</b><small>開催日・定員を見て申し込む</small><em>操作する →</em></button><button type="button" class="choice-card" data-try="contact"><span class="choice-symbol">✉</span><b>オーダー相談</b><small>作品への質問や制作のご相談</small><em>操作する →</em></button></div></div></section>
         </div>
         <section class="panel margin-top"><div class="panel-head"><div><h2>LP見本</h2><p>作品販売・オーダー受付・ワークショップ</p></div><button class="text-action" data-page-go="lp">LP管理へ ›</button></div><div class="lp-tiles" id="dashboard-lps"></div></section>
       </section>
       <section class="page" id="page-lp" data-page="lp" hidden aria-labelledby="title-lp">
-        <div class="page-head"><div><span class="eyebrow">WORKS & STORIES</span><h1 id="title-lp">LP管理</h1><p>訴求の異なる3ページから同じ管理画面へ受付を集約します。</p></div></div>
-        <div class="info"><b>ⓘ</b> ここに表示するのは制作見本の仮カードです。実際の完成LPのURLや画像が揃ったら差し替えます。存在しない公開URLにはリンクしません。</div>
+        <div class="page-head"><div><span class="eyebrow">WORKS & STORIES</span><h1 id="title-lp">LP管理</h1><p>作品販売・オーダー受付・体験レッスン。目的別の3つのLPを管理できます。</p></div></div>
+        <div class="info"><b>ⓘ</b> 架空アトリエを想定したLP構成イメージです。実際の完成LPの画像と公開URLは未登録です。</div>
         <div class="lp-cards" id="lp-cards"></div>
       </section>
       <section class="page" id="page-events" data-page="events" hidden aria-labelledby="title-events">
-        <div class="page-head"><div><span class="eyebrow">WORKSHOPS</span><h1 id="title-events">ワークショップ管理</h1><p>セミナー・ワークショップの開催日と定員を設定します。</p></div><button class="btn btn-primary" type="button" id="new-event">＋ ワークショップを作成</button></div>
+        <div class="page-head"><div><span class="eyebrow">WORKSHOPS</span><h1 id="title-events">ワークショップ管理</h1><p>体験レッスンやワークショップの開催日・定員を設定します。</p></div><button class="btn btn-primary" type="button" id="new-event">＋ ワークショップを作成</button></div>
         <section class="panel"><div class="panel-head"><div><h2>開催予定のワークショップ</h2><p>受付ON/OFF、日程・定員の変更を体験できます</p></div></div><div class="event-list" id="events-list"></div></section>
       </section>
       <section class="page" id="page-leads" data-page="leads" hidden aria-labelledby="title-leads">
         <div class="page-head"><div><span class="eyebrow">ORDERS & MESSAGES</span><h1 id="title-leads">申込・オーダー相談</h1><p>ワークショップの参加申込と、作品やオーダーのご相談をまとめて確認できます。</p></div></div>
-        <section class="panel"><div class="panel-head lead-head"><div class="segmented" role="group" aria-label="一覧切り替え"><button class="segment active" data-lead-tab="event" aria-pressed="true">ワークショップ申込</button><button class="segment" data-lead-tab="contact" aria-pressed="false">作品のご相談</button></div><span class="count-label" id="lead-count"></span></div><div class="table-scroll"><table class="records"><thead id="lead-headings"></thead><tbody id="lead-rows"></tbody></table></div><div class="empty" id="lead-empty" hidden>該当するデータはありません。</div></section>
+        <section class="panel"><div class="panel-head lead-head"><div class="segmented" role="group" aria-label="一覧切り替え"><button class="segment active" data-lead-tab="event" aria-pressed="true">ワークショップ申込</button><button class="segment" data-lead-tab="contact" aria-pressed="false" >オーダー相談</button></div><span class="count-label" id="lead-count"></span></div><div class="table-scroll"><table class="records"><thead id="lead-headings"></thead><tbody id="lead-rows"></tbody></table></div><div class="empty" id="lead-empty" hidden>該当するデータはありません。</div></section>
       </section>
       <section class="page" id="page-settings" data-page="settings" hidden aria-labelledby="title-settings">
         <div class="page-head"><div><span class="eyebrow">FORM SETTINGS</span><h1 id="title-settings">フォームの設定</h1><p>どのタイプの受付フォームを使うか体験できます。</p></div></div>
@@ -86,10 +86,10 @@
   <header class="dialog-head"><div><small>購入者さん側のフォーム（操作体験版）</small><h2 id="experience-title">ワークショップ申込・オーダー相談</h2></div><button type="button" class="close" id="close-experience" aria-label="閉じる">×</button></header>
   <div class="dialog-body">
     <p class="modal-notice">架空のお客様情報のみを使用します。実際の送信・メール通知・他の利用者とのデータ共有はありません。</p>
-    <div class="progress"><span id="progress-bar"></span></div><p class="progress-label" id="progress-label">1 / 3　フォームを選択</p>
+    <div class="progress"><span id="progress-bar"></span></div><p class="progress-label" id="progress-label">1 / 2　フォームを選択</p>
     <section id="experience-step-0" class="flow-step">
       <h3>どちらのフォームを体験しますか？</h3>
-      <div class="flow-modes"><button type="button" class="flow-mode" data-modal-mode="event"><b>▦ ワークショップ申込</b><small>日時・残席から選ぶ</small></button><button type="button" class="flow-mode" data-modal-mode="contact"><b>✉ 作品のご相談</b><small>相談内容を選んで送る</small></button></div>
+      <div class="flow-modes"><button type="button" class="flow-mode" data-modal-mode="event"><b>▦ ワークショップ申込</b><small>日時・残席から選ぶ</small></button><button type="button" class="flow-mode" data-modal-mode="contact"><b>✉ オーダー相談</b><small>相談内容を選んで送る</small></button></div>
       <label class="field-label" for="modal-lp">どのLPからアクセスしたことにしますか？</label><select class="field" id="modal-lp"></select>
       <div id="event-selection"><label class="field-label">申し込むワークショップ <span class="required">必須</span></label><div id="event-choices" class="event-choices"></div></div>
       <div id="contact-selection" hidden><label class="field-label" for="modal-topic">ご相談内容 <span class="required">必須</span></label><select class="field" id="modal-topic"></select><p class="subtle">実際の文章を入力する必要はありません。</p></div>
