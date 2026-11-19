@@ -10,7 +10,7 @@ const pages={dashboard:"ダッシュボード",lp:"LP管理",events:"ワーク�
 const modeLabel={event:"ワークショップ申込",contact:"オーダー相談"};
 const CONTACT_PREVIEW="デモのお客様 様\n作品のご相談をお寄せいただきありがとうございます。\n内容を受け付けました。確認後にご案内します。\n（このメールは実際には送信されません）";
 let s=initialState(),activePage="dashboard",leadTab="event";
-let flow={mode:"event",step:0,eventId:null,lpId:"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
+let flow={mode:"event",step:0,eventId:null,lpId:"lp-event",topic:INQUIRY_TOPICS[0],resultId:null,returnToConfirm:false};
 let toastTimer=null;
 
 function showToast(message){
@@ -34,7 +34,9 @@ function safeButton(label,cls,callback){
  const b=create("button",label,cls);b.type="button";b.addEventListener("click",callback);return b;
 }
 function chooseExperience(mode,lpId){
- flow={mode,step:0,eventId:null,lpId:lpId||LP_SAMPLES.find(x=>x.mode===mode)?.id||"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
+ flow={mode,step:0,eventId:null,lpId:lpId||LP_SAMPLES.find(x=>x.mode===mode)?.id||"lp-event",topic:INQUIRY_TOPICS[0],resultId:null,returnToConfirm:false};
+ $("confirm-checkbox").checked=false;
+ $("demo-attendees").value="1";
  const modal=$("experience-dialog");
  renderExperience();
  if(!modal.open)modal.showModal();
@@ -155,7 +157,7 @@ function renderAll(){
 function renderEventChoices(){
  const root=$("event-choices");root.replaceChildren();
  const choices=[...s.events].filter(e=>e.open).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
- if(!choices.some(e=>e.id===flow.eventId&&totalSeats(e)>0))flow.eventId=choices.find(e=>totalSeats(e)>0)?.id||null;
+ if(!choices.some(e=>e.id===flow.eventId&&totalSeats(e)>0))flow.eventId=null;
  for(const ev of choices){
   const remaining=totalSeats(ev),active=flow.eventId===ev.id;
   const row=safeButton("","event-choice"+(active?" selected":""),()=>{
@@ -163,73 +165,81 @@ function renderEventChoices(){
   });
   row.disabled=remaining===0;
   row.setAttribute("aria-pressed",String(active));
-  row.append(create("strong",ev.title),create("small",eventLabel(ev)+" ・ "+(remaining?"残り"+remaining+"席":"満席")));
+  row.append(create("strong",eventLabel(ev)),create("small",ev.title+" ・ "+(remaining?"残り"+remaining+"席":"満席")));
   root.append(row);
  }
- if(!root.childElementCount)root.append(create("p","受付中のワークショップはありません。管理画面でワークショップを公開してください。","subtle"));
+ if(!root.childElementCount)root.append(create("p","受付中のワークショップはありません。","subtle"));
+}
+function validAttendees(){
+ const n=Number($("demo-attendees").value);
+ return Number.isInteger(n)&&n>=1&&n<=10&&Boolean(flow.eventId)&&n<=totalSeats(evById(flow.eventId));
 }
 function renderModalButtons(){
- $("step-back").hidden=flow.step!==1;
- $("step-next").hidden=flow.step!==0;
- $("step-next").disabled=flow.mode==="event"&&!flow.eventId;
- $("step-send").hidden=flow.step!==1;
- $("step-send").disabled=!$("confirm-checkbox").checked||flow.step!==1;
- $("experience-actions").hidden=flow.step===2;
+ $("step-back").hidden=flow.step===0||flow.step===4;
+ $("step-next").hidden=flow.step>=3;
+ $("step-next").disabled=flow.step===2&&flow.mode==="event"&&!validAttendees();
+ $("step-next").textContent=flow.returnToConfirm?"確認画面に戻る":flow.step===2?"内容を確認する":"次へ（残り"+(2-flow.step)+"問）";
+ $("step-send").hidden=flow.step!==3;
+ $("step-send").disabled=!$("confirm-checkbox").checked||flow.step!==3;
+ $("experience-actions").hidden=flow.step===4;
 }
 function renderReview(){
- const rows=[["フォーム",modeLabel[flow.mode]],["お名前","デモのお客様（架空）"],["メール","demo@example.invalid"],["流入LP",lpName(flow.lpId)]];
+ const rows=[["お名前","デモのお客様",0],["メール","demo@example.invalid",1]];
  if(flow.mode==="event"){
-  const ev=evById(flow.eventId);rows.push(["ワークショップ",ev?.title||"未選択"],["開催日",ev?eventLabel(ev):"未選択"]);
- }else rows.push(["オーダー相談内容",flow.topic]);
- $("review-content").replaceChildren(...rows.map(([key,val])=>{
-  const div=create("div",null,"review-row");div.append(create("dt",key),create("dd",val));return div;
+  const ev=evById(flow.eventId);
+  rows.push(["ワークショップ",ev?.title||"未選択",2],["開催日",ev?eventLabel(ev):"未選択",2],["参加人数",$("demo-attendees").value+"名",2]);
+ } else rows.push(["ご相談内容",flow.topic,2]);
+ $("review-content").replaceChildren(...rows.map(([key,val,step])=>{
+  const div=create("div",null,"review-row");
+  div.append(create("dt",key),create("dd",val));
+  div.append(safeButton("修正する","review-edit",()=>{flow.returnToConfirm=true;flow.step=step;renderExperience();}));
+  return div;
  }));
 }
 function renderExperience(){
- $("experience-step-0").hidden=flow.step!==0;
- $("experience-step-1").hidden=flow.step!==1;
- $("experience-step-2").hidden=flow.step!==2;
+ for(let i=0;i<=4;i++)$("experience-step-"+i).hidden=flow.step!==i;
+ $("experience-title").textContent=modeLabel[flow.mode];
  $("modal-lp").value=flow.lpId;
  $("modal-topic").value=flow.topic;
  $("event-selection").hidden=flow.mode!=="event";
  $("contact-selection").hidden=flow.mode!=="contact";
- for(const b of document.querySelectorAll("[data-modal-mode]")){b.classList.toggle("active",b.dataset.modalMode===flow.mode);b.setAttribute("aria-pressed",String(b.dataset.modalMode===flow.mode))}
- $("progress-bar").style.width=(flow.step===2?100:(flow.step+1)*50)+"%";
- $("progress-label").textContent=flow.step===2?"完了":(flow.step+1)+" / 2　"+(flow.step===0?"フォームの選択":"申込内容の確認");
- $("progress-bar").parentElement.hidden=flow.step===2;
- $("progress-label").hidden=flow.step===2;
+ $("progress-bar").style.width=(Math.min(flow.step,3)/3*100)+"%";
+ $("progress-label").textContent=flow.step===3?"最終確認":"質問 "+(flow.step+1)+"/3";
+ $("progress-bar").parentElement.hidden=flow.step===4;
+ $("progress-label").hidden=flow.step===4;
  $("select-status").textContent="";
- if(flow.mode==="event")renderEventChoices();
- if(flow.step===1)renderReview();
+ if(flow.mode==="event"&&flow.step===2)renderEventChoices();
+ if(flow.step===3)renderReview();
  renderModalButtons();
 }
 function updateMode(mode){
- flow.mode=mode;flow.lpId=LP_SAMPLES.find(lp=>lp.mode===mode)?.id||"lp-event";flow.eventId=null;
+ flow.mode=mode;flow.lpId=LP_SAMPLES.find(lp=>lp.mode===mode)?.id||"lp-event";flow.eventId=null;flow.returnToConfirm=false;
  renderExperience();
 }
 function submit(){
- if(flow.step!==1||!$("confirm-checkbox").checked)return;
+ if(flow.step!==3||!$("confirm-checkbox").checked)return;
  try{
   let result;
   if(flow.mode==="event"){
-   result=registerEvent(s,{eventId:flow.eventId,lpId:flow.lpId});
+   if(!validAttendees())throw Error("event_full");
+   result=registerEvent(s,{eventId:flow.eventId,lpId:flow.lpId,attendeeCount:Number($("demo-attendees").value)});
    const ev=evById(result.eventId);
    $("success-heading").textContent="ワークショップ申込を受け付けました";
    $("success-summary").textContent=ev.title;
-   $("success-detail").textContent=eventLabel(ev)+" / 残り"+totalSeats(ev)+"席";
+   $("success-detail").textContent=eventLabel(ev)+" / "+result.attendeeCount+"名";
    $("success-mail").textContent=result.customer+" 様\nお申し込みありがとうございます。\n"+ev.title+"\n"+eventLabel(ev)+"\n（メール送信なし）";
   }else{
    result=submitInquiry(s,{topic:flow.topic,lpId:flow.lpId});
    $("success-heading").textContent="オーダー相談を受け付けました";
    $("success-summary").textContent=result.topic;
-   $("success-detail").textContent="ご相談一覧に新着が1件追加されました";
+   $("success-detail").textContent="ご相談が一覧に反映されました";
    $("success-mail").textContent=result.customer+" 様\n作品のご相談をお寄せいただきありがとうございます。\n"+result.topic+"\n（メール送信なし）";
   }
-  flow.resultId=result.id;flow.step=2;renderAll();renderExperience();
+  flow.resultId=result.id;flow.step=4;renderAll();renderExperience();
   $("experience-dialog").scrollTop=0;
  }catch(e){
-  flow.step=0;renderExperience();
-  $("select-status").textContent=e.message==="event_full"?"満席のため別のワークショップを選んでください。":"この内容では受け付けできません。選択を確認してください。";
+  flow.step=2;renderExperience();
+  $("select-status").textContent=e.message==="event_full"?"残席数を確認してください。":"この内容では受け付けできません。";
  }
 }
 function bind(){
@@ -242,9 +252,15 @@ function bind(){
  document.querySelectorAll("[data-modal-mode]").forEach(b=>b.addEventListener("click",()=>updateMode(b.dataset.modalMode)));
  $("modal-lp").addEventListener("change",e=>{flow.lpId=e.target.value});
  $("modal-topic").addEventListener("change",e=>{flow.topic=e.target.value});
- $("step-next").addEventListener("click",()=>{if(flow.mode==="event"&&!flow.eventId)return;flow.step=1;$("confirm-checkbox").checked=false;renderExperience();$("experience-dialog").scrollTop=0});
- $("step-back").addEventListener("click",()=>{flow.step=0;renderExperience();$("experience-dialog").scrollTop=0});
+ $("step-next").addEventListener("click",()=>{
+  if(flow.step===2&&flow.mode==="event"&&!validAttendees())return;
+  flow.step=flow.returnToConfirm?3:Math.min(flow.step+1,3);
+  if(flow.step===3){flow.returnToConfirm=false;$("confirm-checkbox").checked=false;}
+  renderExperience();$("experience-dialog").scrollTop=0;
+ });
+ $("step-back").addEventListener("click",()=>{flow.step=Math.max(0,flow.step-1);flow.returnToConfirm=false;renderExperience();$("experience-dialog").scrollTop=0});
  $("confirm-checkbox").addEventListener("change",renderModalButtons);
+ $("demo-attendees").addEventListener("input",renderModalButtons);
  $("step-send").addEventListener("click",submit);
  $("view-result").addEventListener("click",()=>{
   $("experience-dialog").close();leadTab=flow.mode;renderLeads();go("leads");
@@ -277,5 +293,17 @@ function init(){
  for(const lp of LP_SAMPLES){const opt=create("option",lp.title);opt.value=lp.id;$("modal-lp").append(opt)}
  for(const topic of INQUIRY_TOPICS){const opt=create("option",topic);opt.value=topic;$("modal-topic").append(opt)}
  bind();renderAll();go("dashboard");
+ const start=()=>{
+  $("demo-intro").hidden=true;
+  $("demo-shell").hidden=false;
+  document.body.classList.add("experience-mode");
+  window.scrollTo(0,0);
+ };
+ $("start-experience").addEventListener("click",start);
+ if(new URLSearchParams(location.search).has("capture"))start();
+ const video=$("intro-video"),fallback=$("intro-film-fallback");
+ video.addEventListener("loadeddata",()=>fallback.hidden=true);
+ video.addEventListener("error",()=>{fallback.hidden=false;video.hidden=true;});
+
 }
 init();
