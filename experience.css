@@ -76,7 +76,7 @@ body.experience-mode .page-head .eyebrow,
 body.experience-mode #page-lp .info,
 body.experience-mode .notice,
 body.experience-mode .lp-card-details .subtle,
-body.experience-mode .page-settings .steps { display:none!important; }
+body.experience-mode #page-settings .steps { display:none!important; }
 body.experience-mode .page-head {margin-bottom:20px;}
 body.experience-mode .panel-head{min-height:58px;}
 body.experience-mode .main{padding-top:23px;}
@@ -137,3 +137,7 @@ body.experience-mode .page-head h1{margin-top:0;}
  .v2-demo-form .review dd{font-size:13px;}
 }
 @media(prefers-reduced-motion:reduce){.intro-film-fallback span{animation:none!important;}}
+
+/* The form-setting screen in the hands-on area contains controls only, not a second explanation panel. */
+body.experience-mode #page-settings .split {display:block;max-width:730px;}
+body.experience-mode #page-settings .split > .panel:nth-child(2) {display:none!important;}
