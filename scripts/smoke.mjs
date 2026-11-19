@@ -7,13 +7,13 @@ import {createServer} from "node:http";
 import {chromium} from "playwright";
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
-const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/demo-journey.css","/src/app.mjs","/src/state.mjs","/robots.txt","/media/atelier-demo.mp4"]);
+const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/demo-journey.css","/src/app.mjs","/src/state.mjs","/robots.txt","/media/atelier-demo.webm"]);
 const server=createServer(async(req,res)=>{
  const url=new URL(req.url,"http://127.0.0.1"),path=url.pathname==="/"?"/index.html":url.pathname;
  if(!allowed.has(path)){res.writeHead(404);res.end();return}
  try{
   const data=await readFile(join(root,"dist",path.slice(1)));
-  const types={".html":"text/html",".css":"text/css",".mjs":"text/javascript",".txt":"text/plain",".mp4":"video/mp4"};
+  const types={".html":"text/html",".css":"text/css",".mjs":"text/javascript",".txt":"text/plain",".webm":"video/webm"};
   res.writeHead(200,{"Content-Type":(types[extname(path)]||"application/octet-stream")+"; charset=utf-8"});res.end(data);
  }catch{res.writeHead(404);res.end()}
 });
@@ -30,7 +30,7 @@ try{
  assert.equal(await page.locator("#demo-intro").isVisible(),true);
  assert.equal(await page.locator("#demo-shell").isVisible(),false);
  assert.match(await page.locator("#intro-title").innerText(),/作家活動を/);
- assert.equal(await page.locator("#intro-video source").getAttribute("src"),"./media/atelier-demo.mp4");
+ assert.equal(await page.locator("#intro-video source").getAttribute("src"),"./media/atelier-demo.webm");
  await page.screenshot({path:join(screenshots,"01-intro-desktop.png")});
  await page.locator("#start-demo").click();
  await page.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
