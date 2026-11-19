@@ -1,0 +1,44 @@
+name: Record real demo video
+on:
+  push:
+    branches: [feat/v2-form-simple-demo-intro-20261119]
+    paths-ignore:
+      - public/media/**
+permissions:
+  contents: write
+jobs:
+  record:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the offline-only demo
+        run: npm run build
+      - name: Install browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install chromium
+      - name: Generate a silent 16:9 MP4 from actual browser interaction
+        run: node scripts/record-demo.mjs
+      - name: Video quality gate
+        run: |
+          test -s public/media/demo-overview.mp4
+          ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height -of default=noprint_wrappers=1 public/media/demo-overview.mp4
+      - name: Upload video backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-form-demo-walkthrough
+          path: public/media/demo-overview.mp4
+      - name: Commit recorded video to the dedicated feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/demo-overview.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m "media: add real recorded V2-like form and admin preview"
+            git push origin HEAD:"$GITHUB_REF_NAME"
+          fi
