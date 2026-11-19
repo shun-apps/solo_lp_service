@@ -23,27 +23,26 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1
           npx playwright install chromium
-      - name: Record actual V2-like UI walkthrough and render 16:9 MP4
+      - name: Record real V2-style browser walkthrough (16:9 WebM)
         run: |
           node scripts/record-demo.mjs > recording.log
           cat recording.log
           WEBM=$(sed -n 's/^RECORDING=//p' recording.log)
           test -s "$WEBM"
-          command -v ffmpeg
           mkdir -p media
-          ffmpeg -hide_banner -loglevel error -y -i "$WEBM" -an -c:v libx264 -pix_fmt yuv420p -r 25 -crf 29 -preset veryfast -movflags +faststart -vf scale=960:540 media/atelier-demo.mp4
-          test -s media/atelier-demo.mp4
-          ls -lh media/atelier-demo.mp4
+          cp "$WEBM" media/atelier-demo.webm
+          test -s media/atelier-demo.webm
+          ls -lh media/atelier-demo.webm
       - name: Save video source in feature branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add media/atelier-demo.mp4
+          git add media/atelier-demo.webm
           git diff --cached --quiet || git commit -m "assets: record silent atelier demo walkthrough"
           git push origin HEAD:feat/v2-style-guided-form-video-intro-20261119
       - name: Provide an artifact preview
         uses: actions/upload-artifact@v4
         with:
-          name: atelier-demo-mp4
-          path: media/atelier-demo.mp4
+          name: atelier-demo-webm
+          path: media/atelier-demo.webm
           retention-days: 14
