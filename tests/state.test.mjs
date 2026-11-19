@@ -70,8 +70,9 @@ test("フォーム種別は2種類のみ、操作はメモリ内",async()=>{
     assert.doesNotMatch(source,/\bfetch\s*\(|\blocalStorage\b|\bsessionStorage\b|\bXMLHttpRequest\b|\bsendBeacon\s*\(/);
   }
   const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
-  assert.match(html,/data-modal-mode="event"/);
-  assert.match(html,/data-modal-mode="contact"/);
+  assert.match(html,/id="experience-step-0"/);
+  assert.match(html,/id="experience-step-1"/);
+  assert.match(html,/id="experience-step-2"/);
   assert.match(html,/demo@example.invalid/);
   assert.doesNotMatch(html,/type="email"|type="tel"/);
 });
