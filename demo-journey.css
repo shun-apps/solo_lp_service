@@ -1,0 +1,59 @@
+/* INTRO → EXPERIENCE: explanation in the entrance only; no tutorial overlays after start */
+.demo-intro { min-height:100dvh; background: #F2F0EF; color:#423F42; display:grid; place-items:center; padding:40px 20px 52px; }
+.intro-wrap { width:min(100%,880px); text-align:center; }
+.intro-kicker { color:#397C7D; font-size:12px; font-weight:850; letter-spacing:.12em; margin-bottom:12px; }
+.demo-intro h1 { font-size:clamp(26px,3vw,38px); line-height:1.45; margin:0; color:#52434A; }
+.intro-lead { font-size:16px; margin:10px 0 26px; color:#75696D; }
+.intro-video-wrap { position:relative; width:100%; max-width:780px; margin:0 auto; background:linear-gradient(135deg,#E8E2DF,#D1DDDC); border:1px solid #DCD4D0; border-radius:17px; box-shadow:0 18px 48px #6B5B6020; overflow:hidden; }
+#intro-video { display:block; width:100%; aspect-ratio:16/9; object-fit:contain; background:#E8E2DF; }
+.intro-video-pending { position:absolute; inset:0; display:grid; place-items:center; background:#E8E2DF; font-size:15px; color:#62565A; pointer-events:none; }
+.intro-path { display:flex; align-items:center; justify-content:center; gap:13px; margin:21px 0; color:#397C7D; font-size:14px; font-weight:750; }
+.intro-path b { font-size:20px; color:#A89DA0; }
+.intro-path span { min-width:56px; }
+.intro-start { min-width:280px; min-height:54px; font-size:17px; border-radius:10px; }
+.intro-disclaimer { margin:14px 0 0; font-size:12px; color:#716A6B; }
+#demo-shell[hidden], #demo-intro[hidden] { display:none!important; }
+/* The form now matches V2's step-by-step question → confirmation → completion pattern. */
+.experience { width:min(94vw,520px); border-radius:16px; }
+.experience .dialog-head { padding:19px 23px 16px; }
+.experience .dialog-head small { font-size:11px; color:#816A73; }
+.experience .dialog-body { padding:22px 24px; min-height:245px; }
+.experience .flow-step h3 { font-size:20px; color:#4F4047; margin:0 0 17px; }
+.experience .progress-label { font-size:13px; margin-bottom:24px; }
+.experience .event-choices { gap:10px; }
+.experience .event-choice { min-height:59px; font-size:14px; }
+.experience .event-choice strong { font-size:15px; }
+.experience .event-choice small { font-size:13px; }
+.experience .field { min-height:50px; font-size:16px; }
+.experience .field-label { font-size:14px; }
+.experience .readonly-sample { background:#F4F1F0; color:#60545A; border-color:#DCD3D3; cursor:default; font-weight:600; }
+.experience .fake-badge { display:inline-block; margin-top:12px; font-size:12px; color:#397C7D; }
+.experience .review { margin:0; }
+.experience .review-row { display:grid; grid-template-columns:100px minmax(0,1fr) auto; align-items:center; gap:7px; padding:13px; }
+.experience .review dt { font-size:13px; color:#786C71; }
+.experience .review dd { font-size:14px; color:#493E44; line-height:1.6; }
+.review-edit { border:0; background:transparent; color:#28666C; font-size:13px; font-weight:750; min-height:40px; padding:6px; text-decoration:underline; }
+.review-edit:hover { color:#164C52; }
+.experience .dialog-foot .btn { font-size:15px; min-height:45px; }
+.experience .success-card { margin:14px 0 20px; }
+.experience .demo-note { font-size:12px; color:#7A6F74; margin:14px 0 0; }
+.experience .success .text-action { display:block; margin:12px auto; }
+.experience .inline-status:empty { display:none; }
+.page .eyebrow { display:none; }
+.page .page-head h1 { margin:0; }
+@media(max-width:650px){
+ .demo-intro { padding:30px 14px 32px; }
+ .intro-kicker { font-size:11px; }
+ .demo-intro h1 { font-size:26px; }
+ .intro-lead { font-size:14px; margin-bottom:20px; }
+ .intro-video-wrap { border-radius:12px; }
+ .intro-start { width:100%; min-width:0; }
+ .intro-path { margin:17px 0; }
+ .intro-disclaimer { font-size:11px; }
+ .experience .dialog-body { padding:18px; }
+ .experience .flow-step h3 { font-size:18px; }
+ .experience .review-row { grid-template-columns:80px minmax(0,1fr) auto; padding:10px; }
+ .experience .review dt { font-size:12px; }
+ .experience .review dd { font-size:13px; }
+ .review-edit { font-size:12px; }
+}
