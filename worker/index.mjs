@@ -11,7 +11,7 @@ const SECURITY_HEADERS={
   "Content-Security-Policy":[
     "default-src 'none'","base-uri 'none'","frame-ancestors 'none'",
     "script-src 'self'","style-src 'self'","img-src 'self'",
-    "font-src 'self'","connect-src 'none'","form-action 'none'","object-src 'none'"
+    "font-src 'self'","media-src 'self'","connect-src 'none'","form-action 'none'","object-src 'none'"
   ].join("; ")
 };
 function secure(response,extra={}){
