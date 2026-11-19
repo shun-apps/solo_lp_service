@@ -12,7 +12,21 @@
 </head>
 <body>
 <a class="skip" href="#main">本文に移動</a>
-<div class="shell">
+<section id="demo-intro" class="demo-intro" aria-labelledby="intro-title">
+  <div class="intro-inner">
+    <span class="intro-kicker">HANDMADE LP DEMO</span>
+    <h1 id="intro-title">作品の魅力を伝えて、<br>申込をひとつに。</h1>
+    <p class="intro-lead">LPからのお申込を、アトリエの管理画面へ。</p>
+    <div class="intro-film">
+      <video id="intro-video" src="./media/demo-overview.mp4" muted autoplay loop playsinline controls preload="metadata" aria-label="フォーム申込から管理画面に届くまでのデモ動画"></video>
+      <div id="intro-film-fallback" class="intro-film-fallback" aria-hidden="true"><span>LPから申込</span><span>受付が届く</span><span>一覧で管理</span></div>
+    </div>
+    <div class="intro-process"><span>01 <b>LPから申込</b></span><span>02 <b>管理画面に反映</b></span><span>03 <b>受付を管理</b></span></div>
+    <button type="button" class="btn btn-primary intro-start" id="start-experience">操作を体験する <span aria-hidden="true">→</span></button>
+    <p class="intro-privacy">架空のデータを使う体験版です。実際の送信はありません。</p>
+  </div>
+</section>
+<div class="shell" id="demo-shell" hidden>
   <aside class="sidebar" aria-label="管理メニュー">
     <div class="business-id shop-header"><span class="business-avatar" aria-hidden="true">糸</span><span class="shop-header-text"><strong id="sidebar-name">糸と花のアトリエ（架空）</strong><small>ハンドメイド作家のショップ（デモ）</small></span></div>
     <nav id="menu" aria-label="管理メニュー">
@@ -28,9 +42,9 @@
     <div class="side-foot"><span class="dot"></span> デモデータのみ使用中 <small>顧客情報の送信・保存はありません。</small></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><div class="breadcrumb">アトリエ管理 <span>/</span> <strong id="page-name">ダッシュボード</strong></div><div class="top-actions"><span class="demo-tag"><span class="dot"></span> 操作体験版</span><button type="button" class="btn btn-light btn-small" id="reset">初期状態に戻す</button></div></header>
+    <header class="topbar"><div class="breadcrumb">アトリエ管理 <span>/</span> <strong id="page-name">ダッシュボード</strong></div><div class="top-actions"><span class="demo-tag"><span class="dot"></span> デモ・実送信なし</span><button type="button" class="btn btn-light btn-small" id="reset">初期状態に戻す</button></div></header>
     <main id="main" class="main">
-      <div class="notice"><b>i</b><span><strong>操作体験用の管理画面です。</strong> 全て架空の申込・オーダー相談です。他の体験者とは共有されず、再読み込みすると初期状態に戻ります。実際のメールは送信されません。</span></div>
+
       <section class="page" id="page-dashboard" data-page="dashboard" aria-labelledby="title-dashboard">
         <div class="page-head"><div><span class="eyebrow">ATELIER OVERVIEW</span><h1 id="title-dashboard">ダッシュボード</h1><p>作品販売LP・ワークショップ・オーダー相談をひとつの画面で管理できます。</p></div><div class="page-ctas"><button class="btn btn-outline" type="button" data-try="contact">オーダー相談を試す</button><button class="btn btn-primary" type="button" data-try="event">ワークショップ申込を試す</button></div></div>
         <div class="metrics">
@@ -76,40 +90,53 @@
         <div class="page-head"><div><span class="eyebrow">THE MAKER</span><h1 id="title-profile">作家プロフィール</h1><p>アトリエ名・ショップ名の表示をお試しいただけます。</p></div></div>
         <section class="panel narrow"><div class="panel-head"><h2>基本情報</h2></div><div class="panel-body"><label class="field-label" for="business-name">アトリエ・ショップ名（デモ用）</label><input type="text" class="field" id="business-name" value="糸と花のアトリエ（架空）" maxlength="40"><p class="subtle">本名・メールアドレスなどの個人情報は入力しないでください。再読み込みで戻ります。</p><button type="button" class="btn btn-primary" id="save-business">表示名を変更</button></div></section>
       </section>
-      <footer class="footer">瞬apps <span>ハンドメイド作家さん向け・操作体験版</span></footer>
+      <footer class="footer">瞬apps <span>体験中の内容は再読み込みで初期状態に戻ります</span></footer>
     </main>
   </div>
 </div>
 
-<dialog id="experience-dialog" class="experience" aria-labelledby="experience-title">
-  <header class="dialog-head"><div><small>購入者さん側のフォーム（操作体験版）</small><h2 id="experience-title">ワークショップ申込・オーダー相談</h2></div><button type="button" class="close" id="close-experience" aria-label="閉じる">×</button></header>
+<dialog id="experience-dialog" class="experience v2-demo-form" aria-labelledby="experience-title">
+  <header class="dialog-head"><div><small>V2式の質問フォーム ・ 架空データ</small><h2 id="experience-title">ワークショップ申込</h2></div><button type="button" class="close" id="close-experience" aria-label="閉じる">×</button></header>
   <div class="dialog-body">
-    <p class="modal-notice">架空のお客様情報のみを使用します。実際の送信・メール通知・他の利用者とのデータ共有はありません。</p>
-    <div class="progress"><span id="progress-bar"></span></div><p class="progress-label" id="progress-label">1 / 2　フォームを選択</p>
-    <section id="experience-step-0" class="flow-step">
-      <h3>どちらのフォームを体験しますか？</h3>
-      <div class="flow-modes"><button type="button" class="flow-mode" data-modal-mode="event"><b>▦ ワークショップ申込</b><small>日時・残席から選ぶ</small></button><button type="button" class="flow-mode" data-modal-mode="contact"><b>✉ オーダー相談</b><small>相談内容を選んで送る</small></button></div>
-      <label class="field-label" for="modal-lp">どのLPからアクセスしたことにしますか？</label><select class="field" id="modal-lp"></select>
-      <div id="event-selection"><label class="field-label">申し込むワークショップ <span class="required">必須</span></label><div id="event-choices" class="event-choices"></div></div>
-      <div id="contact-selection" hidden><label class="field-label" for="modal-topic">ご相談内容 <span class="required">必須</span></label><select class="field" id="modal-topic"></select><p class="subtle">実際の文章を入力する必要はありません。</p></div>
+    <div class="progress"><span id="progress-bar"></span></div><p class="progress-label" id="progress-label">質問 1/3</p>
+    <section id="experience-step-0" class="flow-step" aria-label="お名前">
+      <h3>お名前</h3>
+      <label class="field-label v2-required" for="demo-name">お名前 <em>必須</em></label>
+      <input class="field v2-prefilled" id="demo-name" value="デモのお客様" readonly aria-label="架空のお客様名">
+    </section>
+    <section id="experience-step-1" class="flow-step" hidden aria-label="メールアドレス">
+      <h3>メールアドレス</h3>
+      <label class="field-label v2-required" for="demo-email">メールアドレス <em>必須</em></label>
+      <input class="field v2-prefilled" id="demo-email" value="demo@example.invalid" readonly aria-label="架空のメールアドレス">
+    </section>
+    <section id="experience-step-2" class="flow-step" hidden aria-label="申込内容">
+      <div id="event-selection">
+        <h3>参加するワークショップ</h3>
+        <div id="event-choices" class="event-choices"></div>
+        <label class="field-label" for="demo-attendees">参加人数</label>
+        <input class="field v2-attendees" id="demo-attendees" type="number" min="1" max="10" value="1" inputmode="numeric">
+      </div>
+      <div id="contact-selection" hidden>
+        <h3>ご相談内容</h3>
+        <select class="field" id="modal-topic"></select>
+      </div>
       <p class="inline-status" id="select-status" aria-live="polite"></p>
+      <select id="modal-lp" hidden aria-label="流入元LP（デモ用）"></select>
     </section>
-    <section id="experience-step-1" class="flow-step" hidden>
-      <h3>お客様情報と申込内容の確認</h3>
-      <div class="fake-contact"><span class="fake-badge">自動入力・架空データ</span><strong>デモのお客様</strong><span>demo@example.invalid</span><small>個人情報の入力は不要です</small></div>
-      <dl class="review" id="review-content"></dl>
-      <label class="confirm"><input type="checkbox" id="confirm-checkbox"><span>この操作はデモであり、実際には送信されないことを確認しました。</span></label>
+    <section id="experience-step-3" class="flow-step" hidden aria-label="確認">
+      <h3>入力内容の確認</h3>
+      <dl class="review v2-confirm" id="review-content"></dl>
+      <label class="confirm"><input type="checkbox" id="confirm-checkbox"><span>デモ送信を確認</span></label>
     </section>
-    <section id="experience-step-2" class="flow-step success" hidden>
+    <section id="experience-step-4" class="flow-step success" hidden>
       <div class="success-mark">✓</div><h3 id="success-heading">受け付けました</h3>
-      <p>管理画面へ反映されました。メールは実際には送信されません。</p>
       <div class="success-card"><strong id="success-summary"></strong><small id="success-detail"></small></div>
-      <div class="mail-sample"><span>自動返信のプレビュー（未送信）</span><p id="success-mail"></p></div>
-      <button type="button" id="view-result" class="btn btn-primary btn-wide">管理画面で反映を確認する →</button>
+      <button type="button" id="view-result" class="btn btn-primary btn-wide">管理画面で確認する →</button>
       <button type="button" id="again" class="text-action">別のフォームも試す</button>
+      <details class="demo-mail-details"><summary>自動返信のプレビュー</summary><p id="success-mail"></p></details>
     </section>
   </div>
-  <footer class="dialog-foot" id="experience-actions"><button type="button" class="btn btn-outline" id="step-back" hidden>戻る</button><button type="button" class="btn btn-primary" id="step-next">次へ</button><button type="button" class="btn btn-primary" id="step-send" hidden disabled>送信を確定する（デモ）</button></footer>
+  <footer class="dialog-foot" id="experience-actions"><button type="button" class="btn btn-outline" id="step-back" hidden>戻る</button><button type="button" class="btn btn-primary" id="step-next">次へ（残り2問）</button><button type="button" class="btn btn-primary" id="step-send" hidden disabled>送信する（デモ）</button></footer>
 </dialog>
 
 <dialog id="event-dialog" class="event-editor" aria-labelledby="edit-title"><header class="dialog-head"><div><small>管理画面でワークショップを設定</small><h2 id="edit-title">ワークショップの追加・変更</h2></div><button type="button" class="close" id="close-event" aria-label="閉じる">×</button></header>
