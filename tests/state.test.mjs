@@ -70,8 +70,8 @@ test("フォーム種別は2種類のみ、操作はメモリ内",async()=>{
     assert.doesNotMatch(source,/\bfetch\s*\(|\blocalStorage\b|\bsessionStorage\b|\bXMLHttpRequest\b|\bsendBeacon\s*\(/);
   }
   const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
-  assert.match(html,/data-modal-mode="event"/);
-  assert.match(html,/data-modal-mode="contact"/);
+  assert.match(html,/id="experience-step-0"/);
+  assert.match(html,/id="experience-step-4"/);
   assert.match(html,/demo@example.invalid/);
   assert.doesNotMatch(html,/type="email"|type="tel"/);
 });
@@ -112,4 +112,33 @@ test("読みやすい文字サイズと配色は独立テーマで維持",async(
   assert.match(theme,/#F2F0EF/i);
   assert.match(theme,/#397C7D/i);
   assert.match(theme,/#964A64/i);
+});
+
+test("V2フォームと同じ1問ずつ・入力確認・編集の導線と動画入口を持つ",async()=>{
+ const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+ const app=await readFile(new URL("../src/app.mjs",import.meta.url),"utf8");
+ const css=await readFile(new URL("../demo-journey.css",import.meta.url),"utf8");
+ assert.match(html,/id="demo-intro"/);
+ assert.match(html,/id="intro-video"/);
+ assert.match(html,/media\/atelier-demo\.webm/);
+ assert.match(html,/id="start-demo"/);
+ assert.match(html,/id="demo-shell" hidden/);
+ for(let step=0;step<=4;step++)assert.match(html,new RegExp('id="experience-step-'+step+'"'));
+ assert.match(html,/readonly tabindex="-1" aria-label="架空のお客様名"/);
+ assert.match(html,/demo@example\.invalid/);
+ assert.doesNotMatch(html,/id="confirm-checkbox"/);
+ assert.doesNotMatch(html,/id="modal-lp"/);
+ assert.match(app,/review-edit/);
+ assert.match(app,/function validAttendees/);
+ assert.match(css,/\.demo-intro/);
+ assert.match(css,/\.review-edit/);
+ assert.doesNotMatch(html,/class="notice"/);
+});
+test("イベント受付の参加人数は残席と定員を超えない",()=>{
+ const s=baseline(),ev=s.events[0],before=eventParticipants(s,ev.id);
+ const r=registerEvent(s,{eventId:ev.id,lpId:"lp-event",attendeeCount:2});
+ assert.equal(r.attendeeCount,2);
+ assert.equal(eventParticipants(s,ev.id),before+2);
+ assert.throws(()=>registerEvent(s,{eventId:ev.id,lpId:"lp-event",attendeeCount:ev.capacity}),/event_full/);
+ assert.throws(()=>registerEvent(s,{eventId:ev.id,lpId:"lp-event",attendeeCount:0}),/invalid_attendee_count/);
 });

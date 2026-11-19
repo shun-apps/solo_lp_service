@@ -10,7 +10,7 @@ const pages={dashboard:"ダッシュボード",lp:"LP管理",events:"ワーク�
 const modeLabel={event:"ワークショップ申込",contact:"オーダー相談"};
 const CONTACT_PREVIEW="デモのお客様 様\n作品のご相談をお寄せいただきありがとうございます。\n内容を受け付けました。確認後にご案内します。\n（このメールは実際には送信されません）";
 let s=initialState(),activePage="dashboard",leadTab="event";
-let flow={mode:"event",step:0,eventId:null,lpId:"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
+let flow={mode:"event",step:0,eventId:null,attendeeCount:1,lpId:"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
 let toastTimer=null;
 
 function showToast(message){
@@ -34,7 +34,7 @@ function safeButton(label,cls,callback){
  const b=create("button",label,cls);b.type="button";b.addEventListener("click",callback);return b;
 }
 function chooseExperience(mode,lpId){
- flow={mode,step:0,eventId:null,lpId:lpId||LP_SAMPLES.find(x=>x.mode===mode)?.id||"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
+ flow={mode,step:0,eventId:null,attendeeCount:1,lpId:lpId||LP_SAMPLES.find(x=>x.mode===mode)?.id||"lp-event",topic:INQUIRY_TOPICS[0],resultId:null};
  const modal=$("experience-dialog");
  renderExperience();
  if(!modal.open)modal.showModal();
@@ -77,10 +77,10 @@ function lpCard(lp,small=false){
  visual.append(create("span","LOOK "+String(LP_SAMPLES.indexOf(lp)+1).padStart(2,"0"),"lp-visual-number"),create("span",lp.id==="lp-content"?"✿":lp.id==="lp-craft"?"✧":"❋","lp-ornament"),create("strong",lp.copy,"lp-visual-copy"));
  const info=create("div",null,"lp-card-details");
  info.append(create("span",lp.category,"kicker"),create("h3",lp.title));
- if(!small)info.append(create("p","ハンドメイド作家向けの構成イメージです。実際の完成LP画像・公開URLは準備中です。","subtle"));
+
  const actions=create("div",null,"lp-actions");
- actions.append(chip("見本画像準備中"));
- actions.append(safeButton("フォームを体験 →","text-action",()=>chooseExperience(lp.mode,lp.id)));
+
+ actions.append(safeButton(lp.mode==="event"?"参加フォームへ →":"相談フォームへ →","text-action",()=>chooseExperience(lp.mode,lp.id)));
  info.append(actions);card.append(visual,info);
  return card;
 }
@@ -168,51 +168,58 @@ function renderEventChoices(){
  }
  if(!root.childElementCount)root.append(create("p","受付中のワークショップはありません。管理画面でワークショップを公開してください。","subtle"));
 }
+function validAttendees(){
+ return flow.mode!=="event" || (
+  Number.isInteger(flow.attendeeCount)&&flow.attendeeCount>=1&&flow.attendeeCount<=20&&
+  flow.attendeeCount<=(evById(flow.eventId)?totalSeats(evById(flow.eventId)):0)
+ );
+}
 function renderModalButtons(){
- $("step-back").hidden=flow.step!==1;
- $("step-next").hidden=flow.step!==0;
- $("step-next").disabled=flow.mode==="event"&&!flow.eventId;
- $("step-send").hidden=flow.step!==1;
- $("step-send").disabled=!$("confirm-checkbox").checked||flow.step!==1;
- $("experience-actions").hidden=flow.step===2;
+ const finalStep=flow.step===3;
+ $("step-back").hidden=flow.step===0||flow.step===4;
+ $("step-next").hidden=finalStep||flow.step===4;
+ $("step-next").disabled=flow.step===0&&flow.mode==="event"&&(!flow.eventId||!validAttendees());
+ $("step-send").hidden=!finalStep;
+ $("experience-actions").hidden=flow.step===4;
 }
 function renderReview(){
- const rows=[["フォーム",modeLabel[flow.mode]],["お名前","デモのお客様（架空）"],["メール","demo@example.invalid"],["流入LP",lpName(flow.lpId)]];
+ const rows=[["お名前","デモのお客様",1],["メール","demo@example.invalid",2]];
  if(flow.mode==="event"){
-  const ev=evById(flow.eventId);rows.push(["ワークショップ",ev?.title||"未選択"],["開催日",ev?eventLabel(ev):"未選択"]);
- }else rows.push(["オーダー相談内容",flow.topic]);
- $("review-content").replaceChildren(...rows.map(([key,val])=>{
-  const div=create("div",null,"review-row");div.append(create("dt",key),create("dd",val));return div;
+  const ev=evById(flow.eventId);
+  rows.unshift(["ワークショップ",ev?.title||"未選択",0]);
+  rows.push(["日時",ev?eventLabel(ev):"未選択",0],["人数",flow.attendeeCount+"名",0]);
+ }else rows.unshift(["ご相談",flow.topic,0]);
+ $("review-content").replaceChildren(...rows.map(([key,val,editStep])=>{
+  const div=create("div",null,"review-row");
+  const title=create("dt",key);
+  const content=create("dd",val);
+  const edit=safeButton("修正","review-edit",()=>{flow.step=editStep;renderExperience()});
+  div.append(title,content,edit);return div;
  }));
 }
 function renderExperience(){
- $("experience-step-0").hidden=flow.step!==0;
- $("experience-step-1").hidden=flow.step!==1;
- $("experience-step-2").hidden=flow.step!==2;
- $("modal-lp").value=flow.lpId;
+ for(let i=0;i<=4;i++)$("experience-step-"+i).hidden=flow.step!==i;
+ $("experience-title").textContent=modeLabel[flow.mode];
+ $("question-heading").textContent=flow.mode==="event"?"ワークショップを選ぶ":"ご相談内容を選ぶ";
  $("modal-topic").value=flow.topic;
  $("event-selection").hidden=flow.mode!=="event";
  $("contact-selection").hidden=flow.mode!=="contact";
- for(const b of document.querySelectorAll("[data-modal-mode]")){b.classList.toggle("active",b.dataset.modalMode===flow.mode);b.setAttribute("aria-pressed",String(b.dataset.modalMode===flow.mode))}
- $("progress-bar").style.width=(flow.step===2?100:(flow.step+1)*50)+"%";
- $("progress-label").textContent=flow.step===2?"完了":(flow.step+1)+" / 2　"+(flow.step===0?"フォームの選択":"申込内容の確認");
- $("progress-bar").parentElement.hidden=flow.step===2;
- $("progress-label").hidden=flow.step===2;
+ $("event-attendees").value=String(flow.attendeeCount);
+ $("progress-bar").style.width=(flow.step===4?100:(flow.step+1)*25)+"%";
+ $("progress-label").textContent=flow.step===4?"完了":(flow.step+1)+" / 4";
+ $("progress-bar").parentElement.hidden=flow.step===4;
+ $("progress-label").hidden=flow.step===4;
  $("select-status").textContent="";
  if(flow.mode==="event")renderEventChoices();
- if(flow.step===1)renderReview();
+ if(flow.step===3)renderReview();
  renderModalButtons();
 }
-function updateMode(mode){
- flow.mode=mode;flow.lpId=LP_SAMPLES.find(lp=>lp.mode===mode)?.id||"lp-event";flow.eventId=null;
- renderExperience();
-}
 function submit(){
- if(flow.step!==1||!$("confirm-checkbox").checked)return;
+ if(flow.step!==3||!validAttendees())return;
  try{
   let result;
   if(flow.mode==="event"){
-   result=registerEvent(s,{eventId:flow.eventId,lpId:flow.lpId});
+   result=registerEvent(s,{eventId:flow.eventId,lpId:flow.lpId,attendeeCount:flow.attendeeCount});
    const ev=evById(result.eventId);
    $("success-heading").textContent="ワークショップ申込を受け付けました";
    $("success-summary").textContent=ev.title;
@@ -225,7 +232,7 @@ function submit(){
    $("success-detail").textContent="ご相談一覧に新着が1件追加されました";
    $("success-mail").textContent=result.customer+" 様\n作品のご相談をお寄せいただきありがとうございます。\n"+result.topic+"\n（メール送信なし）";
   }
-  flow.resultId=result.id;flow.step=2;renderAll();renderExperience();
+  flow.resultId=result.id;flow.step=4;renderAll();renderExperience();
   $("experience-dialog").scrollTop=0;
  }catch(e){
   flow.step=0;renderExperience();
@@ -239,17 +246,17 @@ function bind(){
  $("close-experience").addEventListener("click",()=>$("experience-dialog").close());
  $("close-event").addEventListener("click",()=>$("event-dialog").close());
  $("cancel-event").addEventListener("click",()=>$("event-dialog").close());
- document.querySelectorAll("[data-modal-mode]").forEach(b=>b.addEventListener("click",()=>updateMode(b.dataset.modalMode)));
- $("modal-lp").addEventListener("change",e=>{flow.lpId=e.target.value});
+
+
  $("modal-topic").addEventListener("change",e=>{flow.topic=e.target.value});
- $("step-next").addEventListener("click",()=>{if(flow.mode==="event"&&!flow.eventId)return;flow.step=1;$("confirm-checkbox").checked=false;renderExperience();$("experience-dialog").scrollTop=0});
- $("step-back").addEventListener("click",()=>{flow.step=0;renderExperience();$("experience-dialog").scrollTop=0});
- $("confirm-checkbox").addEventListener("change",renderModalButtons);
+ $("step-next").addEventListener("click",()=>{if(flow.step===0&&flow.mode==="event"&&(!flow.eventId||!validAttendees()))return;if(flow.step<3){flow.step++;renderExperience();$("experience-dialog").scrollTop=0}});
+ $("step-back").addEventListener("click",()=>{flow.step=Math.max(0,flow.step-1);renderExperience();$("experience-dialog").scrollTop=0});
+ $("event-attendees").addEventListener("input",e=>{flow.attendeeCount=Number(e.target.value);renderModalButtons()});
  $("step-send").addEventListener("click",submit);
  $("view-result").addEventListener("click",()=>{
   $("experience-dialog").close();leadTab=flow.mode;renderLeads();go("leads");
   const highlighted=document.querySelector("#lead-rows tr.highlight");highlighted?.scrollIntoView({behavior:"smooth",block:"center"});
-  showToast("新しい受付が一覧に反映されました（デモ）。");
+  showToast("受付が反映されました");
  });
  $("again").addEventListener("click",()=>chooseExperience(flow.mode==="event"?"contact":"event"));
  document.querySelectorAll("[data-lead-tab]").forEach(b=>b.addEventListener("click",()=>{leadTab=b.dataset.leadTab;renderLeads()}));
@@ -268,14 +275,30 @@ function bind(){
   if(!v||v.length>40){showToast("事業者名は1〜40文字で設定してください。");return}
   s.businessName=v;renderAll();showToast("表示名を更新しました（デモ）。");
  });
+ $("start-demo").addEventListener("click",()=>showDemo());
+ $("back-to-intro").addEventListener("click",()=>showIntro());
+ $("intro-video").addEventListener("error",()=>{$("intro-video-pending").hidden=false});
  $("reset").addEventListener("click",()=>{
   if(!window.confirm("このブラウザで体験した変更を消して初期状態に戻しますか？"))return;
   s=initialState();leadTab="event";renderAll();go("dashboard");showToast("初期データに戻しました。");
  });
 }
+function showDemo(){
+ $("demo-intro").hidden=true;
+ $("demo-shell").hidden=false;
+ $("intro-video").pause();
+ window.scrollTo({top:0,behavior:"instant"});
+}
+function showIntro(){
+ if($("experience-dialog").open)$("experience-dialog").close();
+ if($("event-dialog").open)$("event-dialog").close();
+ $("demo-shell").hidden=true;
+ $("demo-intro").hidden=false;
+ window.scrollTo({top:0,behavior:"instant"});
+}
 function init(){
- for(const lp of LP_SAMPLES){const opt=create("option",lp.title);opt.value=lp.id;$("modal-lp").append(opt)}
+
  for(const topic of INQUIRY_TOPICS){const opt=create("option",topic);opt.value=topic;$("modal-topic").append(opt)}
- bind();renderAll();go("dashboard");
+ bind();renderAll();go("dashboard");if(new URLSearchParams(location.search).get("demo")==="1")showDemo();else showIntro();
 }
 init();
