@@ -31,6 +31,11 @@ try{
  assert.equal(await page.locator("#demo-shell").isVisible(),false);
  assert.match(await page.locator("#intro-title").innerText(),/作家活動を/);
  assert.equal(await page.locator("#intro-video source").getAttribute("src"),"./media/atelier-demo.webm");
+ const videoResponse=await page.request.get("http://127.0.0.1:4185/media/atelier-demo.webm");
+ assert.equal(videoResponse.status(),200,"The intro must have an actual playable video file");
+ assert.match(videoResponse.headers()["content-type"],/video\/webm/);
+ assert.ok((await videoResponse.body()).byteLength>20000);
+
  await page.screenshot({path:join(screenshots,"01-intro-desktop.png")});
  await page.locator("#start-demo").click();
  await page.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
