@@ -1,0 +1,139 @@
+/* Short introduction → hands-on demo: no instructional paragraphs while using the app. */
+.demo-intro{
+ min-height:100svh;
+ display:grid;
+ place-items:center;
+ padding:36px 20px 48px;
+ background:#F2F0EF;
+}
+.intro-inner{
+ width:min(1020px,100%);
+ text-align:center;
+ margin:auto;
+}
+.intro-kicker{
+ display:inline-block;
+ color:#397C7D;
+ font-size:12px;font-weight:800;letter-spacing:.18em;margin-bottom:12px;
+}
+.demo-intro h1{
+ margin:0;
+ font-size:clamp(28px,4.6vw,46px);
+ letter-spacing:-.035em;
+ line-height:1.42;
+ font-weight:850;
+}
+.intro-lead{
+ color:#71686C;
+ font-size:16px;
+ line-height:1.6;
+ margin:10px 0 22px;
+}
+.intro-film{
+ position:relative;
+ width:min(800px,100%);
+ aspect-ratio:16 / 9;
+ overflow:hidden;
+ margin:auto;
+ border-radius:17px;
+ background:#E7E3E1;
+ box-shadow:0 13px 46px rgba(73,59,66,.14);
+ border:1px solid #D9CECA;
+}
+.intro-film video{width:100%;height:100%;object-fit:contain;display:block;background:#E9E5E2;}
+.intro-film video[hidden]{display:none!important;}
+.intro-film-fallback{
+ position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:11px;
+ color:#51474A;
+ background:linear-gradient(126deg,#ECDDE1,#EEEAE7 45%,#C8DCD9);
+ padding:30px;
+}
+.intro-film-fallback span{
+ flex:1;max-width:150px;min-height:75px;padding:22px 9px;
+ border:1px solid #D2C9C7;
+ border-radius:12px;
+ background:#fff;display:grid;place-items:center;
+ font-size:14px;font-weight:800;
+ box-shadow:0 8px 24px rgba(55,55,55,.07);
+}
+.intro-film-fallback span:nth-child(2){animation:filmStep 6s 1.8s infinite;}
+.intro-film-fallback span:nth-child(3){animation:filmStep 6s 3.6s infinite;}
+@keyframes filmStep{0%,60%,100%{transform:translateY(0)}20%{transform:translateY(-8px);box-shadow:0 12px 28px rgba(55,55,55,.17)}}
+.intro-process{
+ display:flex;justify-content:center;align-items:center;gap:13px;
+ margin:24px auto 19px;
+ flex-wrap:wrap;
+ color:#7D6D73;font-size:13px;
+}
+.intro-process>span{padding:8px 14px;background:#fff;border:1px solid #E5DCDA;border-radius:99px;}
+.intro-process b{color:#514A4E;font-weight:750;margin-left:4px;}
+.intro-start{width:min(320px,100%);font-size:16px;min-height:54px;gap:12px;}
+.intro-privacy{font-size:12px;color:#807679;margin:14px 0 0;}
+body.experience-mode .page-head p,
+body.experience-mode .panel-head p,
+body.experience-mode .choice-card small,
+body.experience-mode .page-head .eyebrow,
+body.experience-mode #page-lp .info,
+body.experience-mode .notice,
+body.experience-mode .lp-card-details .subtle,
+body.experience-mode .page-settings .steps { display:none!important; }
+body.experience-mode .page-head {margin-bottom:20px;}
+body.experience-mode .panel-head{min-height:58px;}
+body.experience-mode .main{padding-top:23px;}
+body.experience-mode .metric>p{font-size:13px;}
+body.experience-mode .choice-card{min-height:125px;gap:7px;}
+body.experience-mode .choice-card em{margin-top:auto;}
+body.experience-mode .page-head h1{margin-top:0;}
+/* Form is visually aligned with the V2 published 1-question-per-screen chat form. */
+.v2-demo-form{width:min(95vw,520px);max-height:90dvh;}
+.v2-demo-form .dialog-body{min-height:290px;padding:22px 24px;display:flex;flex-direction:column;}
+.v2-demo-form .dialog-head{padding:18px 24px;}
+.v2-demo-form .dialog-head h2{font-size:21px;}
+.v2-demo-form .progress{height:6px;background:#E9E5E2;}
+.v2-demo-form .progress span{background:#397C7D;}
+.v2-demo-form .progress-label{font-size:13px;margin:8px 0 22px;color:#777076;}
+.v2-demo-form .flow-step{min-height:180px;}
+.v2-demo-form .flow-step h3{font-size:21px;line-height:1.45;margin:0 0 18px;}
+.v2-demo-form .v2-required{font-weight:800;display:flex;gap:9px;align-items:center;}
+.v2-demo-form .v2-required em{font-size:11px;font-weight:850;font-style:normal;background:#F2E8EB;color:#964A64;border-radius:99px;padding:2px 8px;}
+.v2-demo-form .field{min-height:50px;font-size:16px;border-radius:12px;}
+.v2-demo-form .v2-prefilled{background:#F7F6F5;color:#534D50;cursor:default;}
+.v2-demo-form .event-choice{min-height:56px;border-radius:11px;padding:12px 15px;}
+.v2-demo-form .event-choice strong{font-size:15px;}
+.v2-demo-form .event-choice small{font-size:13px;}
+.v2-demo-form .v2-attendees{width:100%;max-width:124px;}
+.v2-demo-form .confirm{margin-top:13px;}
+.v2-demo-form .v2-confirm{border:1px solid #E6DEDD;border-radius:12px;}
+.v2-demo-form .review-row{grid-template-columns:110px minmax(0,1fr) auto;align-items:center;gap:10px;}
+.v2-demo-form .review dt{font-size:12px;grid-column:auto;}
+.v2-demo-form .review dd{font-size:14px;}
+.v2-demo-form .review-edit{
+ border:1px solid #D7CCCA;border-radius:8px;background:#fff;color:#397C7D;
+ font-size:12px;font-weight:800;padding:7px 9px;
+}
+.v2-demo-form .dialog-foot .btn{min-height:48px;font-size:15px;}
+.v2-demo-form .dialog-foot #step-back{flex:0 0 92px;}
+.v2-demo-form .dialog-foot #step-next,.v2-demo-form .dialog-foot #step-send{flex:1;}
+.v2-demo-form .success-card{margin:15px 0;}
+.v2-demo-form .success-card strong{font-size:16px;}
+.v2-demo-form .success-card small{font-size:13px;}
+.demo-mail-details{margin-top:19px;text-align:left;font-size:13px;color:#62595D;}
+.demo-mail-details summary{cursor:pointer;text-align:center;color:#397C7D;}
+.demo-mail-details p{white-space:pre-line;border:1px solid #E6DEDD;border-radius:12px;padding:14px;line-height:1.8;background:#FAF9F8;}
+@media(max-width:650px){
+ .demo-intro{padding:30px 15px;}
+ .demo-intro h1{font-size:clamp(28px,7vw,37px);}
+ .intro-lead{font-size:14px;}
+ .intro-process{gap:7px;font-size:11px;margin:16px auto;}
+ .intro-process>span{padding:6px 9px;}
+ .intro-film{border-radius:12px;}
+ .intro-film-fallback{padding:10px;gap:5px;}
+ .intro-film-fallback span{font-size:11px;padding:8px 5px;min-height:60px;}
+ .v2-demo-form .dialog-body{padding:20px 17px;}
+ .v2-demo-form .flow-step h3{font-size:19px;}
+ .v2-demo-form .review-row{grid-template-columns:80px minmax(0,1fr) auto;gap:5px;padding:12px 10px;}
+ .v2-demo-form .review-edit{font-size:11px;padding:6px;}
+ .v2-demo-form .review dt{font-size:11px;}
+ .v2-demo-form .review dd{font-size:13px;}
+}
+@media(prefers-reduced-motion:reduce){.intro-film-fallback span{animation:none!important;}}
