@@ -47,7 +47,7 @@ export function initialState(now=new Date()){
     latest:{type:"registration",id:"reg3"}
   };
 }
-export const eventParticipants=(s,id)=>s.registrations.filter(x=>x.eventId===id&&x.status==="参加予定").length;
+export const eventParticipants=(s,id)=>s.registrations.filter(x=>x.eventId===id&&x.status==="参加予定").reduce((n,x)=>n+(Number(x.attendeeCount)||1),0);
 export const stats=(s)=>({
   lps:LP_SAMPLES.length,
   events:s.events.filter(x=>x.open).length,
@@ -55,13 +55,14 @@ export const stats=(s)=>({
   inquiries:s.inquiries.filter(x=>x.status==="未対応").length
 });
 const eventById=(s,id)=>s.events.find(x=>x.id===id);
-export function registerEvent(s,{eventId,lpId="lp-event"}){
+export function registerEvent(s,{eventId,lpId="lp-event",attendeeCount=1}){
   const ev=eventById(s,eventId);
   if(!ev||!ev.open)throw Error("event_unavailable");
-  if(eventParticipants(s,eventId)>=ev.capacity)throw Error("event_full");
+  if(!Number.isInteger(attendeeCount)||attendeeCount<1||attendeeCount>10)throw Error("invalid_attendees");
+  if(eventParticipants(s,eventId)+attendeeCount>ev.capacity)throw Error("event_full");
   if(!LP_SAMPLES.some(x=>x.id===lpId))throw Error("invalid_lp");
   const number=s.seq++;
-  const reg={id:"reg"+number,eventId,lpId,customer:"体験用のお客様 "+number,status:"参加予定"};
+  const reg={id:"reg"+number,eventId,lpId,customer:"体験用のお客様 "+number,attendeeCount,status:"参加予定"};
   s.registrations.unshift(reg);
   s.latest={type:"registration",id:reg.id};
   return clone(reg);
