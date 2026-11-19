@@ -22,6 +22,8 @@ jobs:
           test -s dist/index.html
           test -s dist/styles.css
           test -s dist/theme-handmade.css
+          test -s dist/experience.css
+          if test -f public/media/demo-overview.mp4; then test -s dist/media/demo-overview.mp4; fi
           test -s dist/src/app.mjs
           test -s dist/src/state.mjs
           test -s dist/robots.txt
