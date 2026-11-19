@@ -113,3 +113,32 @@ test("読みやすい文字サイズと配色は独立テーマで維持",async(
   assert.match(theme,/#397C7D/i);
   assert.match(theme,/#964A64/i);
 });
+
+test("V2に合わせた1問1画面フォームと動画前段が存在し、個人情報は架空データのみ",async()=>{
+ const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+ const css=await readFile(new URL("../experience.css",import.meta.url),"utf8");
+ const worker=await readFile(new URL("../worker/index.mjs",import.meta.url),"utf8");
+ assert.match(html,/id="demo-intro"/);
+ assert.match(html,/id="intro-video"/);
+ assert.match(html,/id="start-experience"/);
+ assert.match(html,/id="demo-shell" hidden/);
+ for(let i=0;i<=4;i++)assert.match(html,new RegExp('id="experience-step-'+i+'"'));
+ assert.match(html,/id="demo-name"[^>]+readonly/);
+ assert.match(html,/id="demo-email"[^>]+readonly/);
+ assert.match(html,/id="review-content"/);
+ assert.match(css,/experience-mode/);
+ assert.match(worker,/media-src 'self'/);
+ assert.doesNotMatch(html,/type="email"|type="tel"/);
+});
+test("イベント参加人数の選択が残席とキャンセルに反映される",()=>{
+ const s=baseline();
+ const id=s.events[0].id;
+ const before=eventParticipants(s,id);
+ const reg=registerEvent(s,{eventId:id,attendeeCount:3});
+ assert.equal(reg.attendeeCount,3);
+ assert.equal(eventParticipants(s,id),before+3);
+ cancelRegistration(s,reg.id);
+ assert.equal(eventParticipants(s,id),before);
+ assert.throws(()=>registerEvent(s,{eventId:id,attendeeCount:11}),/invalid_attendees/);
+ assert.throws(()=>registerEvent(s,{eventId:id,attendeeCount:0}),/invalid_attendees/);
+});
