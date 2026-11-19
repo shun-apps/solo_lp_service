@@ -42,7 +42,7 @@ try{
  await page.addStyleTag({content:'@font-face{font-family:DemoJP;src:url("/demo-font.woff2") format("woff2");font-style:normal;font-weight:100 900}body,button,input,select{font-family:DemoJP,sans-serif!important}'});
  await page.evaluate(()=>document.fonts.load('16px DemoJP'));
  await page.evaluate(()=>document.fonts.ready);
- await page.addStyleTag({content:'#video-caption{position:fixed;left:270px;bottom:24px;z-index:99999;padding:11px 20px;border-radius:12px;background:rgba(41,83,86,.95);color:white;font:800 20px/1.4 sans-serif;box-shadow:0 8px 28px #0002}'});
+ await page.addStyleTag({content:'#video-caption{position:fixed;left:270px;bottom:24px;z-index:99999;padding:11px 20px;border-radius:12px;background:rgba(41,83,86,.95);color:white;font:800 20px/1.4 DemoJP,sans-serif;box-shadow:0 8px 28px #0002}'});
  await page.evaluate(()=>{const box=document.createElement("div");box.id="video-caption";document.body.append(box);});
  const caption=async s=>page.locator("#video-caption").evaluate((el,t)=>{el.textContent=t},s);
  const hold=async(ms=950)=>page.waitForTimeout(ms);
