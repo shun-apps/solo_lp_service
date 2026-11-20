@@ -11,7 +11,7 @@ for(const file of ["styles.css","theme-handmade.css","demo-journey.css"]){
  html=html.replace('href="./'+file+'"','href="/'+file+'"');
 }
 html=html.replace('</head>','<link rel="stylesheet" href="/delivery/admin.css"></head>');
-html=html.replace(/<dialog id="experience-dialog"'[\s\S]*?<\/dialog>\s*/,"");
+html=html.replace(/<dialog id="experience-dialog"[\s\S]*?<\/dialog>\s*/,"");
 html=html.replace(/<button[^>]+id="reset"[^>]*>[\s\S]*?<\/button>/,"");
 html=html.replace("ハンドメイド作家のアトリエ管理｜瞬apps（デモ）","ハンドメイド作家のアトリエ管理｜納品版");
 html=html.replace("ハンドメイド作家のショップ（デモ）","ハンドメイド作家のショップ");
