@@ -114,23 +114,39 @@ test("読みやすい文字サイズと配色は独立テーマで維持",async(
   assert.match(theme,/#964A64/i);
 });
 
-test("V2フォームと同じ1問ずつ・入力確認・編集の導線と動画入口を持つ",async()=>{
+test("動画なしでダッシュボード直行、7メニュー全てに同トーンの説明帯",async()=>{
  const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
  const app=await readFile(new URL("../src/app.mjs",import.meta.url),"utf8");
  const css=await readFile(new URL("../demo-journey.css",import.meta.url),"utf8");
- assert.match(html,/id="demo-intro"/);
- assert.match(html,/id="intro-video"/);
- assert.match(html,/media\/atelier-demo\.webm/);
- assert.match(html,/id="start-demo"/);
- assert.match(html,/id="demo-shell" hidden/);
- for(let step=0;step<=4;step++)assert.match(html,new RegExp('id="experience-step-'+step+'"'));
- assert.match(html,/readonly tabindex="-1" aria-label="架空のお客様名"/);
+ const build=await readFile(new URL("../scripts/build.mjs",import.meta.url),"utf8");
+ assert.match(html,/id="demo-shell"/);
+ assert.doesNotMatch(html,/id="demo-shell" hidden/);
+ assert.doesNotMatch(html,/<video|id="intro-video"|id="demo-intro"|id="start-demo"|id="back-to-intro"/);
+ assert.doesNotMatch(build,/atelier-demo\.webm/);
+ assert.doesNotMatch(app,/showIntro|showDemo|intro-video|start-demo|back-to-intro/);
+ const descriptions={
+  dashboard:"LPからどのくらい予約が入ったかが表示されます。",
+  lp:"制作するLPの見本を確認できます。",
+  events:"ワークショップの開催日時と定員を設定できます。",
+  leads:"申込やオーダー相談を一覧で確認できます。",
+  settings:"受付フォームの種類を切り替えられます。",
+  mail:"自動返信メールの見本を確認できます。",
+  profile:"ショップ名を変更できます。"
+ };
+ for(const [id,message] of Object.entries(descriptions)){
+  const page=html.slice(html.indexOf('id="page-'+id+'"'));
+  assert.match(page,new RegExp('class="guide-band guide-band--'+id+'"'));
+  assert.ok(page.includes(message));
+  assert.match(css,new RegExp('\\.guide-band--'+id+'\\s*\\{'));
+ }
+ assert.match(css,/guide-band--dashboard\s*\{ --guide-bg:#E3F0E8/);
+ assert.doesNotMatch(css,/\.demo-intro|\.intro-video-wrap/);
+ assert.match(html,/id="experience-step-0"/);
+ assert.match(html,/id="experience-step-4"/);
  assert.match(html,/demo@example\.invalid/);
- assert.doesNotMatch(html,/id="confirm-checkbox"/);
- assert.doesNotMatch(html,/id="modal-lp"/);
+ assert.doesNotMatch(html,/id="confirm-checkbox"|id="modal-lp"|type="email"|type="tel"/);
  assert.match(app,/review-edit/);
  assert.match(app,/function validAttendees/);
- assert.match(css,/\.demo-intro/);
  assert.match(css,/\.review-edit/);
  assert.doesNotMatch(html,/class="notice"/);
 });
