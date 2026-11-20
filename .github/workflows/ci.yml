@@ -23,7 +23,7 @@ jobs:
           test -s dist/styles.css
           test -s dist/theme-handmade.css
           test -s dist/demo-journey.css
-          test -s dist/media/atelier-demo.webm
+          test ! -e dist/media/atelier-demo.webm
           test -s dist/src/app.mjs
           test -s dist/src/state.mjs
           test -s dist/robots.txt
