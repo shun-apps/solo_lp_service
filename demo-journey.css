@@ -68,7 +68,6 @@
 .page .eyebrow { display:none; }
 .page .page-head h1 { margin:0; }
 @media(max-width:650px){
- .demo-intro h1 { font-size:26px; }
  .experience .dialog-body { padding:18px; }
  .experience .flow-step h3 { font-size:18px; }
  .experience .review-row { grid-template-columns:80px minmax(0,1fr) auto; padding:10px; }
