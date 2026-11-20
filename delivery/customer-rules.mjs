@@ -92,6 +92,16 @@ export function transitionCustomerState(original,action,payload={}){
       result=state.selectedMode;
       break;
     }
+    case "set_business_icon":{
+      const icon=payload.icon;
+      if(icon!==null&&(typeof icon!=="string"||icon.length>12000||
+        !/^data:image\/webp;base64,[A-Za-z0-9+/]+={0,2}$/.test(icon))){
+        throw Error("invalid_business_icon");
+      }
+      state.businessIcon=icon;
+      result=Boolean(icon);
+      break;
+    }
     case "set_lp_url":{
       requireLP(payload.lpId);
       if(typeof payload.url!=="string")throw Error("invalid_lp_url");
