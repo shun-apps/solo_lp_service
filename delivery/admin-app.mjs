@@ -142,7 +142,7 @@ async function init(){
  $("event-form").addEventListener("submit",async e=>{
   e.preventDefault();
   const p={id:$("edit-id").value||null,title:$("edit-name").value,date:$("edit-date").value,time:$("edit-time").value,capacity:Number($("edit-capacity").value)};
-  try{await change("create_or_update_event",p);$("event-dialog").close()}catch{$("edit-status").textContent="日時・定員・既存申込人数を確認してください"}
+  try{await change("create_or_update_event",p);$("event-dialog").close()}catch{$("edit-status").textContent="申込者がいるイベントの日時は変更できません。新しい日程はイベントを追加してください。"}
  });
  document.querySelectorAll("[data-lead-tab]").forEach(b=>b.onclick=()=>{leadTab=b.dataset.leadTab;leads()});
  $("save-business").onclick=async()=>{try{await change("set_shop_name",{name:$("business-name").value})}catch{}};
