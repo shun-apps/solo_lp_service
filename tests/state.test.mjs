@@ -126,12 +126,12 @@ test("動画なしでダッシュボード直行、7メニュー全てに同ト�
  assert.doesNotMatch(app,/showIntro|showDemo|intro-video|start-demo|back-to-intro/);
  const descriptions={
   dashboard:"LPからどのくらい予約が入ったかが表示されます。",
-  lp:"制作するLPの見本を確認できます。",
+  lp:"納品した訴求違い3本のLPが表示されます。",
   events:"ワークショップの開催日時と定員を設定できます。",
   leads:"申込やオーダー相談を一覧で確認できます。",
-  settings:"受付フォームの種類を切り替えられます。",
-  mail:"自動返信メールの見本を確認できます。",
-  profile:"ショップ名を変更できます。"
+  settings:"お問い合わせフォームとイベントの予約フォームの設定ができます。",
+  mail:"サンクスメール、リマインドメールが設定できます。",
+  profile:"ショップ名とアイコンを登録して左上に表示できます。"
  };
  for(const [id,message] of Object.entries(descriptions)){
   const page=html.slice(html.indexOf('id="page-'+id+'"'));
