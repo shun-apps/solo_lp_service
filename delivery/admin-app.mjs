@@ -124,10 +124,39 @@ function forms(){
  }
  root.append(split);
 }
+async function imageData(file){
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>2*1024*1024)throw Error("PNG/JPEG/WebPの2MB以内の画像を選んでください");
+ const bitmap=await createImageBitmap(file);
+ const cv=document.createElement("canvas");cv.width=80;cv.height=80;
+ const ctx=cv.getContext("2d");
+ const scale=Math.min(bitmap.width,bitmap.height);
+ ctx.drawImage(bitmap,(bitmap.width-scale)/2,(bitmap.height-scale)/2,scale,scale,0,0,80,80);
+ bitmap.close?.();
+ const url=cv.toDataURL("image/webp",0.7);
+ if(!url.startsWith("data:image/webp;base64,")||url.length>12000)throw Error("アイコン画像を縮小できません");
+ return url;
+}
 function profile(){
  $("business-name").value=s.businessName||"";
  $("sidebar-name").textContent=s.businessName||"ショップ名未設定";
- document.querySelector(".business-avatar").textContent=(s.businessName||"店").slice(0,1);
+ const avatar=document.querySelector(".business-avatar");avatar.replaceChildren();
+ if(s.businessIcon){const pic=elem("img");pic.src=s.businessIcon;pic.alt="ショップアイコン";avatar.append(pic)}
+ else avatar.textContent=(s.businessName||"店").slice(0,1);
+ const body=$("page-profile").querySelector(".panel-body");
+ if(!body.querySelector("#shop-icon")){
+  const wrapper=elem("div",null,"shop-icon-controls");
+  const label=elem("label","ショップアイコン画像（PNG / JPEG / WebP）","field-label");
+  const input=elem("input");input.id="shop-icon";input.type="file";input.accept="image/png,image/jpeg,image/webp";
+  label.append(input);wrapper.append(label);
+  input.addEventListener("change",async()=>{
+   if(!input.files?.[0])return;
+   try{const icon=await imageData(input.files[0]);await change("set_business_icon",{icon})}
+   catch(e){notice(e.message)}
+   finally{input.value=""}
+  });
+  wrapper.append(btn("アイコンを削除","btn btn-light btn-small",async()=>{try{await change("set_business_icon",{icon:null})}catch{}}));
+  body.append(wrapper);
+ }
 }
 function emails(){
  const root=$("page-mail");root.querySelector(".split")?.remove();
