@@ -97,7 +97,7 @@ function lpCard(lp,small=false){
 
  const actions=create("div",null,"lp-actions");
 
- actions.append(safeButton(lp.mode==="event"?"参加フォームへ →":"相談フォームへ →","text-action",()=>chooseExperience(lp.mode,lp.id)));
+ actions.append(safeButton("LPを見る","text-action",()=>chooseExperience(lp.mode,lp.id)));
  info.append(actions);card.append(visual,info);
  return card;
 }

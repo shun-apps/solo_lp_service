@@ -63,7 +63,7 @@ try{
  await page.screenshot({path:join(screenshots,"02-dashboard-desktop.png")});
  // Workshop path: event and attendee count, name, email, confirm/edit, completion
  await page.locator('[data-page-go="lp"]').first().click();
- await page.locator('#lp-cards .lp-card').nth(2).getByRole("button",{name:/参加フォームへ/}).click();
+ await page.locator('#lp-cards .lp-card').nth(2).getByRole("button",{name:"LPを見る"}).click();
  assert.equal(await page.locator("#experience-dialog").isVisible(),true);
  assert.equal(await page.locator("#experience-step-0").isVisible(),true);
  assert.equal(await page.locator("#event-choices .event-choice:not(:disabled)").count(),3);
@@ -98,7 +98,7 @@ try{
  // Contact path
  await page.locator('[data-page-go="dashboard"]').first().click();
  await page.locator('[data-page-go="lp"]').first().click();
- await page.locator('#lp-cards .lp-card').first().getByRole("button",{name:/相談フォームへ/}).click();
+ await page.locator('#lp-cards .lp-card').first().getByRole("button",{name:"LPを見る"}).click();
  assert.equal(await page.locator("#contact-selection").isVisible(),true);
  assert.equal(await page.locator("#event-selection").isVisible(),false);
  await page.locator("#modal-topic").selectOption({label:"作品のオーダー制作について相談したい"});
@@ -124,6 +124,7 @@ try{
  assert.equal(await page.locator("#events-list .event-row").count(),4);
  await page.locator('[data-page-go="lp"]').first().click();
  assert.equal(await page.locator("#lp-cards .lp-card").count(),3);
+ assert.equal(await page.locator('#lp-cards .lp-card button').filter({hasText:"LPを見る"}).count(),3);
  assert.equal(await page.locator("#lp-cards a").count(),0);
  // Mobile layout and independent reset
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,deviceScaleFactor:1,reducedMotion:"reduce"});
@@ -138,7 +139,7 @@ try{
  assert.equal(await mobile.locator('[data-lp-id="lp-event"] .lp-performance-count').innerText(),"3件");
  await mobile.screenshot({path:join(screenshots,"06-dashboard-mobile.png")});
  await mobile.locator('[data-page-go="lp"]').first().click();
- await mobile.locator('#lp-cards .lp-card').first().getByRole("button",{name:/相談フォームへ/}).click();
+ await mobile.locator('#lp-cards .lp-card').first().getByRole("button",{name:"LPを見る"}).click();
  assert.equal(await mobile.locator("#experience-dialog").isVisible(),true);
  await mobile.screenshot({path:join(screenshots,"07-contact-mobile.png")});
  for(let i=0;i<3;i++)await mobile.locator("#step-next").click();
