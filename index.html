@@ -33,19 +33,17 @@
     <main id="main" class="main">
       
       <section class="page" id="page-dashboard" data-page="dashboard" aria-labelledby="title-dashboard">
-        <div class="page-head"><div><span class="eyebrow">ATELIER OVERVIEW</span><h1 id="title-dashboard">ダッシュボード</h1></div><div class="page-ctas"><button class="btn btn-outline" type="button" data-try="contact">オーダー相談を試す</button><button class="btn btn-primary" type="button" data-try="event">ワークショップ申込を試す</button></div></div>
-                <div class="guide-band guide-band--dashboard" role="note">LPからどのくらい予約が入ったかが表示されます。</div>
-        <div class="metrics">
-          <article class="metric"><span>LP見本</span><strong id="stat-lp">3<small>本</small></strong></article>
+        <div class="page-head"><div><span class="eyebrow">ATELIER OVERVIEW</span><h1 id="title-dashboard">ダッシュボード</h1></div></div>
+        <div class="guide-band guide-band--dashboard" role="note">LPからどのくらい予約が入ったかが表示されます。</div>
+        <div class="metrics dashboard-metrics">
           <article class="metric"><span>開催予定のレッスン</span><strong id="stat-events">—</strong></article>
           <article class="metric"><span>参加申込数</span><strong id="stat-register">—</strong></article>
           <article class="metric"><span>未対応のご相談</span><strong id="stat-inquiry">—</strong></article>
         </div>
-        <div class="split">
-          <section class="panel"><div class="panel-head"><div><h2>最近の受付</h2></div><button class="text-action" data-page-go="leads">すべて見る ›</button></div><div id="recent-leads" class="recent-list"></div></section>
-          <section class="panel"><div class="panel-head"><div><h2>受付フォームの体験</h2></div></div><div class="panel-body"><div class="choice-cards"><button type="button" class="choice-card" data-try="event"><span class="choice-symbol">▦</span><b>ワークショップ申込</b><em>操作する →</em></button><button type="button" class="choice-card" data-try="contact"><span class="choice-symbol">✉</span><b>オーダー相談</b><em>操作する →</em></button></div></div></section>
+        <div class="split dashboard-panels">
+          <section class="panel"><div class="panel-head"><h2>最近の受付</h2><button class="text-action" data-page-go="leads">すべて見る ›</button></div><div id="recent-leads" class="recent-list"></div></section>
+          <section class="panel"><div class="panel-head"><h2>LP別の申込・相談数</h2></div><div class="panel-body"><p class="lp-performance-note">各LPからの申込・オーダー相談の受付件数です。</p><div id="lp-breakdown" class="lp-performance-list" aria-live="polite"></div></div></section>
         </div>
-        <section class="panel margin-top"><div class="panel-head"><div><h2>LP見本</h2></div><button class="text-action" data-page-go="lp">LP管理へ ›</button></div><div class="lp-tiles" id="dashboard-lps"></div></section>
       </section>
       <section class="page" id="page-lp" data-page="lp" hidden aria-labelledby="title-lp">
         <div class="page-head"><div><span class="eyebrow">WORKS & STORIES</span><h1 id="title-lp">LP管理</h1></div></div>
