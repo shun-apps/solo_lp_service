@@ -22,7 +22,7 @@ const credentials="Basic "+btoa("owner:example-secret");
 const authorized={Authorization:credentials};
 const call=(env,path,method="GET",data,headers={})=>worker.fetch(new Request(base+path,{
  method,
- headers:{...headers,...(data===undefined?{}:{"Content-Type":"application/json",Origin:base})},
+ headers:{...(data===undefined?{}:{"Content-Type":"application/json",Origin:base}),...headers},
  ...(data===undefined?{}:{body:JSON.stringify(data)})
 }),env);
 test("顧客の管理画面・状態APIに認証が必要",async()=>{
