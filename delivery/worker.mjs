@@ -115,7 +115,7 @@ export default {
     if(submitPath&&request.method==="POST")return handleAction(request,env,"public",submitPath[1]);
     if(path.startsWith("/api/"))return failure("not_found",404);
     if(!["GET","HEAD"].includes(request.method))return failure("method_not_allowed",405);
-    const permitted=new Set(["/admin.html","/public-form.html","/delivery/admin-app.mjs","/delivery/public-form.mjs","/delivery/public-form.css","/styles.css","/theme-handmade.css","/demo-journey.css","/robots.txt"]);
+    const permitted=new Set(["/admin.html","/public-form.html","/delivery/admin-app.mjs","/delivery/admin.css","/delivery/public-form.mjs","/delivery/public-form.css","/styles.css","/theme-handmade.css","/demo-journey.css","/robots.txt"]);
     if(!permitted.has(path))return failure("not_found",404);
     if(path==="/public-form.html")return secure(Response.redirect(new URL("/form/lp-content",request.url),302));
     return secure(await env.ASSETS.fetch(request));
