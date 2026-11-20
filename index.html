@@ -13,24 +13,7 @@
 </head>
 <body>
 <a class="skip" href="#main">本文に移動</a>
-<section id="demo-intro" class="demo-intro" aria-labelledby="intro-title">
-  <div class="intro-wrap">
-    <div class="intro-kicker">瞬apps × ハンドメイド作家</div>
-    <h1 id="intro-title">作家活動を、もっと自由に。</h1>
-    <p class="intro-lead">LP・ワークショップ・オーダー相談を、ひとつに。</p>
-    <div class="intro-video-wrap">
-      <video id="intro-video" controls playsinline preload="metadata" aria-label="アトリエ管理の操作紹介動画">
-        <source src="./media/atelier-demo.webm" type="video/webm">
-        お使いのブラウザでは動画を再生できません。
-      </video>
-      <div id="intro-video-pending" class="intro-video-pending" hidden>紹介動画を準備しています</div>
-    </div>
-    <div class="intro-path" aria-hidden="true"><span>LP</span><b>›</b><span>申込</span><b>›</b><span>管理</span></div>
-    <button type="button" id="start-demo" class="btn btn-primary intro-start">デモを体験する →</button>
-    <p class="intro-disclaimer">体験は架空データのみ。実際の申込・メール送信は行いません。</p>
-  </div>
-</section>
-<div class="shell" id="demo-shell" hidden>
+<div class="shell" id="demo-shell">
   <aside class="sidebar" aria-label="管理メニュー">
     <div class="business-id shop-header"><span class="business-avatar" aria-hidden="true">糸</span><span class="shop-header-text"><strong id="sidebar-name">糸と花のアトリエ（架空）</strong><small>ハンドメイド作家のショップ（デモ）</small></span></div>
     <nav id="menu" aria-label="管理メニュー">
@@ -46,11 +29,12 @@
     <div class="side-foot"><span class="dot"></span> 架空データで体験中</div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><div class="breadcrumb">アトリエ管理 <span>/</span> <strong id="page-name">ダッシュボード</strong></div><div class="top-actions"><button type="button" class="btn btn-light btn-small" id="back-to-intro">紹介へ</button><button type="button" class="btn btn-light btn-small" id="reset">リセット</button></div></header>
+    <header class="topbar"><div class="breadcrumb">アトリエ管理 <span>/</span> <strong id="page-name">ダッシュボード</strong></div><div class="top-actions"><button type="button" class="btn btn-light btn-small" id="reset">リセット</button></div></header>
     <main id="main" class="main">
       
       <section class="page" id="page-dashboard" data-page="dashboard" aria-labelledby="title-dashboard">
         <div class="page-head"><div><span class="eyebrow">ATELIER OVERVIEW</span><h1 id="title-dashboard">ダッシュボード</h1></div><div class="page-ctas"><button class="btn btn-outline" type="button" data-try="contact">オーダー相談を試す</button><button class="btn btn-primary" type="button" data-try="event">ワークショップ申込を試す</button></div></div>
+                <div class="guide-band guide-band--dashboard" role="note">LPからどのくらい予約が入ったかが表示されます。</div>
         <div class="metrics">
           <article class="metric"><span>LP見本</span><strong id="stat-lp">3<small>本</small></strong></article>
           <article class="metric"><span>開催予定のレッスン</span><strong id="stat-events">—</strong></article>
@@ -65,19 +49,23 @@
       </section>
       <section class="page" id="page-lp" data-page="lp" hidden aria-labelledby="title-lp">
         <div class="page-head"><div><span class="eyebrow">WORKS & STORIES</span><h1 id="title-lp">LP管理</h1></div></div>
-        <div class="info"><b>ⓘ</b> 構成見本です。完成LPへのリンクは準備中。</div>
+                <div class="guide-band guide-band--lp" role="note">制作するLPの見本を確認できます。</div>
+        
         <div class="lp-cards" id="lp-cards"></div>
       </section>
       <section class="page" id="page-events" data-page="events" hidden aria-labelledby="title-events">
         <div class="page-head"><div><span class="eyebrow">WORKSHOPS</span><h1 id="title-events">ワークショップ管理</h1></div><button class="btn btn-primary" type="button" id="new-event">＋ ワークショップを作成</button></div>
+                <div class="guide-band guide-band--events" role="note">ワークショップの開催日時と定員を設定できます。</div>
         <section class="panel"><div class="panel-head"><div><h2>開催予定のワークショップ</h2></div></div><div class="event-list" id="events-list"></div></section>
       </section>
       <section class="page" id="page-leads" data-page="leads" hidden aria-labelledby="title-leads">
         <div class="page-head"><div><span class="eyebrow">ORDERS & MESSAGES</span><h1 id="title-leads">申込・オーダー相談</h1></div></div>
+                <div class="guide-band guide-band--leads" role="note">申込やオーダー相談を一覧で確認できます。</div>
         <section class="panel"><div class="panel-head lead-head"><div class="segmented" role="group" aria-label="一覧切り替え"><button class="segment active" data-lead-tab="event" aria-pressed="true">ワークショップ申込</button><button class="segment" data-lead-tab="contact" aria-pressed="false" >オーダー相談</button></div><span class="count-label" id="lead-count"></span></div><div class="table-scroll"><table class="records"><thead id="lead-headings"></thead><tbody id="lead-rows"></tbody></table></div><div class="empty" id="lead-empty" hidden>該当するデータはありません。</div></section>
       </section>
       <section class="page" id="page-settings" data-page="settings" hidden aria-labelledby="title-settings">
         <div class="page-head"><div><span class="eyebrow">FORM SETTINGS</span><h1 id="title-settings">フォームの設定</h1></div></div>
+                <div class="guide-band guide-band--settings" role="note">受付フォームの種類を切り替えられます。</div>
         <div class="split">
           <section class="panel"><div class="panel-head"><div><h2>受付フォームの種類</h2></div></div><div class="panel-body"><div class="mode-choices"><label class="mode-option"><input type="radio" name="default-mode" value="event"><span><b>ワークショップ申込フォーム</b><small>開催日・定員を指定して申込を受け付ける</small></span></label><label class="mode-option"><input type="radio" name="default-mode" value="contact"><span><b>オーダー相談フォーム</b><small>作品のご質問やオーダー制作の相談を受け付ける</small></span></label></div><p class="inline-status" id="setting-status"></p><button type="button" class="btn btn-primary" id="try-default">設定したフォームを体験</button></div></section>
           <section class="panel"><div class="panel-head"><div><h2>受付のしくみ</h2></div></div><div class="panel-body"><div class="steps"><span>LP → フォーム → 受付一覧</span></div></div></section>
@@ -85,6 +73,7 @@
       </section>
       <section class="page" id="page-mail" data-page="mail" hidden aria-labelledby="title-mail">
         <div class="page-head"><div><span class="eyebrow">EMAIL PREVIEW</span><h1 id="title-mail">自動返信メール</h1></div></div>
+                <div class="guide-band guide-band--mail" role="note">自動返信メールの見本を確認できます。</div>
         <div class="split">
           <section class="panel"><div class="panel-head"><h2>ワークショップ申込確認メール</h2><span class="chip">プレビューのみ</span></div><div class="panel-body"><div class="mail-sample"><strong>件名：ワークショップへのお申し込みありがとうございます</strong><p id="event-mail">参加申込を受け付けました。<br>ワークショップの詳細をご案内します。</p></div></div></section>
           <section class="panel"><div class="panel-head"><h2>オーダー相談の確認メール</h2><span class="chip">プレビューのみ</span></div><div class="panel-body"><div class="mail-sample"><strong>件名：ご相談を受け付けました</strong><p id="contact-mail">ご相談ありがとうございます。<br>ご相談内容を確認します。</p></div></div></section>
@@ -92,6 +81,7 @@
       </section>
       <section class="page" id="page-profile" data-page="profile" hidden aria-labelledby="title-profile">
         <div class="page-head"><div><span class="eyebrow">THE MAKER</span><h1 id="title-profile">作家プロフィール</h1></div></div>
+                <div class="guide-band guide-band--profile" role="note">ショップ名を変更できます。</div>
         <section class="panel narrow"><div class="panel-head"><h2>基本情報</h2></div><div class="panel-body"><label class="field-label" for="business-name">アトリエ・ショップ名（デモ用）</label><input type="text" class="field" id="business-name" value="糸と花のアトリエ（架空）" maxlength="40"><button type="button" class="btn btn-primary" id="save-business">表示名を変更</button></div></section>
       </section>
       

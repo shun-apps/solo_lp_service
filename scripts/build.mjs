@@ -8,7 +8,5 @@ const html=await readFile(join(root,"index.html"),"utf8");
 if(!["page-dashboard","page-lp","page-events","page-leads","experience-dialog","event-dialog"].every(x=>html.includes(x)))throw Error("Missing demo screens");
 await rm(dist,{recursive:true,force:true});
 for(const file of files){const path=join(dist,file);await mkdir(dirname(path),{recursive:true});await copyFile(join(root,file),path);}
-// Intro video is generated and committed by a separate CI job, not invented at runtime.
-try { await mkdir(join(dist,"media"),{recursive:true}); await copyFile(join(root,"media/atelier-demo.webm"),join(dist,"media/atelier-demo.webm")); } catch (error) { if(error.code!=="ENOENT")throw error; }
 await writeFile(join(dist,"robots.txt"),"User-agent: *\nDisallow: /\n");
 console.log("Isolated Cloudflare Workers demo built into dist/");

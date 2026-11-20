@@ -275,30 +275,14 @@ function bind(){
   if(!v||v.length>40){showToast("事業者名は1〜40文字で設定してください。");return}
   s.businessName=v;renderAll();showToast("表示名を更新しました（デモ）。");
  });
- $("start-demo").addEventListener("click",()=>showDemo());
- $("back-to-intro").addEventListener("click",()=>showIntro());
- $("intro-video").addEventListener("error",()=>{$("intro-video-pending").hidden=false});
  $("reset").addEventListener("click",()=>{
   if(!window.confirm("このブラウザで体験した変更を消して初期状態に戻しますか？"))return;
   s=initialState();leadTab="event";renderAll();go("dashboard");showToast("初期データに戻しました。");
  });
 }
-function showDemo(){
- $("demo-intro").hidden=true;
- $("demo-shell").hidden=false;
- $("intro-video").pause();
- window.scrollTo({top:0,behavior:"instant"});
-}
-function showIntro(){
- if($("experience-dialog").open)$("experience-dialog").close();
- if($("event-dialog").open)$("event-dialog").close();
- $("demo-shell").hidden=true;
- $("demo-intro").hidden=false;
- window.scrollTo({top:0,behavior:"instant"});
-}
 function init(){
 
  for(const topic of INQUIRY_TOPICS){const opt=create("option",topic);opt.value=topic;$("modal-topic").append(opt)}
- bind();renderAll();go("dashboard");if(new URLSearchParams(location.search).get("demo")==="1")showDemo();else showIntro();
+ bind();renderAll();go("dashboard");
 }
 init();

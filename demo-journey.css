@@ -1,18 +1,44 @@
-/* INTRO → EXPERIENCE: explanation in the entrance only; no tutorial overlays after start */
-.demo-intro { min-height:100dvh; background: #F2F0EF; color:#423F42; display:grid; place-items:center; padding:40px 20px 52px; }
-.intro-wrap { width:min(100%,880px); text-align:center; }
-.intro-kicker { color:#397C7D; font-size:12px; font-weight:850; letter-spacing:.12em; margin-bottom:12px; }
-.demo-intro h1 { font-size:clamp(26px,3vw,38px); line-height:1.45; margin:0; color:#52434A; }
-.intro-lead { font-size:16px; margin:10px 0 26px; color:#75696D; }
-.intro-video-wrap { position:relative; width:100%; max-width:780px; margin:0 auto; background:linear-gradient(135deg,#E8E2DF,#D1DDDC); border:1px solid #DCD4D0; border-radius:17px; box-shadow:0 18px 48px #6B5B6020; overflow:hidden; }
-#intro-video { display:block; width:100%; aspect-ratio:16/9; object-fit:contain; background:#E8E2DF; }
-.intro-video-pending { position:absolute; inset:0; display:grid; place-items:center; background:#E8E2DF; font-size:15px; color:#62565A; pointer-events:none; }
-.intro-path { display:flex; align-items:center; justify-content:center; gap:13px; margin:21px 0; color:#397C7D; font-size:14px; font-weight:750; }
-.intro-path b { font-size:20px; color:#A89DA0; }
-.intro-path span { min-width:56px; }
-.intro-start { min-width:280px; min-height:54px; font-size:17px; border-radius:10px; }
-.intro-disclaimer { margin:14px 0 0; font-size:12px; color:#716A6B; }
-#demo-shell[hidden], #demo-intro[hidden] { display:none!important; }
+/**
+ * 画面ごとの一文ガイド。淡い背景と深い文字色で統一し、
+ * 7つのメニューごとに落ち着いたグリーン／ブルーグリーン／ローズ／グレージュを使用。
+ * 説明は見出し直下の帯に集約する。動画・導入ページは使用しない。
+ */
+.guide-band {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 62px;
+  margin: -2px 0 24px;
+  padding: 15px 21px;
+  border: 1px solid var(--guide-border);
+  border-left: 5px solid var(--guide-accent);
+  border-radius: 12px;
+  background: var(--guide-bg);
+  color: var(--guide-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+.guide-band--dashboard { --guide-bg:#E3F0E8; --guide-border:#BED8C7; --guide-accent:#568569; --guide-ink:#255A3C; }
+.guide-band--lp        { --guide-bg:#E4F1EF; --guide-border:#BAD8D4; --guide-accent:#528E89; --guide-ink:#265E5B; }
+.guide-band--events    { --guide-bg:#F3E8EB; --guide-border:#E3C8D0; --guide-accent:#B77F91; --guide-ink:#744454; }
+.guide-band--leads     { --guide-bg:#EDE7E3; --guide-border:#D8CAC3; --guide-accent:#A3897C; --guide-ink:#61514B; }
+.guide-band--settings  { --guide-bg:#E6EDE9; --guide-border:#C4D7CD; --guide-accent:#76978A; --guide-ink:#376154; }
+.guide-band--mail      { --guide-bg:#F2E7E7; --guide-border:#E3C8C9; --guide-accent:#B78487; --guide-ink:#78484F; }
+.guide-band--profile   { --guide-bg:#EBE8E5; --guide-border:#D4CCC6; --guide-accent:#928B80; --guide-ink:#56514A; }
+@media (max-width:650px) {
+  .guide-band {
+    min-height: 56px;
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border-left-width: 4px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
 /* The form now matches V2's step-by-step question → confirmation → completion pattern. */
 .experience { width:min(94vw,520px); border-radius:16px; }
 .experience .dialog-head { padding:19px 23px 16px; }
@@ -42,14 +68,6 @@
 .page .eyebrow { display:none; }
 .page .page-head h1 { margin:0; }
 @media(max-width:650px){
- .demo-intro { padding:30px 14px 32px; }
- .intro-kicker { font-size:11px; }
- .demo-intro h1 { font-size:26px; }
- .intro-lead { font-size:14px; margin-bottom:20px; }
- .intro-video-wrap { border-radius:12px; }
- .intro-start { width:100%; min-width:0; }
- .intro-path { margin:17px 0; }
- .intro-disclaimer { font-size:11px; }
  .experience .dialog-body { padding:18px; }
  .experience .flow-step h3 { font-size:18px; }
  .experience .review-row { grid-template-columns:80px minmax(0,1fr) auto; padding:10px; }

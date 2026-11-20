@@ -7,13 +7,13 @@ import {createServer} from "node:http";
 import {chromium} from "playwright";
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
-const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/demo-journey.css","/src/app.mjs","/src/state.mjs","/robots.txt","/media/atelier-demo.webm"]);
+const allowed=new Set(["/","/index.html","/styles.css","/theme-handmade.css","/demo-journey.css","/src/app.mjs","/src/state.mjs","/robots.txt"]);
 const server=createServer(async(req,res)=>{
  const url=new URL(req.url,"http://127.0.0.1"),path=url.pathname==="/"?"/index.html":url.pathname;
  if(!allowed.has(path)){res.writeHead(404);res.end();return}
  try{
   const data=await readFile(join(root,"dist",path.slice(1)));
-  const types={".html":"text/html",".css":"text/css",".mjs":"text/javascript",".txt":"text/plain",".webm":"video/webm"};
+  const types={".html":"text/html",".css":"text/css",".mjs":"text/javascript",".txt":"text/plain"};
   res.writeHead(200,{"Content-Type":(types[extname(path)]||"application/octet-stream")+"; charset=utf-8"});res.end(data);
  }catch{res.writeHead(404);res.end()}
 });
@@ -26,23 +26,33 @@ try{
  const page=await browser.newPage({viewport:{width:1360,height:900},reducedMotion:"reduce"});
  page.on("pageerror",e=>errors.push(e.message));
  await page.goto("http://127.0.0.1:4185/");
- await page.waitForSelector("#start-demo");
- assert.equal(await page.locator("#demo-intro").isVisible(),true);
- assert.equal(await page.locator("#demo-shell").isVisible(),false);
- assert.match(await page.locator("#intro-title").innerText(),/作家活動を/);
- assert.equal(await page.locator("#intro-video source").getAttribute("src"),"./media/atelier-demo.webm");
- const videoResponse=await page.request.get("http://127.0.0.1:4185/media/atelier-demo.webm");
- assert.equal(videoResponse.status(),200,"The intro must have an actual playable video file");
- assert.match(videoResponse.headers()["content-type"],/video\/webm/);
- assert.ok((await videoResponse.body()).byteLength>20000);
-
- await page.screenshot({path:join(screenshots,"01-intro-desktop.png")});
- await page.locator("#start-demo").click();
- await page.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
- assert.equal(await page.locator(".notice").count(),0);
- assert.equal(await page.locator(".modal-notice").count(),0);
+ await page.waitForSelector("#stat-register");
+ assert.equal(await page.locator("#demo-shell").isVisible(),true,"最初から管理画面を表示");
+ assert.equal(await page.locator("#demo-intro").count(),0);
+ assert.equal(await page.locator("video").count(),0);
+ assert.equal(await page.locator("#back-to-intro").count(),0);
+ assert.equal(await page.locator("#stat-register").textContent(),"3件");
  assert.equal(await page.locator(".nav").count(),7);
  assert.equal(await page.locator("#sidebar-name").textContent(),"糸と花のアトリエ（架空）");
+ const bands=[
+  ["dashboard","LPからどのくらい予約が入ったかが表示されます。","rgb(227, 240, 232)"],
+  ["lp","制作するLPの見本を確認できます。","rgb(228, 241, 239)"],
+  ["events","ワークショップの開催日時と定員を設定できます。","rgb(243, 232, 235)"],
+  ["leads","申込やオーダー相談を一覧で確認できます。","rgb(237, 231, 227)"],
+  ["settings","受付フォームの種類を切り替えられます。","rgb(230, 237, 233)"],
+  ["mail","自動返信メールの見本を確認できます。","rgb(242, 231, 231)"],
+  ["profile","ショップ名を変更できます。","rgb(235, 232, 229)"]
+ ];
+ for(const [id,description,color] of bands){
+  await page.locator('[data-page-go="'+id+'"]').first().click();
+  const band=page.locator("#page-"+id+" .guide-band");
+  assert.equal(await band.isVisible(),true,id+" guide visible");
+  assert.equal(await band.innerText(),description,id+" guide copy");
+  assert.equal(await band.evaluate(el=>getComputedStyle(el).backgroundColor),color,id+" guide color");
+  const banner=await band.boundingBox(),heading=await page.locator("#title-"+id).boundingBox();
+  assert.ok(banner&&heading&&banner.y>heading.y,id+" guide below heading");
+ }
+ await page.locator('[data-page-go="dashboard"]').first().click();
  await page.screenshot({path:join(screenshots,"02-dashboard-desktop.png")});
  // Workshop path: event and attendee count, name, email, confirm/edit, completion
  await page.locator('#page-dashboard [data-try="event"]').first().click();
@@ -103,16 +113,15 @@ try{
  await page.locator('[data-page-go="lp"]').first().click();
  assert.equal(await page.locator("#lp-cards .lp-card").count(),3);
  assert.equal(await page.locator("#lp-cards a").count(),0);
- await page.locator("#back-to-intro").click();
- assert.equal(await page.locator("#demo-intro").isVisible(),true);
  // Mobile layout and independent reset
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,deviceScaleFactor:1,reducedMotion:"reduce"});
  mobile.on("pageerror",e=>errors.push(e.message));
  await mobile.goto("http://127.0.0.1:4185/");
- assert.equal(await mobile.locator("#demo-intro").isVisible(),true);
- await mobile.screenshot({path:join(screenshots,"05-intro-mobile.png")});
- await mobile.locator("#start-demo").click();
  await mobile.waitForFunction(()=>document.querySelector("#stat-register")?.textContent==="3件");
+ assert.equal(await mobile.locator("#demo-shell").isVisible(),true);
+ assert.equal(await mobile.locator("#demo-intro").count(),0);
+ assert.equal(await mobile.locator("#page-dashboard .guide-band").innerText(),"LPからどのくらい予約が入ったかが表示されます。");
+ assert.equal(await mobile.locator("#page-dashboard .guide-band").evaluate(el=>getComputedStyle(el).fontSize),"14px");
  await mobile.screenshot({path:join(screenshots,"06-dashboard-mobile.png")});
  await mobile.locator('#page-dashboard [data-try="contact"]').first().click();
  assert.equal(await mobile.locator("#experience-dialog").isVisible(),true);
@@ -121,10 +130,9 @@ try{
  await mobile.locator("#step-send").click();
  assert.equal(await mobile.locator("#stat-inquiry").textContent(),"2件");
  await mobile.reload();
- await mobile.locator("#start-demo").click();
  await mobile.waitForFunction(()=>document.querySelector("#stat-inquiry")?.textContent==="1件");
  const overflow=await mobile.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
  assert.ok(overflow<4,"mobile overflow "+overflow);
  assert.deepEqual(errors,[],"No JS errors");
 }finally{await browser.close();await new Promise(ok=>server.close(ok))}
-console.log("Intro and V2-style demo passed on desktop/mobile.");
+console.log("Direct dashboard + seven guide bands + V2-style demo passed on desktop/mobile.");
