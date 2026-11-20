@@ -1,6 +1,6 @@
 import {
  LP_SAMPLES, INQUIRY_TOPICS, initialState, prettyDate, addDaysISO, eventParticipants,
- stats, registerEvent, submitInquiry, setInquiryHandled, cancelRegistration, saveEvent,
+ stats, lpReceptionStats, registerEvent, submitInquiry, setInquiryHandled, cancelRegistration, saveEvent,
  setEventOpen, selectMode
 } from "./state.mjs";
 
@@ -53,7 +53,6 @@ function openEventEditor(ev){
 function renderDashboard(){
  const x=stats(s);
  $("sidebar-name").textContent=s.businessName;
- $("stat-lp").textContent=x.lps+"本";
  $("stat-events").textContent=x.events+"件";
  $("stat-register").textContent=x.registrations+"件";
  $("stat-inquiry").textContent=x.inquiries+"件";
@@ -70,6 +69,24 @@ function renderDashboard(){
   el.append(first,chip(row.status,row.status==="未対応"?"amber":"neutral"));
   box.append(el);
  }
+ const lpRows=lpReceptionStats(s);
+ const max=Math.max(1,...lpRows.map(row=>row.total));
+ const breakdown=$("lp-breakdown");
+ breakdown.replaceChildren();
+ for(const lp of lpRows){
+  const entry=create("div",null,"lp-performance-row");
+  entry.dataset.lpId=lp.id;
+  const heading=create("div",null,"lp-performance-heading");
+  const name=create("div",null,"lp-performance-name");
+  name.append(create("strong",lp.title),create("small",lp.mode==="event"?"ワークショップ申込":"オーダー相談"));
+  heading.append(name,create("strong",lp.total+"件","lp-performance-count"));
+  const track=create("div",null,"lp-performance-track");
+  const fill=create("span",null,"lp-performance-fill");
+  fill.style.width=(lp.total/max*100)+"%";
+  track.append(fill);
+  entry.append(heading,track);
+  breakdown.append(entry);
+ }
 }
 function lpCard(lp,small=false){
  const card=create("article",null,small?"lp-tile":"lp-card");
@@ -85,7 +102,6 @@ function lpCard(lp,small=false){
  return card;
 }
 function renderLps(){
- $("dashboard-lps").replaceChildren(...LP_SAMPLES.map(lp=>lpCard(lp,true)));
  $("lp-cards").replaceChildren(...LP_SAMPLES.map(lp=>lpCard(lp,false)));
 }
 function renderEvents(){
