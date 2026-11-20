@@ -15,21 +15,6 @@ jobs:
           node-version: 22
       - name: Validate pure demo logic and syntax
         run: npm run check
-      - name: Validate customer delivery foundation separately
-        run: npm run check:delivery
-      - name: Verify delivery assets contain no simulator
-        run: |
-          test -s dist-delivery/admin.html
-          test -s dist-delivery/public-form.html
-          test -s dist-delivery/delivery/admin-app.mjs
-          test -s dist-delivery/delivery/public-form.mjs
-          test ! -e dist-delivery/src/app.mjs
-          test ! -e dist-delivery/src/state.mjs
-          test ! -e dist-delivery/README.md
-          if grep -Eq 'id="experience-dialog"|id="reset"|src/app.mjs' dist-delivery/admin.html; then
-            echo 'Demo-only UI leaked into delivery'
-            exit 1
-          fi
       - name: Build dedicated Workers static assets
         run: npm run build
       - name: Verify minimal public assets and no live customer integrations

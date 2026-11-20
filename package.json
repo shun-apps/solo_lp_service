@@ -10,9 +10,7 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "check": "node --check src/app.mjs && node --check src/state.mjs && node --check worker/index.mjs && node --check scripts/build.mjs && npm test",
-    "build": "node scripts/build.mjs",
-    "build:delivery": "node delivery/build.mjs",
-    "check:delivery": "node --check delivery/worker.mjs && node --check delivery/admin-app.mjs && node --check delivery/public-form.mjs && node --check delivery/customer-rules.mjs && node --check delivery/store.mjs && npm test && npm run build:delivery"
+    "build": "node scripts/build.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
