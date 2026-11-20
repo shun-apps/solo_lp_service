@@ -10,7 +10,8 @@ html=html.replace(script,'<script type="module" src="/delivery/admin-app.mjs"></
 for(const file of ["styles.css","theme-handmade.css","demo-journey.css"]){
  html=html.replace('href="./'+file+'"','href="/'+file+'"');
 }
-html=html.replace(/<dialog id="experience-dialog"[\s\S]*?<\/dialog>\s*/,"");
+html=html.replace('</head>','<link rel="stylesheet" href="/delivery/admin.css"></head>');
+html=html.replace(/<dialog id="experience-dialog"'[\s\S]*?<\/dialog>\s*/,"");
 html=html.replace(/<button[^>]+id="reset"[^>]*>[\s\S]*?<\/button>/,"");
 html=html.replace("ハンドメイド作家のアトリエ管理｜瞬apps（デモ）","ハンドメイド作家のアトリエ管理｜納品版");
 html=html.replace("ハンドメイド作家のショップ（デモ）","ハンドメイド作家のショップ");
@@ -29,7 +30,7 @@ if(html.includes('id="experience-dialog"')||html.includes('id="reset"'))throw Er
 await rm(dist,{recursive:true,force:true});
 const staticFiles=[
  "styles.css","theme-handmade.css","demo-journey.css",
- "delivery/admin-app.mjs","delivery/public-form.html",
+ "delivery/admin-app.mjs","delivery/admin.css","delivery/public-form.html",
  "delivery/public-form.mjs","delivery/public-form.css"
 ];
 for(const file of staticFiles){
