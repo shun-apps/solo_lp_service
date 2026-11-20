@@ -68,14 +68,7 @@
 .page .eyebrow { display:none; }
 .page .page-head h1 { margin:0; }
 @media(max-width:650px){
- .demo-intro { padding:30px 14px 32px; }
- .intro-kicker { font-size:11px; }
  .demo-intro h1 { font-size:26px; }
- .intro-lead { font-size:14px; margin-bottom:20px; }
- .intro-video-wrap { border-radius:12px; }
- .intro-start { width:100%; min-width:0; }
- .intro-path { margin:17px 0; }
- .intro-disclaimer { font-size:11px; }
  .experience .dialog-body { padding:18px; }
  .experience .flow-step h3 { font-size:18px; }
  .experience .review-row { grid-template-columns:80px minmax(0,1fr) auto; padding:10px; }
