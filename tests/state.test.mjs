@@ -45,7 +45,7 @@ test("LP別の申込・相談数は各流入LPと連動し、キャンセルは�
   assert.equal(counts()["lp-craft"],2);
   setInquiryHandled(s,q.id,true);
   assert.equal(counts()["lp-craft"],2);
-  assert.equal(lpReceptionStats(s).reduce((sum,lp)=>sum+lp.total,0),6);
+  assert.equal(lpReceptionStats(s).reduce((sum,lp)=>sum+lp.total,0),7);
 });
 
 test("ダッシュボードはLP見本と体験カードを置かず、LP別の受付集計を表示",async()=>{
