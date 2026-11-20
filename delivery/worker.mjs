@@ -61,7 +61,7 @@ const allowedAdmin=new Set([
 ]);
 const allowedPublic=new Set(["submit_public_registration","submit_public_inquiry"]);
 function errorStatus(code){
-  if(code==="event_full"||code==="event_unavailable"||code==="concurrent_update_retry")return 409;
+  if(code==="event_full"||code==="event_unavailable"||code==="event_has_bookings"||code==="concurrent_update_retry")return 409;
   if(code==="invalid_customer_email"||code==="invalid_customer_name"||code.startsWith("invalid_")||code==="unknown_action")return 400;
   return 500;
 }
