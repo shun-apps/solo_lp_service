@@ -57,7 +57,7 @@ async function parseBody(request){
 }
 const allowedAdmin=new Set([
   "create_or_update_event","set_event_open","toggle_registration",
-  "set_inquiry_handled","set_shop_name","set_default_form","set_lp_url"
+  "set_inquiry_handled","set_shop_name","set_business_icon","set_default_form","set_lp_url"
 ]);
 const allowedPublic=new Set(["submit_public_registration","submit_public_inquiry"]);
 function errorStatus(code){
