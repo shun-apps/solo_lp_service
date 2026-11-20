@@ -112,3 +112,9 @@ python3 -m http.server 4185 --directory dist
 
 `npm run check`（単体・構文）、`npm run build`（Workers Static Assets生成）、GitHub ActionsのPC・スマホブラウザ操作テストを実行します。
 
+
+## 納品物との区別（2026-11-21）
+
+このリポジトリは今後も**営業用の旧・架空デモ専用**です。以前追加した `delivery/` の独自フォーム・予約・メール構築は、瞬LP V2の正本と重複していたため削除しました。
+
+実際の納品物の原型は `shun-apps/shunapps_lp_v2` の `public/atelier/` で作ります。フォーム・予約・自動返信・リマインドはV2の既存実装を使用します。**今の旧デモには納品できない機能があり、納品版と同一ではありません。** 納品版確定後に改めてシミュレーションレイヤーを重ねます。
