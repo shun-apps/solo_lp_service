@@ -26,6 +26,26 @@ html=html.replace("ワークショップの追加・変更","ワークショッ�
 html=html.replace("管理画面でワークショップを設定","ワークショップを設定");
 html=html.replace("内容を保存する（デモ）","内容を保存する");
 html=html.replace("ワークショップ申込（デモ）","ワークショップ申込");
+html=html.replace('> 自動返信メール</button>','> メール通知（準備中）</button>');
+html=html.replace('<h1 id="title-mail">自動返信メール</h1>','<h1 id="title-mail">メール通知</h1>');
+html=html.replace('class="business-avatar" aria-hidden="true">糸<','class="business-avatar" aria-hidden="true">店<');
+const settingsStart=html.indexOf('      <section class="page" id="page-settings"');
+const settingsEnd=html.indexOf('      <section class="page" id="page-mail"',settingsStart);
+if(settingsStart<0||settingsEnd<0)throw Error("Settings screen boundaries changed");
+html=html.slice(0,settingsStart)+
+  '      <section class="page" id="page-settings" data-page="settings" hidden aria-labelledby="title-settings">\n'+
+  '        <div class="page-head"><div><span class="eyebrow">FORM SETTINGS</span><h1 id="title-settings">フォームの設定</h1></div></div>\n'+
+  '        <div class="guide-band guide-band--settings" role="note">LPに設定する受付フォームのURLを確認できます。</div>\n'+
+  '      </section>\n'+html.slice(settingsEnd);
+const mailStart=html.indexOf('      <section class="page" id="page-mail"');
+const mailEnd=html.indexOf('      <section class="page" id="page-profile"',mailStart);
+if(mailStart<0||mailEnd<0)throw Error("Mail screen boundaries changed");
+html=html.slice(0,mailStart)+
+  '      <section class="page" id="page-mail" data-page="mail" hidden aria-labelledby="title-mail">\n'+
+  '        <div class="page-head"><div><span class="eyebrow">EMAIL</span><h1 id="title-mail">メール通知</h1></div></div>\n'+
+  '        <div class="guide-band guide-band--mail" role="note">自動メール送信は準備中です。現在は利用できません。</div>\n'+
+  '      </section>\n'+html.slice(mailEnd);
+
 if(html.includes('id="experience-dialog"')||html.includes('id="reset"'))throw Error("Simulator UI leaked into customer delivery");
 await rm(dist,{recursive:true,force:true});
 const staticFiles=[
