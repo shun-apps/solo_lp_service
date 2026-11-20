@@ -101,6 +101,16 @@ test("納品するLPのURLをHTTPSだけで設定",()=>{
  assert.throws(()=>update(s,"set_lp_url",{lpId:"lp-bogus",url:"https://example.com"}),/invalid_lp_or_form/);
 });
 
+test("ショップアイコンは小さなWebPデータだけ保存・削除可能",()=>{
+ const state=emptyCustomerState();
+ const icon="data:image/webp;base64,AAAA";
+ const updated=update(state,"set_business_icon",{icon});
+ assert.equal(updated.state.businessIcon,icon);
+ assert.equal(update(updated.state,"set_business_icon",{icon:null}).state.businessIcon,null);
+ assert.throws(()=>update(state,"set_business_icon",{icon:"data:image/svg+xml;base64,AAAA"}),/invalid_business_icon/);
+ assert.throws(()=>update(state,"set_business_icon",{icon:"data:image/webp;base64,"+"A".repeat(12001)}),/invalid_business_icon/);
+});
+
 test("架空デモから本番へ実個人情報が流入する経路を作らない",()=>{
  const s=emptyCustomerState();
  assert.throws(()=>update(s,"submit_public_inquiry",{lpId:"lp-content",topic:INQUIRY_TOPICS[0],name:"",email:"invalid"}),/invalid_customer_name/);
