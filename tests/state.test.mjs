@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 import {
-  initialState,LP_SAMPLES,INQUIRY_TOPICS,stats,registerEvent,submitInquiry,
+  initialState,LP_SAMPLES,INQUIRY_TOPICS,stats,lpReceptionStats,registerEvent,submitInquiry,
   eventParticipants,saveEvent,setEventOpen,setInquiryHandled,cancelRegistration,
   prettyDate,selectMode
 } from "../src/state.mjs";
@@ -31,6 +31,33 @@ test("イベント申込で参加数が増えて定員を超えず、キャン�
   cancelRegistration(s,r.id);
   assert.equal(eventParticipants(s,ev.id),before+1);
 });
+test("LP別の申込・相談数は各流入LPと連動し、キャンセルは除外、相談の対応済みは維持",()=>{
+  const s=baseline();
+  const counts=()=>Object.fromEntries(lpReceptionStats(s).map(x=>[x.id,x.total]));
+  assert.deepEqual(counts(),{"lp-content":1,"lp-craft":1,"lp-event":3});
+  const r=registerEvent(s,{eventId:s.events[0].id,lpId:"lp-event"});
+  assert.equal(counts()["lp-event"],4);
+  cancelRegistration(s,r.id);
+  assert.equal(counts()["lp-event"],3);
+  cancelRegistration(s,r.id);
+  assert.equal(counts()["lp-event"],4);
+  const q=submitInquiry(s,{topic:INQUIRY_TOPICS[0],lpId:"lp-craft"});
+  assert.equal(counts()["lp-craft"],2);
+  setInquiryHandled(s,q.id,true);
+  assert.equal(counts()["lp-craft"],2);
+  assert.equal(lpReceptionStats(s).reduce((sum,lp)=>sum+lp.total,0),6);
+});
+
+test("ダッシュボードはLP見本と体験カードを置かず、LP別の受付集計を表示",async()=>{
+ const html=await readFile(new URL("../index.html",import.meta.url),"utf8");
+ const dashboard=html.split('id="page-dashboard"')[1].split('id="page-lp"')[0];
+ assert.match(dashboard,/id="lp-breakdown"/);
+ assert.match(dashboard,/LP別の申込・相談数/);
+ assert.doesNotMatch(dashboard,/id="stat-lp"|id="dashboard-lps"|受付フォームの体験|data-try/);
+ assert.match(html,/id="lp-cards"/);
+ assert.match(html,/id="try-default"/);
+});
+
 test("定員と受付ON/OFFが実イベント予約をブロック",()=>{
   const s=baseline();
   const ev=s.events[0];
