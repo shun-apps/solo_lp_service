@@ -137,9 +137,12 @@ test("動画なしでダッシュボード直行、7メニュー全てに同ト�
   const page=html.slice(html.indexOf('id="page-'+id+'"'));
   assert.match(page,new RegExp('class="guide-band guide-band--'+id+'"'));
   assert.ok(page.includes(message));
-  assert.match(css,new RegExp('\\.guide-band--'+id+'\\s*\\{'));
  }
- assert.match(css,/guide-band--dashboard\s*\{ --guide-bg:#E3F0E8/);
+ assert.match(css,/\.guide-band\s*\{[\s\S]*?--guide-bg:\s*#EDE7E3/);
+ assert.match(css,/--guide-border:\s*#D8CAC3/);
+ assert.match(css,/--guide-accent:\s*#A3897C/);
+ assert.match(css,/--guide-ink:\s*#61514B/);
+ assert.doesNotMatch(css,/\.guide-band--(?:dashboard|lp|events|leads|settings|mail|profile)\s*\{/);
  assert.doesNotMatch(css,/\.demo-intro|\.intro-video-wrap/);
  assert.match(html,/id="experience-step-0"/);
  assert.match(html,/id="experience-step-4"/);
