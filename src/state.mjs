@@ -54,6 +54,14 @@ export const stats=(s)=>({
   registrations:s.registrations.filter(x=>x.status==="参加予定").length,
   inquiries:s.inquiries.filter(x=>x.status==="未対応").length
 });
+/** LPごとの実受付件数。申込は1件単位（参加人数ではない）で、キャンセルを除外。相談は対応済みも含む。 */
+export function lpReceptionStats(s){
+  return LP_SAMPLES.map(lp=>{
+    const registrations=s.registrations.filter(r=>r.lpId===lp.id&&r.status==="参加予定").length;
+    const inquiries=s.inquiries.filter(q=>q.lpId===lp.id).length;
+    return {id:lp.id,title:lp.title,mode:lp.mode,registrations,inquiries,total:registrations+inquiries};
+  });
+}
 const eventById=(s,id)=>s.events.find(x=>x.id===id);
 export function registerEvent(s,{eventId,lpId="lp-event",attendeeCount=1}){
   const ev=eventById(s,eventId);
