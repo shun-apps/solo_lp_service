@@ -125,6 +125,9 @@ try{
  await page.locator('[data-page-go="lp"]').first().click();
  assert.equal(await page.locator("#lp-cards .lp-card").count(),3);
  assert.equal(await page.locator('#lp-cards .lp-card button').filter({hasText:"LPを見る"}).count(),3);
+ assert.equal(await page.locator("#lp-cards .lp-view-action .lp-view-arrow").count(),3);
+ assert.deepEqual(await page.locator("#lp-cards .lp-view-arrow").allTextContents(),["→","→","→"]);
+ assert.equal(await page.locator("#lp-cards .lp-view-arrow[aria-hidden=true]").count(),3);
  assert.equal(await page.locator("#lp-cards a").count(),0);
  // Mobile layout and independent reset
  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,deviceScaleFactor:1,reducedMotion:"reduce"});

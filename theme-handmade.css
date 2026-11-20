@@ -186,6 +186,10 @@ h1, h2, h3 { color: #493B44; letter-spacing: -.018em; }
 .lp-visual.lp-event .lp-ornament { right:12%;top:16%; }
 .lp-card-details h3 { color:#5B4652; }
 .lp-actions { gap:9px; }
+.lp-view-action { display:inline-flex; align-items:center; gap:7px; }
+.lp-view-arrow { display:inline-block; font-size:1.2em; line-height:1; transition:transform .15s ease; }
+.lp-view-action:hover .lp-view-arrow, .lp-view-action:focus-visible .lp-view-arrow { transform:translateX(3px); }
+@media (prefers-reduced-motion: reduce) { .lp-view-arrow { transition:none; } }
 .kicker { color:#9C667B; }
 .lp-tile { border-color:#EFE6E8; }
 .info { background:#F4ECEE;border-color:#EEDFE2;color:#765D68; }

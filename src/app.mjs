@@ -97,7 +97,11 @@ function lpCard(lp,small=false){
 
  const actions=create("div",null,"lp-actions");
 
- actions.append(safeButton("LPを見る","text-action",()=>chooseExperience(lp.mode,lp.id)));
+ const viewButton=safeButton("LPを見る","text-action lp-view-action",()=>chooseExperience(lp.mode,lp.id));
+ const arrow=create("span","→","lp-view-arrow");
+ arrow.setAttribute("aria-hidden","true");
+ viewButton.append(arrow);
+ actions.append(viewButton);
  info.append(actions);card.append(visual,info);
  return card;
 }
