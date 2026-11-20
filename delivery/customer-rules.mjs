@@ -57,6 +57,10 @@ export function transitionCustomerState(original,action,payload={}){
   let result=null;
   switch(action){
     case "create_or_update_event":{
+      const existing=state.events.find(e=>e.id===payload.id);
+      if(existing&&(existing.date!==payload.date||existing.time!==payload.time)&&eventParticipants(state,existing.id)>0){
+        throw Error("event_has_bookings");
+      }
       result=saveEvent(state,{
         id:payload.id??null,title:payload.title,date:payload.date,
         time:payload.time,capacity:payload.capacity
