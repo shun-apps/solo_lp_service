@@ -420,3 +420,21 @@ h3 { font-size: 16px; line-height: 1.5; }
   .choice-card { padding: 13px; }
   .records { min-width: 720px; } /* 表は独立横スクロールで文字を潰さない */
 }
+
+
+/* ダッシュボードは業務の数字とLP別受付数だけを表示。配色は既存のグレージュ系。 */
+.dashboard-metrics { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.lp-performance-note { margin:0 0 20px; color:#716A6B; font-size:14px; line-height:1.6; }
+.lp-performance-list { display:grid; gap:20px; }
+.lp-performance-row { display:grid; gap:9px; min-width:0; }
+.lp-performance-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.lp-performance-name { display:grid; gap:4px; min-width:0; }
+.lp-performance-name strong { color:#58404D; font-size:15px; line-height:1.45; overflow-wrap:anywhere; }
+.lp-performance-name small { color:#716A6B; font-size:13px; line-height:1.4; }
+.lp-performance-count { color:#58404D; font-size:19px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.lp-performance-track { width:100%; height:10px; border-radius:999px; background:#F2F0EF; overflow:hidden; }
+.lp-performance-fill { display:block; height:100%; background:#A3897C; border-radius:999px; }
+@media(max-width:650px){
+  .dashboard-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .dashboard-metrics .metric:last-child { grid-column:1 / -1; }
+}
