@@ -32,6 +32,13 @@ try{
  assert.equal(await page.locator("video").count(),0);
  assert.equal(await page.locator("#back-to-intro").count(),0);
  assert.equal(await page.locator("#stat-register").textContent(),"3件");
+ assert.equal(await page.locator("#page-dashboard #stat-lp").count(),0);
+ assert.equal(await page.locator("#page-dashboard #dashboard-lps").count(),0);
+ assert.equal(await page.locator("#page-dashboard .choice-cards").count(),0);
+ assert.equal(await page.locator("#lp-breakdown .lp-performance-row").count(),3);
+ assert.equal(await page.locator('[data-lp-id="lp-content"] .lp-performance-count').innerText(),"1件");
+ assert.equal(await page.locator('[data-lp-id="lp-craft"] .lp-performance-count').innerText(),"1件");
+ assert.equal(await page.locator('[data-lp-id="lp-event"] .lp-performance-count').innerText(),"3件");
  assert.equal(await page.locator(".nav").count(),7);
  assert.equal(await page.locator("#sidebar-name").textContent(),"糸と花のアトリエ（架空）");
  const bands=[
@@ -55,7 +62,8 @@ try{
  await page.locator('[data-page-go="dashboard"]').first().click();
  await page.screenshot({path:join(screenshots,"02-dashboard-desktop.png")});
  // Workshop path: event and attendee count, name, email, confirm/edit, completion
- await page.locator('#page-dashboard [data-try="event"]').first().click();
+ await page.locator('[data-page-go="lp"]').first().click();
+ await page.locator('#lp-cards .lp-card').nth(2).getByRole("button",{name:/参加フォームへ/}).click();
  assert.equal(await page.locator("#experience-dialog").isVisible(),true);
  assert.equal(await page.locator("#experience-step-0").isVisible(),true);
  assert.equal(await page.locator("#event-choices .event-choice:not(:disabled)").count(),3);
@@ -80,6 +88,7 @@ try{
  await page.locator("#step-send").click();
  assert.equal(await page.locator("#experience-step-4").isVisible(),true);
  assert.equal(await page.locator("#stat-register").textContent(),"4件");
+ assert.equal(await page.locator('[data-lp-id="lp-event"] .lp-performance-count').innerText(),"4件");
  assert.match(await page.locator("#success-mail").textContent(),/メール送信なし/);
  await page.screenshot({path:join(screenshots,"04-form-complete.png")});
  await page.locator("#view-result").click();
@@ -88,7 +97,8 @@ try{
  assert.equal(await page.locator("#lead-rows tr.highlight").count(),1);
  // Contact path
  await page.locator('[data-page-go="dashboard"]').first().click();
- await page.locator('#page-dashboard [data-try="contact"]').first().click();
+ await page.locator('[data-page-go="lp"]').first().click();
+ await page.locator('#lp-cards .lp-card').first().getByRole("button",{name:/相談フォームへ/}).click();
  assert.equal(await page.locator("#contact-selection").isVisible(),true);
  assert.equal(await page.locator("#event-selection").isVisible(),false);
  await page.locator("#modal-topic").selectOption({label:"作品のオーダー制作について相談したい"});
@@ -97,10 +107,12 @@ try{
  assert.match(await page.locator("#review-content").innerText(),/オーダー制作/);
  await page.locator("#step-send").click();
  assert.equal(await page.locator("#stat-inquiry").textContent(),"2件");
+ assert.equal(await page.locator('[data-lp-id="lp-content"] .lp-performance-count').innerText(),"2件");
  await page.locator("#view-result").click();
  assert.equal(await page.locator("#lead-rows tr").count(),3);
  await page.locator("#lead-rows tr.highlight").getByRole("button",{name:"対応済みにする"}).click();
  assert.equal(await page.locator("#stat-inquiry").textContent(),"1件");
+ assert.equal(await page.locator('[data-lp-id="lp-content"] .lp-performance-count').innerText(),"2件");
  // Workshop edit and LP cards remain functional
  await page.locator('[data-page-go="events"]').first().click();
  await page.locator("#new-event").click();
@@ -122,8 +134,11 @@ try{
  assert.equal(await mobile.locator("#demo-intro").count(),0);
  assert.equal(await mobile.locator("#page-dashboard .guide-band").innerText(),"LPからどのくらい予約が入ったかが表示されます。");
  assert.equal(await mobile.locator("#page-dashboard .guide-band").evaluate(el=>getComputedStyle(el).fontSize),"14px");
+ assert.equal(await mobile.locator("#lp-breakdown .lp-performance-row").count(),3);
+ assert.equal(await mobile.locator('[data-lp-id="lp-event"] .lp-performance-count').innerText(),"3件");
  await mobile.screenshot({path:join(screenshots,"06-dashboard-mobile.png")});
- await mobile.locator('#page-dashboard [data-try="contact"]').first().click();
+ await mobile.locator('[data-page-go="lp"]').first().click();
+ await mobile.locator('#lp-cards .lp-card').first().getByRole("button",{name:/相談フォームへ/}).click();
  assert.equal(await mobile.locator("#experience-dialog").isVisible(),true);
  await mobile.screenshot({path:join(screenshots,"07-contact-mobile.png")});
  for(let i=0;i<3;i++)await mobile.locator("#step-next").click();
