@@ -57,6 +57,29 @@ test("同じLPでイベント日程や人数を変更でき、公開フォーム
  assert.equal(s.events.length,1);
 });
 
+test("申込済みイベントの日時変更は安全のため拒否し、定員変更や新規日程の追加は許可",()=>{
+ let state=emptyCustomerState();
+ const initial=update(state,"create_or_update_event",{
+  title:"刺繍体験",date:"2027-06-10",time:"10:00",capacity:5
+ });
+ state=initial.state;
+ state=update(state,"submit_public_registration",{
+  lpId:"lp-event",eventId:initial.result.id,attendeeCount:1,name:"申込者",email:"person@example.com"
+ }).state;
+ assert.throws(()=>update(state,"create_or_update_event",{
+  id:initial.result.id,title:"刺繍体験",date:"2027-06-11",time:"10:00",capacity:5
+ }),/event_has_bookings/);
+ const changed=update(state,"create_or_update_event",{
+  id:initial.result.id,title:"刺繍体験",date:"2027-06-10",time:"10:00",capacity:8
+ });
+ assert.equal(changed.state.events[0].capacity,8);
+ const another=update(state,"create_or_update_event",{
+  title:"次回の刺繍体験",date:"2027-07-11",time:"14:00",capacity:6
+ });
+ assert.equal(another.state.events.length,2);
+ assert.equal(another.state.registrations.length,1);
+});
+
 test("問い合わせは注文ではなく相談としてカウントし、対応済みにしても総数を保つ",()=>{
  let s=emptyCustomerState();
  const created=update(s,"submit_public_inquiry",{
